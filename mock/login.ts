@@ -1,0 +1,37 @@
+// 根据角色动态生成路由
+import { defineFakeRoute } from "vite-plugin-fake-server/client";
+
+export default defineFakeRoute([
+  {
+    url: "/login",
+    method: "post",
+    response: ({ body }) => {
+      if (body.username === "admin") {
+        return {
+          success: true,
+          data: {
+            username: "admin",
+            // 一个用户可能有多个角色
+            roles: ["admin"],
+            /*accessToken: "eyJhbGciOiJIUzUxMiJ9.admin",*/
+            accessToken: "MQ==.3.0.omcAu45_a-45L0-R3_zomSPRF400.ZTZmMTliM2JmMTViN2YzOTYxZmQxMzg0ZjU1ZTRmZDA=",
+            refreshToken: "eyJhbGciOiJIUzUxMiJ9.adminRefresh",
+            expires: "2030/10/30 00:00:00"
+          }
+        };
+      } else {
+        return {
+          success: true,
+          data: {
+            username: "common",
+            // 一个用户可能有多个角色
+            roles: ["common"],
+            accessToken: "eyJhbGciOiJIUzUxMiJ9.common",
+            refreshToken: "eyJhbGciOiJIUzUxMiJ9.commonRefresh",
+            expires: "2030/10/30 00:00:00"
+          }
+        };
+      }
+    }
+  }
+]);
