@@ -6,7 +6,7 @@ import PureTableBar from "@/components/RePureTableBar/src/bar";
 const props = withDefaults(defineProps<DetailProps>(), {
   formInline: () => ({
     banner: [],
-    case: [],
+    coachCase: [],
     coach_id: 0,
     course: [],
     cover_image: "",
@@ -23,8 +23,7 @@ const props = withDefaults(defineProps<DetailProps>(), {
   })
 })
 const newFormInline = ref(props.formInline);
-const dataList = ref()
-dataList.value = newFormInline.value.ids
+
 </script>
 
 <template>
@@ -35,31 +34,31 @@ dataList.value = newFormInline.value.ids
       :column="3"
       :border="true"
     >
-      <el-descriptions-item label="教练ID">{{dataList.coach_id}}</el-descriptions-item>
-      <el-descriptions-item label="教练名称">{{dataList.name}}</el-descriptions-item>
-      <el-descriptions-item label="教练评分">{{dataList.score}}</el-descriptions-item>
+      <el-descriptions-item label="教练ID">{{ newFormInline.coach_id }}</el-descriptions-item>
+      <el-descriptions-item label="教练名称">{{ newFormInline.name }}</el-descriptions-item>
+      <el-descriptions-item label="教练评分">{{ newFormInline.score }}</el-descriptions-item>
       <el-descriptions-item label="教练图像">
         <template #default>
           <el-image
             fit="cover"
             preview-teleported
-            :src="dataList.cover_image"
-            :preview-src-list="[dataList.cover_image]"
+            :src="newFormInline.cover_image"
+            :preview-src-list="[newFormInline.cover_image]"
             class="w-[60px] h-[60px] rounded-full align-middle"
           />
         </template>
       </el-descriptions-item>
-      <el-descriptions-item label="课时费">{{dataList.price}}</el-descriptions-item>
-      <el-descriptions-item label="教练星级">{{dataList.rate}}</el-descriptions-item>
-      <el-descriptions-item label="教练所属区域ID">{{dataList.region_id}}</el-descriptions-item>
-      <el-descriptions-item label="教练介绍">{{dataList.info}}</el-descriptions-item>
-      <el-descriptions-item label="限定接单用户性别">{{dataList.gender_limit}}</el-descriptions-item>
-      <el-descriptions-item label="案例">{{dataList.case}}</el-descriptions-item>
-      <el-descriptions-item label="轮播图">{{dataList.banner}}</el-descriptions-item>
+      <el-descriptions-item label="课时费">{{ newFormInline.price }}</el-descriptions-item>
+      <el-descriptions-item label="教练星级">{{ newFormInline.rate }}</el-descriptions-item>
+      <el-descriptions-item label="教练所属区域ID">{{ newFormInline.region_id }}</el-descriptions-item>
+      <el-descriptions-item label="教练介绍">{{ newFormInline.info }}</el-descriptions-item>
+      <el-descriptions-item label="限定接单用户性别">{{ newFormInline.gender_limit }}</el-descriptions-item>
+      <el-descriptions-item label="案例">{{ newFormInline.case }}</el-descriptions-item>
+      <el-descriptions-item label="轮播图">{{ newFormInline.banner }}</el-descriptions-item>
     </el-descriptions>
     <h3>预约时间段</h3>
     <el-table
-      :data="dataList.segment"
+      :data="newFormInline.segment"
       align-whole="center"
       table-layout="auto"
     >
@@ -67,7 +66,7 @@ dataList.value = newFormInline.value.ids
       <el-table-column label="时间点状态" prop="status"/>
     </el-table>
     <h3>教练可上课程</h3>
-    <el-table :data="dataList.course">
+    <el-table :data="newFormInline.course">
       <el-table-column label="课程ID" prop="course_id"/>
       <el-table-column label="课程名称" prop="name"/>
       <el-table-column label="课程类型" prop="type"/>

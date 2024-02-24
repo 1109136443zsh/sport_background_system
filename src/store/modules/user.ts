@@ -55,19 +55,10 @@ export const useUserStore = defineStore({
     /** 登入 */
     async loginByUsername(data) {
       return new Promise<UserResult>((resolve, reject) => {
-        console.log(data)
-        /*
-         * account: root
-         * password: 123456
-         *  */
         getLogin(data)
           .then(data => {
-            console.log(data)
-            /*
-             * code: 400
-             * msg: 用户名不能为空
-             *  */
             if (data) {
+              console.log(data)
               setToken(data.data);
               resolve(data);
             }

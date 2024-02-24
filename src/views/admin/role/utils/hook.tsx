@@ -7,13 +7,19 @@ import {addDialog} from "@/components/ReDialog/index";
 import editForm from "@/views/admin/role/form/index.vue"
 import {getPowerList} from "@/api/admin/power";
 import {addRole, deleteRole, getRoleList, grantRole} from "@/api/admin/role";
+import type {PaginationProps} from "@pureadmin/table";
 
 export function useRole() {
 
   const formRef = ref();
   const dataList = ref([]);
   const loading = ref(true);
-
+  const pagination = reactive<PaginationProps>({
+    total: 0,
+    pageSize: 10,
+    currentPage: 1,
+    background: true
+  });
   const columns: TableColumnList = [
     {
       label: "角色id",
@@ -47,7 +53,7 @@ export function useRole() {
     loading.value = true;
     await getRoleList().then(response => {
       dataList.value = response.data
-      console.log(response)
+      pagination.total = response.pages
     }).catch(() => {
       message(`获取列表失败`,
         {type: "error"});
@@ -127,6 +133,7 @@ export function useRole() {
     dataList,
     onSearch,
     handleDelete,
-    openDialog
+    openDialog,
+    pagination
   }
 }

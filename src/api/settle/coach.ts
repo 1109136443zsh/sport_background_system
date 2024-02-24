@@ -70,30 +70,31 @@ type ApplyCoachBase = {
   [property: string]: any;
 };
 
-export const getCoachList = (data:object) => {
+export const getCoachList = (data: { page: number, phone: number }) => {
+  const {page, phone} = data
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/apply/coach/list",
-    {data}
+    `http://115.28.37.42:7788/admin/apply/coach/list?page=${page}&phone=${phone}`
   );
 };
 // 获取入驻详情
-export const getCoachDetail = (data:object) => {
+export const getCoachDetail = (data: { apply_id }) => {
+  const {apply_id} = data
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/apply/coach/get",
+    `http://115.28.37.42:7788/admin/apply/coach/get?apply_id=${apply_id}`,
     {data}
   );
 };
 // 同意入驻
-export const coachAccept = (data:object) => {
+export const coachAccept = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/apply/coach/accept",
+    "http://115.28.37.42:7788/admin/apply/coach/accept",
     {data}
   );
 };
 // 拒绝入驻
-export const coachReject = (data:object) => {
+export const coachReject = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/apply/coach/reject",
+    "http://115.28.37.42:7788/admin/apply/coach/reject",
     {data}
   );
 };

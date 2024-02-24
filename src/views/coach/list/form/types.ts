@@ -2,11 +2,11 @@ interface FormItemProps{
   /**
    * 轮播图
    */
-  banner: string[];
+  banner: string;
   /**
    * 学员案例
    */
-  case: string[];
+  coachCase: string;
   /**
    * 教练ID
    */
@@ -30,7 +30,8 @@ interface FormItemProps{
   /**
    * 技能
    */
-  skill: string[];
+  skill: string;
+  url: string;
   [property: string]: any;
 }
 interface FormProps{

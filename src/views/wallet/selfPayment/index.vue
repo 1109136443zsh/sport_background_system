@@ -14,6 +14,9 @@ const {
   dataList,
   pagination,
   onSearch,
+  getBalance,
+  balance,
+  withdrawal
 }=useWallet()
 </script>
 
@@ -25,16 +28,17 @@ const {
       @refresh="onSearch"
     >
       <template #buttons>
+        <el-text class="m-1">余额：{{balance}}</el-text>
         <el-button
           type="primary"
           style="margin-left: 18px"
-          @click=""
+          @click="getBalance"
         >
           查询余额
         </el-button>
         <el-button
           type="primary"
-          @click=""
+          @click="withdrawal(balance)"
         >
           提现
         </el-button>

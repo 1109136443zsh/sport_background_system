@@ -1,13 +1,13 @@
 import {h, onMounted, reactive, ref, toRaw} from "vue";
-import {getBillList, uploadBill} from "@/api/bill";
+import {addBill, getBillList, uploadBill} from "@/api/bill";
 import type {PaginationProps} from "@pureadmin/table";
 import {addDialog} from "@/components/ReDialog/index";
-import editForm from "@/views/bill/form/index.vue";
+import editForm from "@/views/bill/uploadForm/index.vue";
 import {message} from "@/utils/message";
-
+import addForm from "@/views/bill/addForm/index.vue"
 export function useBill() {
   const form = reactive({
-    user_id: ""
+    user_id: 0
   });
   const dataList = ref();
   const formRef = ref()
@@ -63,22 +63,35 @@ export function useBill() {
 
   async function onSearch() {
     loading.value = true;
-    const {data} = await getBillList({
+    await getBillList({
       page: pagination.currentPage,
-      user_id: toRaw(form)
-    });
-    dataList.value = data.page_data;
+      user_id: toRaw(form).user_id
+    }).then(response => {
+      if (response.code === 200){
+        dataList.value = response.data
+      }else {
+        message("出错了，请重试", {
+          type: "error"
+        })
+      }
+    }).catch((error) => {
+      console.log(error)
+      message("获取数据失败，请重试", {
+        type: "error"
+      })
+    })
     setTimeout(() => {
       loading.value = false;
     }, 500);
   }
+
   function openDialog() {
     addDialog({
-      title: "",
+      title: "上传电子发票",
       props: {
         formInline: {
           bill_id: "",
-          bill_file: []
+          bill_file: [],
         }
       },
       width: "46%",
@@ -91,16 +104,22 @@ export function useBill() {
         const curData = options.props.formInline
         FormRef.validate(valid => {
           if (valid) {
-            uploadBill({
-              bill_id: curData.bill_id,
-              bill_file: curData.bill_file
-            }).then(() => {
-              message("成功上传发票", {
-                type: "success"
-              });
-              done();
-              onSearch();
-
+            const data = new FormData()
+            data.append("bill_id",curData.bill_id)
+            data.append("bill_file",curData.bill_file)
+            uploadBill(data).then((response) => {
+              console.log(response)
+              if (response.code === 200){
+                message("成功上传发票", {
+                  type: "success"
+                });
+                done();
+                onSearch();
+              }else {
+                message("出错了，请检查", {
+                  type: "error"
+                });
+              }
             }).catch((error) => {
               console.log(error)
               message("上传发票异常", {
@@ -110,6 +129,62 @@ export function useBill() {
           }
         })
       }
+    })
+  }
+  function openAddDialog() {
+    addDialog({
+      title: "申请发票",
+      props: {
+        formInline: {
+          amount: "",
+          tax_id: "",
+          address: "",
+          title: "",
+          title_type: "",
+          phone: "",
+          bank: "",
+          bank_account: ""
+        }
+      },
+      width: "46%",
+      draggable: true,
+      fullscreenIcon: true,
+      closeOnClickModal: false,
+      contentRenderer: () => h(addForm, {ref: formRef}),
+      beforeSure: (done, { options}) => {
+        const FormRef = formRef.value.getRef();
+        const curData = options.props.formInline;
+        FormRef.validate(valid => {
+          if (valid) {
+            addBill({
+              amount: curData.amount,
+              title_type: curData.title_type,
+              title: curData.title,
+              tax_id: curData.tax_id,
+              address: curData.address,
+              phone: curData.phone,
+              bank: curData.bank,
+              bank_account: curData.bank_account
+            }).then(res => {
+              if (res.code === 200) {
+                message(`申请发票成功`, {
+                  type: "success"
+                });
+                done();
+                onSearch();
+              }else {
+                message(`出错了`, {
+                  type: "error"
+                });
+              }
+            }).catch(() => {
+              message(`提交失败`, {
+                type: "error"
+              });
+            })
+          }
+        })
+      },
     })
   }
   const resetForm = formEl => {
@@ -128,6 +203,7 @@ export function useBill() {
     resetForm,
     pagination,
     onSearch,
-    openDialog
+    openDialog,
+    openAddDialog
   }
 }

@@ -3,7 +3,9 @@ import type {PaginationProps} from "@pureadmin/table";
 
 import dayjs from "dayjs";
 import {message} from "@/utils/message";
-import {getSignedContractList} from "@/api/contract";
+import {contractDetail, contractRemove, getSignedContractList} from "@/api/contract";
+import {addDialog} from "@/components/ReDialog/index";
+import detailTable from "@/views/contract/component/detail/index.vue";
 
 
 export function useSignedContract() {
@@ -21,6 +23,7 @@ export function useSignedContract() {
       label: "签署对象",
       prop: "sign_role"
     },
+    /*,
     {
       label: "签署人id",
       prop: "user_id"
@@ -47,6 +50,12 @@ export function useSignedContract() {
           class="w-[24px] h-[24px] rounded-full align-middle"
         />
       )
+    },*/
+    {
+      label: "操作",
+      fixed: "right",
+      slot: "operation",
+      width: 180
     }
   ];
   const dataList = ref()
@@ -60,9 +69,9 @@ export function useSignedContract() {
 
   async function onSearch() {
     loading.value = true;
-    await getSignedContractList({
-      page: pagination.currentPage
-    }).then(response => {
+    await getSignedContractList(
+      pagination.currentPage
+    ).then(response => {
       dataList.value = response.data
     }).catch(() => {
       message(`获取列表信息失败`,
@@ -75,6 +84,46 @@ export function useSignedContract() {
     }, 500);
   }
 
+  async function handleDelete(row) {
+    await contractRemove({
+      contract_id: row.contract_id
+    }).then(() => {
+      message(`您删除了编号为${row.contract_id}的合同`,
+        {
+          type: "success"
+        });
+      onSearch();
+    }).catch(() => {
+      message(`操作失败，请重试`,
+        {
+          type: "error"
+        });
+    })
+  }
+  async function openDetailDialog(row) {
+    let ids = null
+    await contractDetail({
+      contract_id: row.contract_id
+    }).then(response => {
+      ids = response.data
+      addDialog({
+        title: "查看合同详情",
+        props: {
+          formInline: {
+            contract_id: "",
+            sign_role: 0,
+            name: "",
+            text: ""
+          }
+        },
+        width: "46%",
+        draggable: true,
+        fullscreenIcon: true,
+        closeOnClickModal: false,
+        contentRenderer: () => detailTable
+      })
+    })
+  }
   const resetForm = formEl => {
     if (!formEl) return;
     console.log(formEl)
@@ -92,6 +141,8 @@ export function useSignedContract() {
     columns,
     dataList,
     onSearch,
-    resetForm
+    resetForm,
+    handleDelete,
+    openDetailDialog
   }
 }

@@ -55,38 +55,56 @@ export interface ContractBase {
   [property: string]: any;
 }
 // 获取所有合同
-export const getContractList = (data:object) => {
+export const getContractList = (page:number) => {
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/contract/list",
-    {data}
+    `http://115.28.37.42:7788/admin/contract/list?page=${page}`
   );
 };
 // 获取未签署的合同
-export const getWaitContractList = (data:object) => {
+export const getWaitContractList = (page:number) => {
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/contract/wait",
-    {data}
+    `http://115.28.37.42:7788/admin/contract/wait?page=${page}`
   );
 };
 // 获取已签署的合同
-export const getSignedContractList = (data:object) => {
+export const getSignedContractList = (page:number) => {
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/contract/signed",
-    {data}
+    `http://115.28.37.42:7788/admin/contract/signed?page=${page}`
   );
 };
 // 线下合同补录
 export const contractApply = (data:object) => {
-  return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/contract/signed",
+  return http.request<Response>("post",
+    "http://115.28.37.42:7788/admin/contract/supply",
     {data}
   );
 };
 // 签署合同/同意条款
 export const contractSign = (data:object) => {
-  return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4026186-0-default/admin/contract/sign",
+  return http.request<Response>("post",
+    "http://115.28.37.42:7788/admin/contract/sign",
     {data}
   );
 };
-
+// 删除合同
+export const contractRemove = (data:object) => {
+  return http.request<Response>("post",
+    "http://115.28.37.42:7788/admin/contract/remove",
+    {data}
+  );
+};
+// 获取合同详情
+export const contractDetail = (data: {contract_id: number}) => {
+  const {contract_id} = data
+  return http.request<Response>("get",
+    `http://115.28.37.42:7788/admin/contract/get?contract_id=${contract_id}`,
+    {data}
+  );
+};
+// 添加合同
+export const addContract = (data:object) => {
+  return http.request<Response>("post",
+    "http://115.28.37.42:7788/admin/contract/add",
+    {data}
+  );
+};

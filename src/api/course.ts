@@ -13,6 +13,7 @@ export interface Response {
    * 说明
    */
   msg: string;
+
   [property: string]: any;
 }
 
@@ -33,6 +34,7 @@ export interface Data {
    * 分页大小
    */
   size: number;
+
   [property: string]: any;
 }
 
@@ -64,40 +66,42 @@ export interface CourseBase {
    * 课程类型
    */
   type: number;
+
   [property: string]: any;
 }
+
 // 获取课程列表
-export const getCourseList = (data:object) => {
+export const getCourseList = (data: { page: number, course_type?: number }) => {
+  const {page, course_type} = data
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4026089-0-default/admin/course/list",
-    {data}
+    `http://115.28.37.42:7788/admin/course/list?page=${page}&course_type=${course_type}`
   );
 };
 // 删除课程
-export const removeCourse = (data:object) => {
+export const removeCourse = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4026089-0-default/admin/course/remove",
+    "http://115.28.37.42:7788/admin/course/remove",
     {data}
   );
 };
 // 新增课程
-export const addCourse = (data:object) => {
+export const addCourse = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4026089-0-default/admin/course/remove",
+    "http://115.28.37.42:7788/admin/course/add",
     {data}
   );
 };
 // 更新课程
-export const updateCourse = (data:object) => {
+export const updateCourse = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4026089-0-default/admin/course/update",
+    "http://115.28.37.42:7788/admin/course/update",
     {data}
   );
 };
 // 获取课程详情
-export const getCourseDetail = (data:object) => {
+export const getCourseDetail = (data: object) => {
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4026089-0-default/admin/course/get",
+    "http://115.28.37.42:7788/admin/course/get",
     {data}
   );
 };

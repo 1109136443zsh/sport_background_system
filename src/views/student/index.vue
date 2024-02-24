@@ -15,7 +15,6 @@ const {
   onSearch,
   dataList,
   pagination,
-  selectNum,
   resetForm,
   openModify,
   openDetail
@@ -74,7 +73,7 @@ defineOptions({
           :header-cell-style="{
            background: 'var(--el-fill-color-light)',
            color: 'var(--el-text-color-primary)'
-        }"
+          }"
         >
           <template #operation="{row}">
             <el-button

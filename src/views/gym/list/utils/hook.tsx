@@ -10,9 +10,9 @@ import courseTable from "@/views/gym/list/course/index.vue"
 export function gymList() {
   const formRef = ref()
   const form = reactive({
-    rate_id: "",
+    rate_id: 0,
     name: "",
-    region_id: ""
+    region_id: 0
   })
   const pagination = reactive<PaginationProps>({
     total: 0,
@@ -20,7 +20,7 @@ export function gymList() {
     currentPage: 1,
     background: true
   });
-  const dataList = ref([])
+  const dataList = ref()
   const loading = ref(true)
   const columns: TableColumnList = [
     {
@@ -92,7 +92,8 @@ export function gymList() {
       rate_id: toRaw(form).rate_id,
       region_id: toRaw(form).region_id
     }).then(response => {
-      dataList.value = response.data.page_data
+      dataList.value = response.data
+      pagination.total = response.pages
     }).catch(() => {
       message("获取数据失败，请重试", {
         type: "error"
@@ -119,7 +120,22 @@ export function gymList() {
       title: "查看场馆信息",
       props: {
         formInline: {
-          ids
+          ids,
+          gym_id: ids.gym_id,
+          name: ids.name,
+          cover_image: ids.cover_image,
+          location: ids.location,
+          longitude: ids.longitude,
+          latitude: ids.latitude,
+          rate: ids.rate,
+          rate_id: ids.rate_id,
+          region_id: ids.region_id,
+          score: ids.score,
+          tags: ids.tags,
+          info: ids.info,
+          begin_time: ids.begin_time,
+          end_time: ids.end_time,
+          banner: ids.banner
         }
       },
       width: "75%",
@@ -188,23 +204,26 @@ export function gymList() {
   }
 
   async function openCourseList(row) {
-    const ids = (await getRateCourseList({
+    let ids = null
+    await getRateCourseList({
       gym_id: row.gym_id,
       page: pagination.currentPage
-    })).data.page_data
-    addDialog({
-      title: "查看该星级的可上课课程",
-      props: {
-        formInline: {
-          ids,
-          gym_id: row.gym_id
-        }
-      },
-      width: "46%",
-      draggable: true,
-      fullscreenIcon: true,
-      closeOnClickModal: false,
-      contentRenderer: () => courseTable
+    }).then(res => {
+      ids = res.data
+      addDialog({
+        title: "查看该星级的可上课课程",
+        props: {
+          formInline: {
+            ids,
+            gym_id: row.gym_id
+          }
+        },
+        width: "46%",
+        draggable: true,
+        fullscreenIcon: true,
+        closeOnClickModal: false,
+        contentRenderer: () => courseTable
+      })
     })
   }
 

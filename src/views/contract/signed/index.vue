@@ -11,6 +11,8 @@ const {
   columns,
   dataList,
   onSearch,
+  handleDelete,
+  openDetailDialog
 } = useSignedContract()
 </script>
 
@@ -37,7 +39,33 @@ const {
               color: 'var(--el-text-color-primary)'
             }"
         >
-
+          <template #operation="{row}">
+            <el-button
+              class="reset-margin"
+              link
+              type="primary"
+              :size="size"
+              @click="openDetailDialog(row)"
+            >
+              查看
+            </el-button>
+            <el-popconfirm
+              :title="`是否确认删除编号为${row.contract_id}的这条数据`"
+              @confirm="handleDelete(row)"
+            >
+              <template #reference>
+                <el-button
+                  class="reset-margin"
+                  link
+                  type="primary"
+                  :size="size"
+                  :icon="useRenderIcon(Delete)"
+                >
+                  删除
+                </el-button>
+              </template>
+            </el-popconfirm>
+          </template>
         </pure-table>
       </template>
     </PureTableBar>

@@ -18,19 +18,19 @@ const props = withDefaults(defineProps<FormProps>(), {
 const typeOption = [
   {
     label: "私教课",
-    value: 0
-  },
-  {
-    label: "特色课",
     value: 1
   },
   {
-    label: "训练营",
+    label: "特色课",
     value: 2
   },
   {
-    label: "团操",
+    label: "训练营",
     value: 3
+  },
+  {
+    label: "团操",
+    value: 4
   }
 ]
 const ruleFormRef = ref();
@@ -54,9 +54,10 @@ defineExpose({ getRef });
       <re-col
         v-if="newFormInline.title === '更新'"
         :value="12" :xs="24" :sm="24">
-        <el-form-item label="课程ID" prop="course_id">
+        <el-form-item
+          :rules="[{required: true, message: '课程ID不能为空'}]"
+          label="课程ID" prop="course_id">
           <el-input
-            disabled
             v-model="newFormInline.course_id"
             clearable
             placeholder="请输入课程ID"
@@ -64,7 +65,9 @@ defineExpose({ getRef });
         </el-form-item>
       </re-col>
       <re-col :value="12" :xs="24" :sm="24">
-        <el-form-item label="课程名称" prop="name">
+        <el-form-item
+          :rules="[{required: true, message: '课程名称不能为空'}]"
+          label="课程名称" prop="name">
           <el-input
             v-model="newFormInline.name"
             clearable
@@ -73,7 +76,9 @@ defineExpose({ getRef });
         </el-form-item>
       </re-col>
       <re-col :value="12" :xs="24" :sm="24">
-        <el-form-item label="价格" prop="price">
+        <el-form-item
+          :rules="[{required: true, message: '价格不能为空'}]"
+          label="价格" prop="price">
           <el-input
             v-model="newFormInline.price"
             clearable
@@ -82,16 +87,20 @@ defineExpose({ getRef });
         </el-form-item>
       </re-col>
       <re-col :value="12" :xs="24" :sm="24">
-        <el-form-item label="数字价格" prop="subtitle">
+        <el-form-item
+          :rules="[{required: true, message: '小标签不能为空'}]"
+          label="小标签" prop="subtitle">
           <el-input
             v-model="newFormInline.subtitle"
             clearable
-            placeholder="请输入数字价格"
+            placeholder="请输入小标签"
           />
         </el-form-item>
       </re-col>
       <re-col :value="12" :xs="24" :sm="24">
-        <el-form-item label="价格介绍" prop="price_info">
+        <el-form-item
+          :rules="[{required: true, message: '价格介绍不能为空'}]"
+          label="价格介绍" prop="price_info">
           <el-input
             v-model="newFormInline.price_info"
             clearable
@@ -100,9 +109,11 @@ defineExpose({ getRef });
         </el-form-item>
       </re-col>
       <re-col :value="12" :xs="24" :sm="24">
-        <el-form-item label="课程类型">
+        <el-form-item
+          :rules="[{required: true, message: '课程类型不能为空'}]"
+          label="课程类型" prop="course_type">
           <el-select
-            v-model="newFormInline.sex"
+            v-model="newFormInline.course_type"
             placeholder="请选择课程类型"
             class="w-full"
             clearable

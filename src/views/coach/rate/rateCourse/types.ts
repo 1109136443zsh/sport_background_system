@@ -7,6 +7,7 @@ interface FormItemProps{
    * 课程名
    */
   course_name: string;
+  rate_id: number;
   [property: string]: any;
 }
 interface FormProps {

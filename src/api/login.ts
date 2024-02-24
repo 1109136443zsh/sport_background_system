@@ -72,7 +72,7 @@ export type UserResult = {
     /** 用于调用刷新`accessToken`的接口时所需的`token` */
     refreshToken: string;
     /** `accessToken`的过期时间（格式'xxxx/xx/xx xx:xx:xx'） */
-    expires: number;
+    expires: Date;
   };
 };
 
@@ -89,13 +89,13 @@ export const getLogin = (data: object) => {
 // 二维码登录
 export const qrCodeLogin = () => {
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4026186-0-default/admin/user/wxlogin"
+    "http://115.28.37.42:7788/admin/user/wxlogin"
   );
 };
 // 检查小程序扫码登录状态
 export const checkQrCodeLogin = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4026186-0-default/admin/user/checkWxlogin",
+    "http://115.28.37.42:7788/admin/user/checkWxlogin",
     {data}
   );
 };

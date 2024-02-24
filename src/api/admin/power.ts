@@ -14,6 +14,7 @@ export interface Response {
    * 说明
    */
   msg: string;
+
   [property: string]: any;
 }
 
@@ -33,25 +34,27 @@ export interface Permission {
    * 权限id
    */
   permission_id: string;
+
   [property: string]: any;
 }
+
 // 获取权限列表
 export const getPowerList = () => {
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/permission/list"
+    "http://115.28.37.42:7788/admin/permission/list"
   );
 };
 // 授予角色权限
 export const grantPermission = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/permission/grant",
+    "http://115.28.37.42:7788/admin/permission/grant",
     {data}
   );
 };
 // 撤销角色权限
 export const revokePermission = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/permission/revoke",
+    "http://115.28.37.42:7788/admin/permission/revoke",
     {data}
   );
 };

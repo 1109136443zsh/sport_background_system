@@ -1,9 +1,11 @@
 import {h, onMounted, reactive, ref} from "vue";
 import type {PaginationProps} from "@pureadmin/table";
-import {contractApply, getContractList} from "@/api/contract";
+import {addContract, contractApply, contractDetail, contractRemove, getContractList} from "@/api/contract";
 import {message} from "@/utils/message";
 import {addDialog} from "@/components/ReDialog/index";
 import editForm from "@/views/contract/all/form/index.vue"
+import detailTable from "@/views/contract/component/detail/index.vue";
+import addForm from "@/views/contract/component/addForm/index.vue"
 
 export function useContract() {
 
@@ -20,6 +22,12 @@ export function useContract() {
     {
       label: "签署对象",
       prop: "sign_role"
+    },
+    {
+      label: "操作",
+      fixed: "right",
+      slot: "operation",
+      width: 180
     }
   ]
   const dataList = ref()
@@ -33,10 +41,10 @@ export function useContract() {
 
   async function onSearch() {
     loading.value = true;
-    await getContractList({
-      page: pagination.currentPage
-    }).then(response => {
-      dataList.value = response.data.page_data
+    await getContractList(
+      1
+    ).then(response => {
+      dataList.value = response.data
     }).catch(() => {
       message(`获取列表信息失败`,
         {
@@ -48,6 +56,33 @@ export function useContract() {
     }, 500);
   }
 
+  async function openDetailDialog(row) {
+    let ids = null
+    await contractDetail({
+      contract_id: row.contract_id
+    }).then(response => {
+      ids = response.data
+      console.log(ids)
+      addDialog({
+        title: "查看合同详情",
+        props: {
+          formInline: {
+            ids,
+            name: ids[0].name ?? "",
+            sign_role: ids[0].sign_role ?? "",
+            contract_id: ids[0].contract_id ?? "",
+            text: ids[0].text ?? ""
+          }
+        },
+        width: "46%",
+        draggable: true,
+        fullscreenIcon: true,
+        closeOnClickModal: false,
+        contentRenderer: () => detailTable
+      })
+    })
+  }
+
   function openDialog() {
     addDialog({
       title: "合同补录",
@@ -55,7 +90,8 @@ export function useContract() {
         formInline: {
           user_id: "",
           image: "",
-          sign_time: ""
+          sign_time: "",
+          url: ""
         }
       },
       width: "46%",
@@ -70,10 +106,61 @@ export function useContract() {
           if (valid) {
             contractApply({
               user_id: curData.user_id,
-              image: curData.image,
+              image: curData.url,
               sign_time: curData.sign_time
-            }).then(() => {
-              message(`合同补录成功`,
+            }).then((response) => {
+              console.log(response)
+              if (response.code === 200) {
+                message(`合同补录成功`,
+                  {
+                    type: "success"
+                  });
+                done()
+                onSearch()
+              } else {
+                message(`提交失败`,
+                  {
+                    type: "error"
+                  });
+              }
+            }).catch(() => {
+              message(`提交失败`,
+                {
+                  type: "error"
+                });
+            })
+          }
+        })
+      },
+    })
+  }
+
+  function openAddDialog() {
+    addDialog({
+      title: "添加合同",
+      props: {
+        formInline: {
+          sign_role: "",
+          name: "",
+          text: ""
+        }
+      },
+      width: "46%",
+      draggable: true,
+      fullscreenIcon: true,
+      closeOnClickModal: false,
+      contentRenderer: () => h(addForm, {ref: formRef}),
+      beforeSure: (done, {options}) => {
+        const FormRef = formRef.value.getRef();
+        const curData = options.props.formInline;
+        FormRef.validate(valid => {
+          if (valid) {
+            addContract({
+              sign_role: curData.sign_role,
+              name: curData.name,
+              text: curData.text
+            }).then(response => {
+              message(`添加合同成功`,
                 {
                   type: "success"
                 });
@@ -88,6 +175,23 @@ export function useContract() {
           }
         })
       },
+    })
+  }
+
+  async function handleDelete(row) {
+    await contractRemove({
+      contract_id: row.contract_id
+    }).then(() => {
+      message(`您删除了编号为${row.contract_id}的合同`,
+        {
+          type: "success"
+        });
+      onSearch();
+    }).catch(() => {
+      message(`操作失败，请重试`,
+        {
+          type: "error"
+        });
     })
   }
 
@@ -109,6 +213,9 @@ export function useContract() {
     dataList,
     onSearch,
     resetForm,
-    openDialog
+    openDialog,
+    openDetailDialog,
+    handleDelete,
+    openAddDialog
   }
 }

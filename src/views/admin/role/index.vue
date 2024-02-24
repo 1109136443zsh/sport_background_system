@@ -13,7 +13,8 @@ const {
   dataList,
   onSearch,
   handleDelete,
-  openDialog
+  openDialog,
+  pagination
 } = useRole()
 </script>
 
@@ -50,6 +51,7 @@ const {
           :loading="loading"
           :size="size"
           :data="dataList"
+
           :columns="dynamicColumns"
           :header-cell-style="{
               background: 'var(--el-fill-color-light)',

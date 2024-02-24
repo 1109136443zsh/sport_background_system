@@ -12,7 +12,7 @@ import editForm from "@/views/coach/rate/rateCourse/form/index.vue";
 
 const props = withDefaults(defineProps<FormProps>(), {
   formInline: () => ({
-    rate_id: "",
+    rate_id: 0,
     course_id: 0,
     course_name: "",
   })
@@ -30,9 +30,10 @@ dataList.value = newFormInline.value.ids
 
 async function handDelete(row) {
   await rateCourseRemove({
-    rate_id: row.rate_id,
+    rate_id: newFormInline.value.rate_id,
     course_id: row.course_id
-  }).then(() => {
+  }).then((res) => {
+    console.log(res)
     message(`您删除了课程名称为${row.course_name}的这条数据`,
       {type: "success"});
     onSearch()
@@ -48,7 +49,8 @@ async function onSearch() {
     rate_id: newFormInline.value.rate_id,
     page: 1
   }).then(response => {
-    dataList.value = response.data.page_data
+    dataList.value = response.data
+    console.log(response)
   })
   setTimeout(() => {
     loading.value = false;

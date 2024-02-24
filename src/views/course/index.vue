@@ -40,10 +40,10 @@ const {
           clearable
           class="!w-[180px]"
         >
-          <el-option label="私教课" value="0"/>
-          <el-option label="特色课" value="1"/>
-          <el-option label="训练营" value="2"/>
-          <el-option label="团操" value="3"/>
+          <el-option label="私教课" value="1"/>
+          <el-option label="特色课" value="2"/>
+          <el-option label="训练营" value="3"/>
+          <el-option label="团操" value="4"/>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -86,7 +86,6 @@ const {
           :data="dataList"
           :columns="dynamicColumns"
           :pagination="pagination"
-          :paginationSmall="size === 'small' ? true : false"
           :header-cell-style="{
               background: 'var(--el-fill-color-light)',
               color: 'var(--el-text-color-primary)'

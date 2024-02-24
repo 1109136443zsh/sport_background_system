@@ -25,8 +25,6 @@ const props = withDefaults(defineProps<FormProps>(), {
   })
 })
 const newFormInline = ref(props.formInline);
-const dataList = ref()
-dataList.value = newFormInline.value.ids
 
 function formatTime(time) {
   return dayjs(time).format("YYYY-MM-DD HH:mm:ss");
@@ -41,31 +39,31 @@ function formatTime(time) {
       :column="3"
       :border="true"
     >
-      <el-descriptions-item label="场馆ID">{{ dataList.gym_id }}</el-descriptions-item>
-      <el-descriptions-item label="场馆名称">{{ dataList.name }}</el-descriptions-item>
+      <el-descriptions-item label="场馆ID">{{ newFormInline.gym_id }}</el-descriptions-item>
+      <el-descriptions-item label="场馆名称">{{ newFormInline.name }}</el-descriptions-item>
       <el-descriptions-item label="图像">
         <template #default>
           <el-image
             fit="cover"
             preview-teleported
-            :src="dataList.cover_image"
-            :preview-src-list="[dataList.cover_image]"
+            :src="newFormInline.cover_image"
+            :preview-src-list="[newFormInline.cover_image]"
             class="w-[60px] h-[60px] rounded-full align-middle"
           />
         </template>
       </el-descriptions-item>
-      <el-descriptions-item label="地址名">{{ dataList.location }}</el-descriptions-item>
-      <el-descriptions-item label="所属区域ID">{{ dataList.region_id }}</el-descriptions-item>
-      <el-descriptions-item label="场馆等级">{{ dataList.rate }}</el-descriptions-item>
-      <el-descriptions-item label="场馆介绍">{{ dataList.info }}</el-descriptions-item>
-      <el-descriptions-item label="场馆等级ID">{{ dataList.rate_id }}</el-descriptions-item>
-      <el-descriptions-item label="经度">{{ dataList.longitude }}</el-descriptions-item>
-      <el-descriptions-item label="纬度">{{ dataList.latitude }}</el-descriptions-item>
-      <el-descriptions-item label="评分">{{ dataList.score }}</el-descriptions-item>
-      <el-descriptions-item label="标签">{{ dataList.tags }}</el-descriptions-item>
-      <el-descriptions-item label="营业时间">{{ formatTime(dataList.begin_time) }}</el-descriptions-item>
-      <el-descriptions-item label="结束营业时间">{{ formatTime(dataList.end_time) }}</el-descriptions-item>
-      <el-descriptions-item label="轮播图">{{ dataList.banner }}</el-descriptions-item>
+      <el-descriptions-item label="地址名">{{ newFormInline.location }}</el-descriptions-item>
+      <el-descriptions-item label="所属区域ID">{{ newFormInline.region_id }}</el-descriptions-item>
+      <el-descriptions-item label="场馆等级">{{ newFormInline.rate }}</el-descriptions-item>
+      <el-descriptions-item label="场馆介绍">{{ newFormInline.info }}</el-descriptions-item>
+      <el-descriptions-item label="场馆等级ID">{{ newFormInline.rate_id }}</el-descriptions-item>
+      <el-descriptions-item label="经度">{{ newFormInline.longitude }}</el-descriptions-item>
+      <el-descriptions-item label="纬度">{{ newFormInline.latitude }}</el-descriptions-item>
+      <el-descriptions-item label="评分">{{ newFormInline.score }}</el-descriptions-item>
+      <el-descriptions-item label="标签">{{ newFormInline.tags }}</el-descriptions-item>
+      <el-descriptions-item label="营业时间">{{ formatTime(newFormInline.begin_time) }}</el-descriptions-item>
+      <el-descriptions-item label="结束营业时间">{{ formatTime(newFormInline.end_time) }}</el-descriptions-item>
+      <el-descriptions-item label="轮播图">{{ newFormInline.banner }}</el-descriptions-item>
     </el-descriptions>
   </div>
 </template>

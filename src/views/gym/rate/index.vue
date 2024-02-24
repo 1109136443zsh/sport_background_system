@@ -62,7 +62,7 @@ const {
               修改
             </el-button>
             <el-popconfirm
-              :title="`是否删除星级ID为${row.rate_id}的这条数据`"
+              :title="`是否删除星级ID为${row.id}的这条数据`"
               @confirm="handleDelete(row)"
             >
               <template #reference>

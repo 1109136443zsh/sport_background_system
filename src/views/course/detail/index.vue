@@ -16,8 +16,6 @@ const props = withDefaults(defineProps<FormProps>(), {
   })
 });
 const newFormInline = ref(props.formInline);
-const dataList = ref()
-dataList.value = newFormInline.value.ids
 </script>
 
 <template>
@@ -26,17 +24,18 @@ dataList.value = newFormInline.value.ids
       class="margin-top"
       title="课程信息"
       :column="3"
+      :border="true"
     >
-      <el-descriptions-item label="课程ID">{{dataList.course_id}}</el-descriptions-item>
-      <el-descriptions-item label="课程名称">{{dataList.name}}</el-descriptions-item>
-      <el-descriptions-item label="价格">{{dataList.price}}</el-descriptions-item>
-      <el-descriptions-item label="小标题">{{dataList.subtitle}}</el-descriptions-item>
-      <el-descriptions-item label="课程类型">{{dataList.course_type}}</el-descriptions-item>
-      <el-descriptions-item label="价格介绍">{{dataList.price_info}}</el-descriptions-item>
+      <el-descriptions-item label="课程ID">{{ newFormInline.course_id }}</el-descriptions-item>
+      <el-descriptions-item label="课程名称">{{ newFormInline.name }}</el-descriptions-item>
+      <el-descriptions-item label="价格">{{ newFormInline.price }}</el-descriptions-item>
+      <el-descriptions-item label="小标题">{{ newFormInline.subtitle }}</el-descriptions-item>
+      <el-descriptions-item label="课程类型">{{ newFormInline.type }}</el-descriptions-item>
+      <el-descriptions-item label="价格介绍">{{ newFormInline.price_info }}</el-descriptions-item>
     </el-descriptions>
     <h3>可上课门店</h3>
     <el-table
-      :data="dataList.gym_list"
+      :data="newFormInline.gym_list"
       align-whole="center"
       table-layout="auto"
     >
@@ -64,7 +63,7 @@ dataList.value = newFormInline.value.ids
     </el-table>
     <h3>可上课教练</h3>
     <el-table
-      :data="dataList.coach_list"
+      :data="newFormInline.coach_list"
       align-whole="center"
       table-layout="auto"
     >

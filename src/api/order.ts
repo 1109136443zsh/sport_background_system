@@ -83,10 +83,17 @@ export interface OrderDetailCopy {
 }
 
 // 查询订单列表
-export const getOrderList = (data:object) => {
+export const getOrderList = (data:{
+  page: number,
+  order_status: number,
+  user_id: number,
+  gym_id: number,
+  complain: number,
+  comment: number
+}) => {
+  const {page, complain, comment, order_status, user_id, gym_id} = data
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4024188-0-default/admin/order/list",
-    {data}
+    `http://115.28.37.42:7788/admin/order/list?page=${page}&order_status=${order_status}&user_id=${user_id}&gym_id=${gym_id}&complain=${complain}&comment=${comment}`
   );
 };
 // 查询订单详情

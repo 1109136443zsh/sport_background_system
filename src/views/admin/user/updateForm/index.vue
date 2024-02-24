@@ -7,6 +7,7 @@ import {formRules} from "@/views/admin/user/updateForm/rule";
 
 const props = withDefaults(defineProps<FormProps>(), {
   formInline: () => ({
+    username: "",
     account: "",
     user_id: "",
     password: ""

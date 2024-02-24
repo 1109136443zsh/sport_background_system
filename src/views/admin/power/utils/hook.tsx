@@ -1,22 +1,22 @@
 import {h, onMounted, reactive, ref} from "vue";
 import type {PaginationProps} from "@pureadmin/table";
-import {usePublicHooks} from "@/views/system/hooks";
-import {ElMessageBox} from "element-plus";
 import {message} from "@/utils/message";
 import {grantPermission, revokePermission} from "@/api/admin/power"
 import {addDialog} from "@/components/ReDialog/index";
 import editForm from "@/views/admin/power/form/index.vue"
 import {getPowerList} from "@/api/admin/power";
-import type {FormItemProps} from "@/views/system/user/utils/types";
 
 export function usePower() {
 
   const formRef = ref();
-  const user_id = ref();
   const dataList = ref([]);
   const loading = ref(true);
-  const switchLoadMap = ref({});
-
+  const pagination = reactive<PaginationProps>({
+    total: 0,
+    pageSize: 10,
+    currentPage: 1,
+    background: true
+  });
   const columns: TableColumnList = [
     {
       label: "权限id",
@@ -42,13 +42,13 @@ export function usePower() {
     loading.value = true;
     await getPowerList().then(response => {
       dataList.value = response.data
+      pagination.total = response.pages
     }).catch(() => {
       message(`获取列表失败`,
         {
           type: "error"
         });
     })
-
     setTimeout(() => {
       loading.value = false;
     }, 500);
@@ -79,12 +79,14 @@ export function usePower() {
               grantPermission({
                 role_id: curData.role_id,
                 permission_id: curData.permission_id
-              }).then(() => {
+              }).then((response) => {
+                console.log(response)
                 message(`授予用户权限场馆`,
                   {
                     type: "success"
                   });
-              }).catch(() => {
+              }).catch((error) => {
+                console.log(error)
                 message(`操作失败`,
                   {
                     type: "error"
@@ -120,6 +122,7 @@ export function usePower() {
     loading,
     dataList,
     onSearch,
-    openDialog
+    openDialog,
+    pagination
   }
 }

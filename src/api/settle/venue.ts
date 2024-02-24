@@ -68,17 +68,17 @@ type ApplyGymBase = {
   [property: string]: any;
 }
 // 获取场馆列表
-export const getVenueList = (data:object) => {
+export const getVenueList = (data: {page: string, phone: string}) => {
+  const {page, phone} = data
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/apply/gym/list",
-    {data}
+    `http://115.28.37.42:7788/admin/apply/gym/list?page=${page}&phone=${phone}`
   );
 };
 // 获取场馆详情
-export const getVenueDetail = (data:object) => {
+export const getVenueDetail = (data: {apply_id: string}) => {
+  const {apply_id} = data
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/apply/gym/get",
-    {data}
+    `http://115.28.37.42:7788/admin/apply/gym/get?apply_id=${apply_id}`
   );
 };
 

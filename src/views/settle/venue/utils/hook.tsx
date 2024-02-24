@@ -40,7 +40,17 @@ export function useSettle() {
     },
     {
       label: "申请状态",
-      prop: "apply_status"
+      prop: "apply_status",
+      minWidth: 90,
+      cellRenderer: ({ row, props }) => (
+        <el-tag
+          size={props.size}
+          type={row.apply_status === 0 ? "danger" : ""}
+          effect="plain"
+        >
+          {row.apply_status === 1 ? "通过" : "待审核"}
+        </el-tag>
+      )
     },
     {
       label: "申请ID",
@@ -66,38 +76,57 @@ export function useSettle() {
 
   async function onSearch() {
     loading.value = true;
-    const {data} = await getVenueList({
-      page:pagination.currentPage,
-      phone: toRaw(form)
-    });
-    dataList.value = data.page_data;
+    await getVenueList({
+      page: "1",
+      phone: toRaw(form).phone
+    }).then(response => {
+      if (response.code === 200) {
+        dataList.value = response.data
+        pagination.total = response.pages
+      }else {
+        message("出错了，请检查", {
+          type: "error"
+        });
+      }
+    }).catch((error) => {
+      console.log(error)
+      message("获取数据失败，请重试", {
+        type: "error"
+      });
+    })
     setTimeout(() => {
       loading.value = false;
     }, 500);
   }
+
   function openDetailDialog(row) {
     let ids = null
     getVenueDetail({
       apply_id: row.apply_id
     }).then(response => {
-      ids = response.data
-      addDialog({
-        title: "查看场馆入驻信息",
-        props: {
-          formInline: {
-            ids
-          }
-        },
-        width: "46%",
-        draggable: true,
-        fullscreenIcon: true,
-        closeOnClickModal: false,
-        contentRenderer: () => detailTable
-      })
+      if (response.code === 200) {
+        ids = response.data
+        addDialog({
+          title: "查看场馆入驻信息",
+          props: {
+            formInline: {
+              ids
+            }
+          },
+          width: "46%",
+          draggable: true,
+          fullscreenIcon: true,
+          closeOnClickModal: false,
+          contentRenderer: () => detailTable
+        })
+      }else {
+        message(`出错了`, {type: "error"});
+      }
     }).catch(() => {
       message(`获取教练入驻信息失败`, {type: "error"});
     })
   }
+
   async function handleReject(row) {
     await coachReject({
       apply_id: row.apply_id

@@ -7,6 +7,7 @@ import detailForm from "@/views/student/detail/index.vue"
 import {getStudentDetail, getStudentList, updateStudentList} from "@/api/student";
 import {UserDetailProps} from "@/views/student/detail/types";
 import {message} from "@/utils/message";
+import {picUpload} from "@/api/picUpload";
 
 export function stuUser() {
   const form = reactive({
@@ -69,18 +70,18 @@ export function stuUser() {
   ];
   const resetForm = formEl => {
     if (!formEl) return;
-    console.log(formEl)
     formEl.resetFields();
     onSearch()
   }
 
   async function onSearch() {
     loading.value = true;
-    await getStudentList({
-      page: pagination.currentPage
-    }).then(response => {
-      dataList.value = response.data.page_data
-    }).catch(() => {
+    await getStudentList(
+      pagination.currentPage
+    ).then(response => {
+      dataList.value = response.data
+      console.log(dataList.value)
+    }).catch((error) => {
       message(`获取用户列表失败，请重试`, {
         type: "error"
       });
@@ -92,9 +93,9 @@ export function stuUser() {
 
   async function openDetail(row) {
     let ids = null
-    getStudentDetail({
-      user_id: row.user_id
-    }).then(response => {
+    getStudentDetail(
+      row.user_id
+    ).then(response => {
       ids = response.data
       addDialog({
         title: "查看用户信息",
@@ -115,7 +116,8 @@ export function stuUser() {
         closeOnClickModal: false,
         contentRenderer: () => h(detailForm)
       })
-    }).catch(() => {
+    }).catch((error) => {
+      console.log(error)
       message(`获取用户详情失败`, {
         type: "error"
       });
@@ -127,16 +129,18 @@ export function stuUser() {
       title: "修改用户信息",
       props: {
         formInline: {
-          user_id: row?.user_id ?? "",
-          nickname: row.nickname ?? "",
-          gender: row.gender ?? "",
-          height: row.height ?? "",
-          weight: row.weight ?? "",
-          exercise_purpose: row.exercise_purpose ?? [],
-          history_sport: row.history_sport ?? "",
-          history_injury: row.history_injury ?? "",
-          age: row.age ?? "",
-          avatar: row.avatar ?? ""
+          user_id: row.user_id ?? "",
+          nickname: row?.nickname ?? "",
+          gender: row?.gender ?? "",
+          height: row?.height ?? "",
+          weight: row?.weight ?? "",
+          age: row?.age ?? "",
+          avatar: row?.avatar ?? "",
+          muscle: row?.muscle ?? "",
+          metabolism: row?.metabolism ?? "",
+          fat: row?.fat ?? "",
+          bmi: row?.bmi ?? "",
+          url: ""
         }
       },
       width: "46%",
@@ -151,22 +155,25 @@ export function stuUser() {
           if (valid) {
             updateStudentList({
               user_id: curData.user_id,
-              nickname: curData.name,
+              nickname: curData.nickname,
               gender: curData.gender,
               height: curData.height,
               weight: curData.weight,
-              exercise_purpose: curData.exercise_purpose,
-              history_sport: curData.history_sport,
-              history_injury: curData.history_injury,
+              muscle: curData.muscle,
+              fat: curData.fat,
               age: curData.age,
-              avatar: curData.avatar
-            }).then(() => {
+              metabolism: curData.metabolism,
+              avatar: curData.url,
+              bmi: curData.bmi
+            }).then((response) => {
+              console.log(response)
               message(`更新用户资料成功`, {
                 type: "success"
               });
               done();
               onSearch();
-            }).catch(() => {
+            }).catch((error) => {
+              console.log(error)
               message(`更新用户资料失败`, {
                 type: "error"
               });

@@ -34,7 +34,7 @@ export interface Role {
 // 获取角色列表
 export const getRoleList = () => {
   return http.request<Response>("get",
-    baseUrlApi("admin/role/list")
+    "http://115.28.37.42:7788/admin/role/list"
   );
 };
 // 授予用户角色

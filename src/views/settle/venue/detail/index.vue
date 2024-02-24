@@ -19,8 +19,6 @@ const props = withDefaults(defineProps<FormProps>(), {
   })
 });
 const newFormInline = ref(props.formInline);
-const dataList = ref()
-dataList.value = newFormInline.value.ids
 function formatTime(time) {
   return dayjs(time).format("YYYY-MM-DD HH:mm:ss");
 }
@@ -34,41 +32,41 @@ function formatTime(time) {
       :column="3"
     >
       <el-descriptions-item label="申请ID：">
-        {{dataList.apply_id}}
+        {{ newFormInline.apply_id }}
       </el-descriptions-item>
-      <el-descriptions-item label="申请状态：">{{dataList.apply_status}}</el-descriptions-item>
-      <el-descriptions-item label="申请时间：">{{ formatTime(dataList.apply_time)}}</el-descriptions-item>
+      <el-descriptions-item label="申请状态：">{{ newFormInline.apply_status }}</el-descriptions-item>
+      <el-descriptions-item label="申请时间：">{{ formatTime(newFormInline.apply_time) }}</el-descriptions-item>
       <el-descriptions-item label="真实名称：">
-        {{dataList.name}}
+        {{ newFormInline.name }}
       </el-descriptions-item>
       <el-descriptions-item label="场馆介绍：">
-        {{dataList.info}}
+        {{ newFormInline.info }}
       </el-descriptions-item>
       <el-descriptions-item label="openid：">
-        {{dataList.openid}}
+        {{ newFormInline.openid }}
       </el-descriptions-item>
       <el-descriptions-item label="手机号：">
-        {{dataList.phone}}
+        {{ newFormInline.phone }}
       </el-descriptions-item>
       <el-descriptions-item label="场馆照片：">
         <template #default>
           <el-image
             fit="cover"
             preview-teleported
-            :src="dataList.gym_image"
-            :preview-src-list="[dataList.gym_image]"
+            :src="newFormInline.gym_image"
+            :preview-src-list="[newFormInline.gym_image]"
             class="w-[60px] h-[60px] align-middle"
           />
         </template>
       </el-descriptions-item>
       <el-descriptions-item label="场馆可授课程：">
-        {{dataList.skill}}
+        {{ newFormInline.skill }}
       </el-descriptions-item>
       <el-descriptions-item label="申请人职位：">
-        {{dataList.job}}
+        {{ newFormInline.job }}
       </el-descriptions-item>
       <el-descriptions-item label="详细地址：">
-        {{dataList.location}}
+        {{ newFormInline.location }}
       </el-descriptions-item>
     </el-descriptions>
   </div>

@@ -34,7 +34,7 @@ const {
           :icon="useRenderIcon(AddFill)"
           @click="openDialog('添加')"
         >
-          添加课程
+          添加星级
         </el-button>
       </template>
       <template v-slot="{size,dynamicColumns}">
@@ -73,7 +73,7 @@ const {
               修改
             </el-button>
             <el-popconfirm
-              :title="`是否删除星级ID为${row.rate_id}的这条数据`"
+              :title="`是否删除星级ID为${row.id}的这条数据`"
               @confirm="handleDelete(row)"
             >
               <template #reference>

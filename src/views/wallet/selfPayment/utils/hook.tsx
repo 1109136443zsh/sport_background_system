@@ -1,6 +1,6 @@
 import {onMounted, reactive, ref} from "vue";
 import dayjs from "dayjs";
-import {getSelfPaymentList} from "@/api/wallet";
+import {getSelfBalance, getSelfPaymentList, withdraw} from "@/api/wallet";
 import type {PaginationProps} from "@pureadmin/table";
 import {message} from "@/utils/message";
 
@@ -33,10 +33,18 @@ export function useWallet() {
 
   async function onSearch() {
     loading.value = true;
-    await getSelfPaymentList({
-      page: pagination.currentPage
-    }).then(response => {
-      dataList.value = response.data.page_data
+    await getSelfPaymentList(
+      1
+    ).then(response => {
+      if (response.code === 200){
+        dataList.value = response.data
+        pagination.total = response.pages
+      }else {
+        message(`出错了，请检查`,
+          {
+            type: "error"
+          });
+      }
     }).catch(() => {
       message(`获取数据失败，请重试`,
         {
@@ -47,10 +55,46 @@ export function useWallet() {
       loading.value = false;
     }, 500);
   }
-
+  async function withdrawal(data) {
+    await withdraw({
+      data
+    }).then(res => {
+      if (res.code === 200){
+        getBalance()
+        onSearch()
+      }else {
+        message(`出错了，请检查`,
+          {
+            type: "error"
+          });
+      }
+    }).catch(() => {
+      message(`提现失败，请重试`,
+        {
+          type: "error"
+        });
+    })
+  }
+  async function getBalance() {
+    await getSelfBalance().then(res => {
+      console.log(res)
+      if (res.code === 200){
+        balance.value = res.data.balance
+      }else {
+        message(`出错了，请检查`,
+          {
+            type: "error"
+          });
+      }
+    }).catch(() => {
+      message(`获取数据失败，请重试`,
+        {
+          type: "error"
+        });
+    })
+  }
 
   onMounted(async () => {
-
     onSearch();
   });
 
@@ -61,5 +105,7 @@ export function useWallet() {
     dataList,
     pagination,
     onSearch,
+    getBalance,
+    withdrawal
   };
 }

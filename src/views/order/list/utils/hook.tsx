@@ -13,15 +13,15 @@ import type {FormItemProps} from "@/views/system/user/utils/types";
 
 export function orderList() {
   const form = reactive({
-    comment: "",
-    complain: "",
-    gym_id: "",
-    order_status: "",
-    user_id: ""
+    comment: 0,
+    complain: 0,
+    gym_id: 0,
+    order_status: 0,
+    user_id: 0
   });
   const formRef = ref()
   const loading = ref(true)
-  const dataList = ref([])
+  const dataList = ref()
   const pagination = reactive<PaginationProps>({
     total: 0,
     pageSize: 10,
@@ -110,14 +110,15 @@ export function orderList() {
   async function onSearch() {
     loading.value = true;
     await getOrderList({
-      page: pagination.currentPage,
+      page: 1,
       order_status: toRaw(form).order_status,
       user_id: toRaw(form).user_id,
       gym_id: toRaw(form).gym_id,
       complain: toRaw(form).complain,
       comment: toRaw(form).comment
     }).then(response => {
-      dataList.value = response.data.page_data
+      dataList.value = response.data
+      console.log(response)
     }).catch(() => {
       message("获取数据失败，请重试", {
         type: "error"

@@ -13,6 +13,7 @@ export interface Response {
    * 说明
    */
   msg: string;
+
   [property: string]: any;
 }
 
@@ -33,6 +34,7 @@ export interface Data {
    * 分页大小
    */
   size: number;
+
   [property: string]: any;
 }
 
@@ -88,26 +90,35 @@ export interface Bill {
    * 申请人ID
    */
   user_id: number;
+
   [property: string]: any;
 }
+
 // 获取所有发票列表
-export const getBillList = (data:object) => {
+export const getBillList = (data: { page: number, user_id: number }) => {
+  const {page, user_id} = data
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/bill/list",
-    {data}
+    `http://115.28.37.42:7788/admin/bill/list?page=${page}&user_id=${user_id}`
   );
 };
 // 获取自己的发票的列表
-export const getBillSelfList = (data:object) => {
+export const getBillSelfList = (data: { page: number }) => {
+  const {page} = data
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/bill/self",
-    {data}
+    `http://115.28.37.42:7788/admin/bill/self?page=${page}`
   );
 };
 // 上传发票
-export const uploadBill = (data:object) => {
+export const uploadBill = (data) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/bill/upload",
+    `http://115.28.37.42:7788/admin/bill/upload`,
+    {data}
+  );
+};
+// 申请开票
+export const addBill = (data: object) => {
+  return http.request<Response>("post",
+    "http://115.28.37.42:7788/admin/bill/add",
     {data}
   );
 };

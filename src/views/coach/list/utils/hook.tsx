@@ -1,25 +1,23 @@
 import {PaginationProps} from "@pureadmin/table/dist/types";
 import {h, onMounted, reactive, ref, toRaw,} from "vue";
-import {getCoachList, updateCoach} from "@/api/coach/coach";
+import {getCoachDetail, getCoachList, getGymEnableList, updateCoach} from "@/api/coach/coach";
 import gymEnableTable from "@/views/coach/list/gymEnable/index.vue"
 import {addDialog} from "@/components/ReDialog/index";
 import detailTable from "@/views/coach/list/detail/index.vue";
 import editForm from "@/views/coach/list/form/index.vue"
-import {getCoachDetail} from "@/api/coach/detail";
 import {message} from "@/utils/message";
-import {getGymEnableList} from "@/api/coach/gymEnable";
 
 
 export function useCoach() {
   const form = reactive({
     name: "",
     page: "",
-    rate_id: "",
-    region_id: ""
+    rate_id: 0,
+    region_id: 0
   });
   const formRef = ref();
   const loading = ref(true)
-  const dataList = ref([]);
+  const dataList = ref();
   const pagination = reactive<PaginationProps>({
     total: 0,
     pageSize: 10,
@@ -94,13 +92,14 @@ export function useCoach() {
       name: toRaw(form).name,
       region_id: toRaw(form).region_id
     }).then(response => {
-      dataList.value = response.data.page_data
-    }).catch(() => {
+      dataList.value = response.data
+      pagination.total = response.pages
+    }).catch((error) => {
+      console.log(error)
       message("获取数据失败，请重试", {
         type: "error"
       })
     })
-
     setTimeout(() => {
       loading.value = false;
     }, 500);
@@ -108,24 +107,47 @@ export function useCoach() {
 
   async function openDetail(row) {
     let ids = null
-    await getCoachDetail({
-      coach_id: row.coach_id
-    }).then(response => {
-      ids = response.data
-      addDialog({
-        title: "查看教练信息",
-        props: {
-          formInline: {
-            ids
-          }
-        },
-        width: "46%",
-        draggable: true,
-        fullscreenIcon: true,
-        closeOnClickModal: false,
-        contentRenderer: () => h(detailTable)
-      });
-    }).catch(() => {
+    await getCoachDetail(
+      {
+        coach_id: row.coach_id
+      }
+    ).then(response => {
+      if (response.code === 200) {
+        ids = response.data
+        addDialog({
+          title: "查看教练信息",
+          props: {
+            formInline: {
+              banner: ids.banner,
+              case: ids.case,
+              coach_id: ids.coach_id,
+              course: ids.course,
+              cover_image: ids.cover_image,
+              gender_limit: ids.gender_limit,
+              info: ids.info,
+              name: ids.name,
+              price: ids.price,
+              rate: ids.rate,
+              region_id: ids.region_id,
+              score: ids.score,
+              segment: ids.segment,
+              skill: ids.skill,
+            }
+          },
+          width: "46%",
+          draggable: true,
+          fullscreenIcon: true,
+          closeOnClickModal: false,
+          contentRenderer: () => h(detailTable, {ref: formRef})
+        });
+      } else {
+        console.log(response)
+        message("出错了，请重试", {
+          type: "error"
+        })
+      }
+    }).catch((error) => {
+      console.log(error)
       message("获取数据失败，请重试", {
         type: "error"
       })
@@ -139,12 +161,13 @@ export function useCoach() {
         formInline: {
           name: row?.name ?? "",
           coach_id: row?.coach_id ?? "",
-          skill: [],
+          skill: "",
           gender_limit: row?.gender_limit ?? "",
-          rate_id: "",
-          info: "",
-          banner: [],
-          case: [],
+          rate_id: row?.rate_id ?? "",
+          info: row?.info ?? "",
+          banner: "",
+          coachCase: "",
+          url: ""
         }
       },
       width: "46%",
@@ -157,21 +180,29 @@ export function useCoach() {
         const curData = options.props.formInline;
         FormRef.validate(valid => {
           if (valid) {
+            console.log(curData.url)
             updateCoach({
               coach_id: curData.coach_id,
               name: curData.name,
               rate_id: curData.rate_id,
               skill: curData.skill,
               info: curData.info,
-              banner: curData.banner,
-              case: curData.case,
+              banner: curData.url,
+              coachCase: curData.coachCase,
               gender_limit: curData.gender_limit
-            }).then(() => {
-              message(`成功更新教练信息`, {
-                type: "success"
-              });
-              done();
-              onSearch();
+            }).then((res) => {
+              console.log(res)
+              if (res.code === 200) {
+                message(`成功更新教练信息`, {
+                  type: "success"
+                });
+                done();
+                onSearch();
+              } else {
+                message(`更新教练信息失败`, {
+                  type: "error"
+                });
+              }
             }).catch(() => {
               message(`更新教练信息失败`, {
                 type: "error"
@@ -187,23 +218,29 @@ export function useCoach() {
     let ids = null
     await getGymEnableList({
       coach_id: row.coach_id,
-      page: pagination.currentPage
+      page: 1
     }).then(response => {
-      ids = response.data.page_data
-      addDialog({
-        title: "教练可去场馆",
-        props: {
-          formInline: {
-            coach_id: row.coach_id,
-            ids
-          }
-        },
-        width: "46%",
-        draggable: true,
-        fullscreenIcon: true,
-        closeOnClickModal: false,
-        contentRenderer: () => gymEnableTable
-      })
+      if (response.code === 200) {
+        ids = response.data
+        addDialog({
+          title: "教练可去场馆",
+          props: {
+            formInline: {
+              coach_id: row.coach_id,
+              ids
+            }
+          },
+          width: "46%",
+          draggable: true,
+          fullscreenIcon: true,
+          closeOnClickModal: false,
+          contentRenderer: () => gymEnableTable
+        })
+      } else {
+        message("出错了，请重试", {
+          type: "error"
+        })
+      }
     }).catch(() => {
       message("获取数据失败，请重试", {
         type: "error"
@@ -211,7 +248,16 @@ export function useCoach() {
     })
 
   }
+  function openEditForm() {
+    addDialog({
+      title: "教练设置可上课时间",
+      props: {
+        formInline: {
 
+        }
+      }
+    })
+  }
   onMounted(async () => {
     onSearch();
   });

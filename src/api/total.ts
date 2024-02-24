@@ -42,19 +42,22 @@ export interface detail {
   date: string;
   [property: string]: any;
 }
-export const getNewCustomsList = () => {
+export const getNewCustomsList = (data: {day}) => {
+  const {day} = data
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/report/newCustomer"
+    `http://115.28.37.42:7788/admin/report/newCustomer?day=${day}`
   );
 };
-export const getOrderNum = () => {
+export const getOrderNum = (data: {day}) => {
+  const {day} = data
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/report/orderNum"
+    `https://mock.apifox.com/m1/4020694-0-default/admin/report/orderNum?day=${day}}`
   );
 };
-export const getIncomeNum = () => {
+export const getIncomeNum = (data: {day}) => {
+  const {day} = data
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/report/income"
+    `https://mock.apifox.com/m1/4020694-0-default/admin/report/income?day=${day}`
   );
 };
 

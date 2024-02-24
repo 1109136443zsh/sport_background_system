@@ -7,6 +7,8 @@ import Add from "@iconify-icons/ep/plus";
 import Eye from "@iconify-icons/ri/eye-line";
 import Delete from "@iconify-icons/ri/delete-bin-7-line";
 import type {UploadFile} from "element-plus";
+import UploadIcon from "@iconify-icons/ri/upload-2-line";
+import {picUpload} from "@/api/picUpload";
 
 const props = withDefaults(defineProps<FormProps>(), {
   formInline: () => ({
@@ -15,14 +17,13 @@ const props = withDefaults(defineProps<FormProps>(), {
     gender: 0,
     height: 0,
     weight: 0,
-    exercise_purpose: [],
-    history_sport: [],
-    history_injury: [],
     age: 0,
     avatar: "",
-    openid: "",
-    phone: "",
-    unionid: ""
+    muscle: 0,
+    metabolism: 0,
+    fat: 0,
+    bmi: 0,
+    url: ""
   })
 })
 
@@ -54,7 +55,30 @@ const newFormInline = ref(props.formInline)
 function getRef() {
   return ruleFormRef.value;
 }
+const uploadRef = ref()
+function importCommit(fileData) {
+  return new Promise((resolve, reject) => {
+    const data = new FormData()
+    data.append("image", fileData.file)
 
+    picUpload(
+      data
+    ).then(response => {
+      // 处理成功回调
+      newFormInline.value.url = response.data.url
+      console.log(newFormInline.value.url)
+      resolve(response)
+    })
+      .catch(error => {
+        // 处理失败回调
+        console.log(error)
+        reject(error)
+      });
+  });
+}
+function onSubmit() {
+  uploadRef.value.submit()
+}
 defineExpose({getRef})
 </script>
 
@@ -71,13 +95,13 @@ defineExpose({getRef})
           :rules="[{required: true, message: '用户id不能为空'}]"
         >
           <el-input
-            disabled
             v-model="newFormInline.user_id"
             placeholder="请输入用户id："/>
         </el-form-item>
       </re-col>
       <re-col :value="12" :xs="24" :sm="24">
         <el-form-item
+          :rules="[{required: true, message: '用户昵称不能为空'}]"
           label="用户昵称：" prop="nickname"
         >
           <el-input
@@ -87,7 +111,9 @@ defineExpose({getRef})
         </el-form-item>
       </re-col>
       <re-col :value="12" :xs="24" :sm="24">
-        <el-form-item label="用户性别:">
+        <el-form-item
+          :rules="[{required: true, message: '性别不能为空'}]"
+          label="用户性别:" prop="gender">
           <el-select
             v-model="newFormInline.gender"
             placeholder="请输入用户性别："
@@ -104,7 +130,9 @@ defineExpose({getRef})
         </el-form-item>
       </re-col>
       <re-col :value="12" :xs="24" :sm="24">
-        <el-form-item label="身高:" prop="height">
+        <el-form-item
+          :rules="[{required: true, message: '身高不能为空'}]"
+          label="身高:" prop="height">
           <el-input
             v-model="newFormInline.height"
             clearable
@@ -112,7 +140,9 @@ defineExpose({getRef})
         </el-form-item>
       </re-col>
       <re-col :value="12" :xs="24" :sm="24">
-        <el-form-item label="体重:" prop="weight">
+        <el-form-item
+          :rules="[{required: true, message: '体重不能为空'}]"
+          label="体重:" prop="weight">
           <el-input
             v-model="newFormInline.weight"
             clearable
@@ -121,49 +151,8 @@ defineExpose({getRef})
       </re-col>
       <re-col :value="12" :xs="24" :sm="24">
         <el-form-item
-          label="运动目的" prop="exercise_purpose"
-          :rules="[{required: true, message: '运动目的不能为空'}]">
-          <el-select
-            v-model="newFormInline.exercise_purpose"
-            allow-create
-            filterable
-            multiple
-            placeholder="请输入运动目的"
-          >
-          </el-select>
-        </el-form-item>
-      </re-col>
-      <re-col :value="12" :xs="24" :sm="24">
-        <el-form-item
-          label="运动史:" prop="history_sport"
-          :rules="[{required: true, message: '运动史不能为空'}]">
-          <el-select
-            v-model="newFormInline.history_sport"
-            allow-create
-            multiple
-            filterable
-            placeholder="请输入运动史"
-          >
-          </el-select>
-        </el-form-item>
-      </re-col>
-      <re-col :value="12" :xs="24" :sm="24">
-        <el-form-item
-          label="伤痛史:" prop="history_injury"
-          :rules="[{required: true, message: '伤痛史不能为空'}]"
-        >
-          <el-select
-            v-model="newFormInline.history_injury"
-            allow-create
-            filterable
-            multiple
-            placeholder="请输入伤痛史"
-          >
-          </el-select>
-        </el-form-item>
-      </re-col>
-      <re-col :value="12" :xs="24" :sm="24">
-        <el-form-item label="年龄:" prop="age">
+          :rules="[{required: true, message: '年龄不能为空'}]"
+          label="年龄:" prop="age">
           <el-input
             v-model="newFormInline.age"
             clearable
@@ -171,34 +160,74 @@ defineExpose({getRef})
         </el-form-item>
       </re-col>
       <re-col :value="12" :xs="24" :sm="24">
-        <el-form-item label="头像:" prop="age">
+        <el-form-item
+          :rules="[{required: true, message: '肌肉含量不能为空'}]"
+          label="肌肉含量:" prop="muscle">
+          <el-input
+            v-model="newFormInline.muscle"
+            clearable
+            placeholder="请输入肌肉含量："/>
+        </el-form-item>
+      </re-col>
+      <re-col :value="12" :xs="24" :sm="24">
+        <el-form-item
+          :rules="[{required: true, message: '体脂率不能为空'}]"
+          label="体脂率:" prop="fat">
+          <el-input
+            v-model="newFormInline.fat"
+            clearable
+            placeholder="请输入体脂率："/>
+        </el-form-item>
+      </re-col>
+      <re-col :value="12" :xs="24" :sm="24">
+        <el-form-item
+          :rules="[{required: true, message: '基础代谢不能为空'}]"
+          label="基础代谢:" prop="metabolism">
+          <el-input
+            v-model="newFormInline.metabolism"
+            clearable
+            placeholder="请输入基础代谢："/>
+        </el-form-item>
+      </re-col>
+      <re-col :value="12" :xs="24" :sm="24">
+        <el-form-item
+          :rules="[{required: true, message: 'BMI不能为空'}]"
+          label="BMI:" prop="bmi">
+          <el-input
+            v-model="newFormInline.bmi"
+            clearable
+            placeholder="请输入BMI："/>
+        </el-form-item>
+      </re-col>
+      <re-col :value="12" :xs="24" :sm="24">
+        <el-form-item
+          :rules="[{required: true, message: '头像不能为空'}]"
+          label="头像:" prop="age">
           <el-upload
+            ref="uploadRef"
             v-model="newFormInline.avatar"
             drag
             multiple
-            action="#"
-            class="!w-[130px]"
+            action="http://115.28.37.42:7788/admin/imageUpload"
+            class="!w-[180px]"
             :auto-upload="false"
-            :headers="{ Authorization: 'eyJhbGciOiJIUzUxMiJ9.admin' }"
-            :before-upload="onBefore"
+            :http-request="importCommit"
           >
-            <IconifyIconOffline :icon="Add" class="m-auto" width="30"/>
-            <template #file="{ file }">
-              <div
-                v-if="file.status == 'ready' || file.status == 'uploading'"
-                class="mt-[35%] m-auto"
-              >
-                <p class="font-medium">文件上传中</p>
-                <el-progress
-                  class="mt-2"
-                  :stroke-width="2"
-                  :text-inside="true"
-                  :show-text="false"
-                  :percentage="file.percentage"
-                />
-              </div>
-            </template>
+            <div class="el-upload__text">
+              <IconifyIconOffline
+                :icon="UploadIcon"
+                width="26"
+                class="m-auto mb-2"
+              />
+              可点击或拖拽上传
+            </div>
           </el-upload>
+          <el-button
+            type="primary"
+            @click="onSubmit"
+          >
+            提交头像
+          </el-button>
         </el-form-item>
       </re-col>
     </el-row>

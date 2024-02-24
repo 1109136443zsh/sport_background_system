@@ -21,7 +21,7 @@ export function gymRate() {
   const columns: TableColumnList = [
     {
       label: "星级ID",
-      prop: "rate_id",
+      prop: "id",
     },
     {
       label: "星级名称",
@@ -45,8 +45,9 @@ export function gymRate() {
 
   async function onSearch() {
     loading.value = true;
-    const data = await getRateList();
-    dataList.value = data.data;
+    await getRateList().then(res => {
+      dataList.value = res.data
+    })
     setTimeout(() => {
       loading.value = false;
     }, 500);
@@ -116,7 +117,7 @@ export function gymRate() {
 
   async function handleDelete(row) {
     await rateRemove({
-      rate_id: row.rate_id,
+      rate_id: row.id,
     }).then(() => {
       message(`您删除了星级编号为${row.rate_id}的这条数据`,
         {type: "success"});

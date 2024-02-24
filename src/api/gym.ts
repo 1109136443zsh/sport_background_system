@@ -13,6 +13,7 @@ export interface Response {
    * 说明
    */
   msg: string;
+
   [property: string]: any;
 }
 
@@ -33,6 +34,7 @@ export interface Data {
    * 分页大小
    */
   size: number;
+
   [property: string]: any;
 }
 
@@ -84,75 +86,87 @@ export interface Gym {
    * 标签
    */
   tags?: string[];
+
   [property: string]: any;
 }
 
 // 获取场馆列表
-export const getGymList = (data:object) => {
+export const getGymList = (data: {
+  page: number,
+  rate_id: number,
+  name: string,
+  region_id: number
+}) => {
+  const {
+    page,
+    rate_id,
+    region_id,
+    name
+  } = data
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/gym/list",
-    {data}
+    `http://115.28.37.42:7788/admin/gym/list?page=${page}&rate_id=${rate_id}&region_id=${region_id}&name=${name}`
   );
 };
 //获取场馆详情
-export const getGymDetail = (data:object) => {
+export const getGymDetail = (data: { gym_id: number }) => {
+  const {gym_id} = data
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/gym/get",
-    {data}
+    `http://115.28.37.42:7788/admin/gym/get?gym_id=${gym_id}`
   );
 };
 // 更新场馆资料
-export const updateGym = (data:object) => {
+export const updateGym = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/gym/update",
+    "http://115.28.37.42:7788/admin/gym/update",
     {data}
   );
 };
 // 场馆星级-获取列表
 export const getRateList = () => {
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4024188-0-default/admin/gym/rateList"
+    "http://115.28.37.42:7788/admin/gym/rateList"
   );
 };
 // 场馆星级-增加
-export const rateAdd = (data:object) => {
+export const rateAdd = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4024188-0-default/admin/gym/rateAdd",
+    "http://115.28.37.42:7788/admin/gym/rateAdd",
     {data}
   );
 };
 // 场馆星级-删除
-export const rateRemove = (data:object) => {
+export const rateRemove = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4024188-0-default/admin/gym/rateRemove",
+    "http://115.28.37.42:7788/admin/gym/rateRemove",
     {data}
   );
 };
 // 场馆星级-更新
-export const rateUpdate = (data:object) => {
+export const rateUpdate = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4024188-0-default/admin/gym/rateUpdate",
+    "http://115.28.37.42:7788/admin/gym/rateUpdate",
     {data}
   );
 };
 // 获取场馆可上课程
-export const getRateCourseList = (data:object) => {
-  return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4024188-0-default/admin/gym/courseList",
+export const getRateCourseList = (data: {page: number, gym_id: number}) => {
+  const {page, gym_id} = data
+  return http.request<Response>("get",
+    "http://115.28.37.42:7788/admin/gym/courseList",
     {data}
   );
 };
 // 删除场馆可上课程
-export const rateCourseRemove = (data:object) => {
+export const rateCourseRemove = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4024188-0-default/admin/gym/courseRemove",
+    "http://115.28.37.42:7788/admin/gym/courseRemove",
     {data}
   );
 };
 // 添加场馆可上课程
-export const rateCourseAdd = (data:object) => {
+export const rateCourseAdd = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4024188-0-default/admin/gym/courseAdd",
+    "http://115.28.37.42:7788/admin/gym/courseAdd",
     {data}
   );
 };

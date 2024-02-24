@@ -13,6 +13,7 @@ export interface Response {
    * 说明
    */
   msg: string;
+
   [property: string]: any;
 }
 
@@ -33,6 +34,7 @@ export interface Data {
    * 分页大小
    */
   size: number;
+
   [property: string]: any;
 }
 
@@ -45,55 +47,57 @@ export interface PageDatum {
    * 课程名
    */
   course_name: string;
+
   [property: string]: any;
 }
+
 // 场馆星级-获取列表
 export const getRateList = () => {
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4024188-0-default/admin/coach/rateList"
+    "http://115.28.37.42:7788/admin/coach/rateList"
   );
 };
 
 // 教练星级-增加
-export const rateAdd = (data:object) => {
+export const rateAdd = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/coach/rateAdd",
+    "http://115.28.37.42:7788/admin/coach/rateAdd",
     {data}
   );
 };
 // 教练星级-更新
-export const rateUpdate = (data:object) => {
+export const rateUpdate = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/coach/rateUpdate",
+    "http://115.28.37.42:7788/admin/coach/rateUpdate",
     {data}
   );
 };
 // 教练星级-删除
-export const rateRemove = (data:object) => {
+export const rateRemove = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4024188-0-default/admin/coach/rateRemove",
+    "http://115.28.37.42:7788/admin/coach/rateRemove",
     {data}
   );
 };
 
 // 教练星级-添加可上课程
-export const rateCourseAdd = (data:object) => {
+export const rateCourseAdd = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/coach/rateCourseAdd",
+    "http://115.28.37.42:7788/admin/coach/rateCourseAdd",
     {data}
   );
 };
 // 教练星级-获取可上课程列表
-export const getRateCourseList = (data:object) => {
-  return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4024188-0-default/admin/coach/rateCourseList",
-    {data}
+export const getRateCourseList = (data: {rate_id: number, page: number}) => {
+  const {rate_id, page} = data
+  return http.request<Response>("get",
+    `http://115.28.37.42:7788/admin/coach/rateCourseList?rate_id=${rate_id}&page=${page}`
   );
 };
 // 教练星级-删除可上课程
-export const rateCourseRemove = (data:object) => {
+export const rateCourseRemove = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/coach/rateCourseRemove",
+    "http://115.28.37.42:7788/admin/coach/rateCourseRemove",
     {data}
   );
 };

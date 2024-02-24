@@ -6,15 +6,15 @@ import editForm from "@/views/course/form/index.vue";
 import {FormItemProps} from "@/views/course/form/types";
 import {addDialog} from "@/components/ReDialog/index";
 import detailTable from "@/views/course/detail/index.vue"
+import {any} from "vue-types";
 
 export function courseList() {
   const form = reactive({
-    course_type: ""
+    course_type: 1
   })
 
   const formRef = ref();
-  const ruleFormRef = ref();
-  const dataList = ref([]);
+  const dataList = ref();
   const loading = ref(true);
   const pagination = reactive<PaginationProps>({
     total: 0,
@@ -33,7 +33,17 @@ export function courseList() {
     },
     {
       label: "课程类别",
-      prop: "course_type"
+      prop: "type",
+      minWidth: 90,
+      cellRenderer: ({ row, props }) => (
+        <el-tag size={props.size} effect="plain"
+        >
+          {row.type === 1 && "私教课"}
+          {row.type === 2 && "特色课"}
+          {row.type === 3 && "训练营"}
+          {row.type === 4 && "团操"}
+        </el-tag>
+      )
     },
     {
       label: "价格",
@@ -85,8 +95,10 @@ export function courseList() {
                 price: curData.price,
                 price_info: curData.price_info,
                 subtitle: curData.subtitle,
-                course_type: curData.course_type
-              }).then(() => {
+                type: curData.course_type
+              }).then((res) => {
+                console.log(res)
+                console.log(curData.course_type)
                 message(`您成功${title}了名称为${curData.name}的这条数据`,
                   {
                     type: "success"
@@ -105,9 +117,10 @@ export function courseList() {
                 subtitle: curData.subtitle,
                 price: curData.price,
                 price_info: curData.price_info,
-                course_type: curData.course_type,
+                type: curData.course_type,
                 course_id: curData.course_id
-              }).then(() => {
+              }).then((res) => {
+                console.log(curData.course_type)
                 message(`您成功${title}了名称为${curData.name}的这条数据`,
                   {
                     type: "success"
@@ -157,11 +170,13 @@ export function courseList() {
   async function onSearch() {
     loading.value = true;
     await getCourseList({
-      page: pagination.currentPage,
-      course_type: toRaw(form)
+      page: 1,
+      course_type: toRaw(form).course_type
     }).then(response => {
-      dataList.value = response.data.page_data
-    }).catch(() => {
+      dataList.value = response.data
+      console.log(response)
+      pagination.total = response.pages
+    }).catch((error) => {
       message(`获取课程列表失败`,
         {type: "error"});
     });
@@ -181,7 +196,7 @@ export function courseList() {
     await removeCourse({
       course_id: row.course_id
     }).then(() => {
-      message(`您删除了用户编号为${row.id}的这条数据`,
+      message(`您删除了用户编号为${row.course_id}的这条数据`,
         {type: "success"});
       onSearch();
     }).catch(() => {

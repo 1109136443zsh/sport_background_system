@@ -6,7 +6,7 @@ import ReCol from "@/components/ReCol";
 const props = withDefaults(defineProps<FormProps>(), {
   formInline: () => ({
     username: "",
-    username: "",
+    account: "",
     password: "",
     openid: ""
   })
@@ -37,14 +37,17 @@ defineExpose({getRef});
         </el-form-item>
       </re-col>
       <re-col :value="12" :xs="24" :sm="24">
-        <el-form-item label="用户密码：" prop="password">
+        <el-form-item
+          :rules="[{required: true, message: '用户密码不能为空'}]"
+          label="用户密码：" prop="password">
           <el-input
             v-model="newFormInline.password"
             clearable placeholder="请输入角色密码"/>
         </el-form-item>
       </re-col>
       <re-col :value="12" :xs="24" :sm="24">
-        <el-form-item label="登录账号：" prop="account">
+        <el-form-item
+          label="登录账号：" prop="account">
           <el-input
             v-model="newFormInline.account"
             clearable placeholder="请输入登录账号"/>

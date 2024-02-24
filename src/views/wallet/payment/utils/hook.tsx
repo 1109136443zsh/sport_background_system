@@ -6,7 +6,7 @@ import {message} from "@/utils/message";
 
 export function useWallet() {
   const form = {
-    user_id: ""
+    user_id: null
   }
   const loading = ref(true)
   const dataList = ref()
@@ -39,7 +39,15 @@ export function useWallet() {
       page: pagination.currentPage,
       user_id: toRaw(form).user_id
     }).then(response => {
-      dataList.value = response.data.page_data
+      if (response.code === 200){
+        dataList.value = response.data
+        pagination.total = response.pages
+      }else {
+        message(`出错了，请检查`,
+          {
+            type: "error"
+          });
+      }
     }).catch(() => {
       message(`获取数据失败，请重试`,
         {

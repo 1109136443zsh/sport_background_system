@@ -8,6 +8,7 @@ import {onMounted, ref} from "vue";
 import {setToken} from "@/utils/auth";
 import {STATES} from "xgplayer";
 import DESTROYED = STATES.DESTROYED;
+import {message} from "@/utils/message";
 
 
 // 二维码的内容
@@ -51,11 +52,15 @@ async function checkLogin() {
 }
 
 qrCodeLogin().then(response => {
-  text.value = response.data.qrcode;
-  expire_code = response.data.expire_time
-  session_id = response.data.session_id;
-  second = expire_code
-  checkLogin()
+  if (response.code === 200) {
+    text.value = response.data.qrcode;
+    expire_code = response.data.expire_time
+    session_id = response.data.session_id;
+    second = expire_code
+    checkLogin()
+  } else {
+    message("出错了", {type: "error"})
+  }
 });
 
 async function disabledClick() {

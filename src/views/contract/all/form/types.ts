@@ -11,6 +11,7 @@ interface FormItemProps {
    * 签署人的user_id
    */
   user_id?: string;
+  url: string;
   [property: string]: any;
 }
 interface FormProps {

@@ -6,15 +6,14 @@ import {useRenderIcon} from "@/components/ReIcon/src/hooks";
 import Delete from "@iconify-icons/ri/delete-bin-7-line";
 import editForm from "@/views/coach/list/gymEnable/form/index.vue"
 import {message} from "@/utils/message";
-import {getGymEnableList, gymEnableAdd, gymEnableRemove} from "@/api/coach/gymEnable";
 import AddFill from "@iconify-icons/ri/add-circle-line";
 import {addDialog} from "@/components/ReDialog/index";
-import type {FormItemProps} from "@/views/system/user/utils/types";
+import {getGymEnableList, gymEnableAdd, gymEnableRemove} from "@/api/coach/coach";
 
 
 const props = withDefaults(defineProps<FormProps>(), {
   formInline: () => ({
-    coach_id: "",
+    coach_id: 0,
     gym_id: 0,
     gym_name: "",
     gym_location: ""
@@ -27,9 +26,16 @@ const dataList = ref()
 async function onSearch() {
   loading.value = true
   await getGymEnableList({
-    coach_id: newFormInline.value.coach_id
+    coach_id: newFormInline.value.coach_id,
+    page: 1
   }).then(response => {
-    dataList.value = response.data.page_data
+    if (response.code === 200) {
+      dataList.value = response.data
+    } else {
+      message("出错了，请重试", {
+        type: "error"
+      })
+    }
   }).catch(() => {
     message("获取数据失败，请重试", {
       type: "error"
@@ -61,12 +67,18 @@ function openDialog() {
           gymEnableAdd({
             coach_id: curData.coach_id,
             gym_id: curData.gym_id
-          }).then(() => {
-            message(`成功添加教练可去场馆`, {
-              type: "success"
-            });
-            done();
-            onSearch();
+          }).then((res) => {
+            if (res.code === 200) {
+              message(`成功添加教练可去场馆`, {
+                type: "success"
+              });
+              done();
+              onSearch();
+            } else {
+              message(`出错了`, {
+                type: "error"
+              });
+            }
           }).catch(() => {
             message(`添加失败`, {
               type: "error"
@@ -82,15 +94,24 @@ const newFormInline = ref(props.formInline);
 
 async function handDelete(row) {
   await gymEnableRemove({
-    course_id: row.course_id,
+    coach_id: newFormInline.value.coach_id,
     gym_id: row.gym_id
-  }).then(() => {
-    message(`您删除了场馆名称为${row.gym_name}的这条数据`,
-      {type: "success"});
-    onSearch()
+  }).then((res) => {
+    if (res.code === 200) {
+      message(`您删除了场馆名称为${row.gym_name}的这条数据`,
+        {type: "success"});
+      onSearch()
+    } else {
+      message(`出错了`,
+        {
+          type: "error"
+        });
+    }
   }).catch(() => {
     message(`删除失败`,
-      {type: "error"});
+      {
+        type: "error"
+      });
   })
 }
 

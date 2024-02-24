@@ -67,25 +67,24 @@ export interface User {
   [property: string]: any;
 }
 // 获取用户列表
-export const getStudentList = (data: object) => {
+export const getStudentList = (page: number) => {
   return http.request<Response>("get",
-    "http://115.28.37.42:7788/admin/customer/list",
-    {data}
+    `http://115.28.37.42:7788/admin/customer/list?page=${page}`
   );
 };
+
 
 // 更新用户资料
 export const updateStudentList = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/user/update_info",
+    `http://115.28.37.42:7788/admin/user/update_info`,
     {data}
   );
 };
 
 // 获取用户详情
-export const getStudentDetail = (data: object) => {
+export const getStudentDetail = (user_id: object) => {
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/customer/info",
-    {data}
+    `http://115.28.37.42:7788/admin/customer/info?user_id=${user_id}`
   );
 };

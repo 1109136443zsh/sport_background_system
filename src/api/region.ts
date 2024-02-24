@@ -13,6 +13,7 @@ export interface Response {
    * 说明
    */
   msg: string;
+
   [property: string]: any;
 }
 
@@ -33,6 +34,7 @@ export interface Data {
    * 分页大小
    */
   size: number;
+
   [property: string]: any;
 }
 
@@ -45,23 +47,27 @@ export interface PageDatum {
    * 区域ID
    */
   region_id: string;
+
   [property: string]: any;
 }
-export const getRegionList = (data:object) => {
+// 获取区域列表
+export const getRegionList = (data: { page: number }) => {
+  const {page} = data
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/region/list",
+    `http://115.28.37.42:7788/admin/region/list?page=${page}`
+  );
+};
+// 删除区域
+export const deleteRegion = (data: object) => {
+  return http.request<Response>("post",
+    "http://115.28.37.42:7788/admin/region/remove",
     {data}
   );
 };
-export const deleteRegion = (data:object) => {
+// 新增区域
+export const addRegion = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/region/remove",
-    {data}
-  );
-};
-export const addRegion = (data:object) => {
-  return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/region/add",
+    "http://115.28.37.42:7788/admin/region/add",
     {data}
   );
 };

@@ -38,10 +38,18 @@ export function useRegion() {
 
   async function onSearch() {
     loading.value = true;
-    const {data} = await getRegionList({
-      page: pagination.currentPage
-    });
-    dataList.value = data.page_data;
+    await getRegionList({
+      page: 1
+    }).then(response => {
+      console.log(response)
+      dataList.value = response.data
+      pagination.total = response.pages
+    }).catch((error) => {
+      console.log(error)
+      message("获取数据失败，请重试", {
+        type: "error"
+      })
+    })
     setTimeout(() => {
       loading.value = false;
     }, 500);
@@ -67,7 +75,8 @@ export function useRegion() {
           if (valid) {
             addRegion({
               name: curData.name
-            }).then(() => {
+            }).then((res) => {
+              console.log(res)
               message(`成功新增区域 ${curData.name}`, {
                 type: "success"
               });
@@ -88,7 +97,7 @@ export function useRegion() {
 
   async function handleDelete(row) {
     await deleteRegion({
-      region_id: row.user_id
+      region_id: row.region_id
     }).then(() => {
       message(`您删除了区域编号为${row.region_id}的这条数据`,
         {type: "success"});

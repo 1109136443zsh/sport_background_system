@@ -18,7 +18,8 @@ const {
   dataList,
   columns,
   resetForm,
-  openDialog
+  openDialog,
+  openAddDialog
 } = useBill()
 </script>
 
@@ -59,6 +60,13 @@ const {
       @refresh="onSearch"
     >
       <template #buttons>
+        <el-button
+          type="primary"
+          :icon="useRenderIcon(AddFill)"
+          @click="openAddDialog"
+        >
+          申请发票
+        </el-button>
         <el-button
           type="primary"
           :icon="useRenderIcon(AddFill)"

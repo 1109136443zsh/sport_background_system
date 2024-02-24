@@ -17,8 +17,6 @@ const props = withDefaults(defineProps<FormProps>(), {
   })
 });
 const newFormInline = ref(props.formInline);
-const dataList = ref()
-dataList.value = newFormInline.value.ids
 function formatTime(time) {
   return dayjs(time).format("YYYY-MM-DD HH:mm:ss");
 }
@@ -32,29 +30,29 @@ function formatTime(time) {
       :column="3"
     >
       <el-descriptions-item label="申请ID：">
-        {{dataList.apply_id}}
+        {{ newFormInline.apply_id }}
       </el-descriptions-item>
-      <el-descriptions-item label="申请状态：">{{dataList.apply_status}}</el-descriptions-item>
-      <el-descriptions-item label="申请时间：">{{ formatTime(dataList.apply_time)}}</el-descriptions-item>
+      <el-descriptions-item label="申请状态：">{{ newFormInline.apply_status }}</el-descriptions-item>
+      <el-descriptions-item label="申请时间：">{{ formatTime(newFormInline.apply_time) }}</el-descriptions-item>
       <el-descriptions-item label="教练名称：">
-        {{dataList.name}}
+        {{ newFormInline.name }}
       </el-descriptions-item>
       <el-descriptions-item label="教练介绍：">
-        {{dataList.info}}
+        {{ newFormInline.info }}
       </el-descriptions-item>
       <el-descriptions-item label="openid：">
-        {{dataList.openid}}
+        {{ newFormInline.openid }}
       </el-descriptions-item>
       <el-descriptions-item label="手机号：">
-        {{dataList.phone}}
+        {{ newFormInline.phone }}
       </el-descriptions-item>
       <el-descriptions-item label="封面图：">
         <template #default>
           <el-image
             fit="cover"
             preview-teleported
-            :src="dataList.cover_image"
-            :preview-src-list="[dataList.cover_image]"
+            :src="newFormInline.cover_image"
+            :preview-src-list="[newFormInline.cover_image]"
             class="w-[60px] h-[60px] rounded-full align-middle"
           />
         </template>
@@ -64,14 +62,14 @@ function formatTime(time) {
           <el-image
             fit="cover"
             preview-teleported
-            :src="dataList.avatar"
-            :preview-src-list="[dataList.avatar]"
+            :src="newFormInline.avatar"
+            :preview-src-list="[newFormInline.avatar]"
             class="w-[60px] h-[60px] rounded-full align-middle"
           />
         </template>
       </el-descriptions-item>
       <el-descriptions-item label="擅长技能：">
-        {{dataList.skill}}
+        {{ newFormInline.skill }}
       </el-descriptions-item>
     </el-descriptions>
   </div>

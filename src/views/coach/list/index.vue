@@ -6,6 +6,7 @@ import PureTableBar from "@/components/RePureTableBar/src/bar";
 import {useCoach} from "@/views/coach/list/utils/hook";
 import {ref} from "vue";
 import EditPen from "@iconify-icons/ep/edit-pen";
+import AddFill from "@iconify-icons/ri/add-circle-line";
 
 
 const formRef = ref();
@@ -71,6 +72,15 @@ const {
       :columns="columns"
       @refresh="onSearch"
     >
+      <template #buttons>
+        <el-button
+          type="primary"
+          :icon="useRenderIcon(AddFill)"
+          @click=""
+        >
+          设置可上课时间
+        </el-button>
+      </template>
       <template v-slot="{size, dynamicColumns}">
         <pure-table
           ref="tableRef"

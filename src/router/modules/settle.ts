@@ -10,19 +10,28 @@ export default {
   children: [
     {
       path: "/settle/venue/index",
-      name: "venueManage",
+      name: "venue",
       component: () => import("@/views/settle/venue/index.vue"),
       meta: {
-        title: "场馆入驻管理",
+        title: "场馆",
         showParent: true
       }
     },
     {
       path: "/settle/coach/index",
-      name: "",
+      name: "coach",
       component: () => import("@/views/settle/coach/index.vue"),
       meta: {
-        title: "教练入驻管理",
+        title: "教练",
+        showParent: true
+      }
+    },
+    {
+      path: "/settle/partner/index",
+      name: "partner",
+      component: () => import("@/views/settle/partner/index.vue"),
+      meta: {
+        title: "合伙人",
         showParent: true
       }
     }

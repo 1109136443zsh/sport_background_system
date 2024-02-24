@@ -41,28 +41,36 @@ export function useWallet() {
     {
       label: "提现时间",
       prop: "create_time",
-      formatter: ({ createTime }) =>
+      formatter: ({createTime}) =>
         dayjs(createTime).format("YYYY-MM-DD HH:mm:ss")
     }
   ]
+
   async function onSearch() {
     loading.value = true;
-    await getSelfOrderList({
-      page: pagination.currentPage
-    }).then(response => {
-      dataList.value = response.data.page_data
+    await getSelfOrderList(
+      1
+    ).then(response => {
+      if (response.code === 200){
+        dataList.value = response.data
+        pagination.total = response.pages
+      }else {
+        message(`出错了，请检查`,
+          {
+            type: "error"
+          });
+      }
     }).catch(() => {
       message(`获取数据失败，请重试`,
         {
           type: "error"
         });
     })
-
-
     setTimeout(() => {
       loading.value = false;
     }, 500);
   }
+
   const resetForm = formEl => {
     if (!formEl) return;
     formEl.resetFields();

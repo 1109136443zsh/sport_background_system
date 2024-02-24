@@ -71,37 +71,36 @@ export interface AdminUser {
 }
 
 // 获取用户列表
-export const getUserList = (data: object) => {
+export const getUserList = (page: number) => {
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/user/list",
-    {data}
+    `http://115.28.37.42:7788/admin/user/list?page=${page}`
   );
 };
 // 修改用户可用状态
 export const updateUserAble = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/user/able",
+    "http://115.28.37.42:7788/admin/user/able",
     {data}
   );
 };
 // 删除用户
 export const deleteUser = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/user/list",
+    "http://115.28.37.42:7788/admin/user/list",
     {data}
   );
 };
 // 更新用户信息
 export const updateUser = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/user/update",
+    "http://115.28.37.42:7788/admin/user/update",
     {data}
   );
 };
 // 新增用户
 export const addUser = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4026089-0-default/admin/user/add",
+    "http://115.28.37.42:7788/admin/user/add",
     {data}
   );
 };

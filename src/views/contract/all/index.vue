@@ -3,6 +3,7 @@ import {useContract} from "@/views/contract/all/utils/hook";
 import {useRenderIcon} from "@/components/ReIcon/src/hooks";
 import PureTableBar from "@/components/RePureTableBar/src/bar";
 import AddFill from "@iconify-icons/ri/add-circle-line";
+import Delete from "@iconify-icons/ep/delete";
 
 
 const {
@@ -11,7 +12,10 @@ const {
   columns,
   dataList,
   onSearch,
-  openDialog
+  openDialog,
+  openDetailDialog,
+  handleDelete,
+  openAddDialog
 } = useContract()
 </script>
 
@@ -30,6 +34,13 @@ const {
         >
           合同补录
         </el-button>
+        <el-button
+          type="primary"
+          :icon="useRenderIcon(AddFill)"
+          @click="openAddDialog"
+        >
+          添加合同
+        </el-button>
       </template>
       <template v-slot="{size,dynamicColumns}">
         <pure-table
@@ -47,7 +58,33 @@ const {
               color: 'var(--el-text-color-primary)'
             }"
         >
-
+          <template #operation="{row}">
+            <el-button
+              class="reset-margin"
+              link
+              type="primary"
+              :size="size"
+              @click="openDetailDialog(row)"
+            >
+              查看
+            </el-button>
+            <el-popconfirm
+              :title="`是否确认删除编号为${row.contract_id}的这条数据`"
+              @confirm="handleDelete(row)"
+            >
+              <template #reference>
+                <el-button
+                  class="reset-margin"
+                  link
+                  type="primary"
+                  :size="size"
+                  :icon="useRenderIcon(Delete)"
+                >
+                  删除
+                </el-button>
+              </template>
+            </el-popconfirm>
+          </template>
         </pure-table>
       </template>
     </PureTableBar>

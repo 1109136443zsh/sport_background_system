@@ -20,7 +20,8 @@ const defaultConfig: AxiosRequestConfig = {
   timeout: 10000,
   headers: {
     Accept: "application/json, text/plain, */*",
-    "Content-Type": "application/json",
+    token: "MQ==.0.1.null.ZmExZmRmYmRjNzdiOTkxYjdmOGMyZTFkZDMyZDZmZGI=",
+    "Content-Type":"application/x-www-form-urlencoded",
     "X-Requested-With": "XMLHttpRequest"
   },
   // 数组格式参数序列化（https://github.com/axios/axios/issues/5142）
@@ -86,7 +87,7 @@ class PureHttp {
                   if (!PureHttp.isRefreshing) {
                     PureHttp.isRefreshing = true;
                     // token过期刷新
-                    useUserStoreHook()
+                   /* useUserStoreHook()
                       .handRefreshToken({ refreshToken: data.refreshToken })
                       .then(res => {
                         const token = res.data.accessToken;
@@ -96,7 +97,7 @@ class PureHttp {
                       })
                       .finally(() => {
                         PureHttp.isRefreshing = false;
-                      });
+                      });*/
                   }
                   resolve(PureHttp.retryOriginalRequest(config));
                 } else {

@@ -11,6 +11,7 @@ interface FormItemProps {
    * 场馆名字
    */
   gym_name: string;
+  coach_id: number;
   [property: string]: any;
 }
 interface FormProps {

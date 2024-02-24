@@ -13,6 +13,7 @@ export interface Response {
    * 说明
    */
   msg: string;
+
   [property: string]: any;
 }
 
@@ -33,6 +34,7 @@ export interface Data {
    * 分页大小
    */
   size: number;
+
   [property: string]: any;
 }
 
@@ -76,19 +78,56 @@ export interface Coach {
    * 擅长技能
    */
   skill: string[];
+
   [property: string]: any;
 }
-export const getCoachList = (data:object) => {
+
+// 获取教练列表
+export const getCoachList = (data: {
+  page: number,
+  rate_id?: number,
+  name?: string,
+  region_id?: number
+}) => {
+  const {page, rate_id, name, region_id} = data
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/coach/list",
+    `http://115.28.37.42:7788/admin/coach/list?page=${page}&rate_id=${rate_id}&rehion_id=${region_id}&name=${name}`,
     {data}
   );
 };
-export const updateCoach = (data:object) => {
+// 更新教练资料
+export const updateCoach = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/coach/list",
+    "http://115.28.37.42:7788/admin/coach/update",
     {data}
   );
 };
-
-
+// 获取教练详情
+export const getCoachDetail = (data: { coach_id }) => {
+  const {coach_id} = data
+  return http.request<Response>("get",
+    `http://115.28.37.42:7788/admin/coach/get?coach_id=${coach_id}`
+  );
+};
+// 教练可去场馆-列表
+export const getGymEnableList = (data: { coach_id: number, page: number }) => {
+  const {coach_id, page} = data
+  return http.request<Response>("get",
+    `http://115.28.37.42:7788/admin/coach/gymEnable/list?coach_id=${coach_id}&page=${page}`,
+    {data}
+  );
+};
+// 教练可去场馆-添加
+export const gymEnableAdd = (data: object) => {
+  return http.request<Response>("post",
+    "http://115.28.37.42:7788/admin/coach/gymEnable/add",
+    {data}
+  );
+};
+// 教练可去场馆-删除
+export const gymEnableRemove = (data: object) => {
+  return http.request<Response>("post",
+    "http://115.28.37.42:7788/admin/coach/gymEnable/remove",
+    {data}
+  );
+};

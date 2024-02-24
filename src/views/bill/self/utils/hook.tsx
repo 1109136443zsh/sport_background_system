@@ -1,10 +1,12 @@
 import {h, onMounted, reactive, ref} from "vue";
 import {getCoachList} from "@/api/settle/coach";
-import {getBillList, getBillSelfList, uploadBill} from "@/api/bill";
+import {addBill, getBillList, getBillSelfList, uploadBill} from "@/api/bill";
 import type {PaginationProps} from "@pureadmin/table";
 import {addDialog} from "@/components/ReDialog/index";
-import editForm from "@/views/bill/form/index.vue"
+import editForm from "@/views/bill/uploadForm/index.vue"
 import {message} from "@/utils/message";
+import addForm from "@/views/bill/addForm/index.vue";
+import {picUpload} from "@/api/picUpload";
 
 export function useBill() {
   const form = reactive({
@@ -64,14 +66,66 @@ export function useBill() {
 
   async function onSearch() {
     loading.value = true;
-    const {data} = await getBillSelfList({
+    await getBillSelfList({
       page: pagination.currentPage
+    }).then(res => {
+      dataList.value = res.data
+      pagination.total = res.pages
     })
-    dataList.value = data.page_data;
-
     setTimeout(() => {
       loading.value = false;
     }, 500);
+  }
+
+  function openAddDialog() {
+    addDialog({
+      title: "",
+      props: {
+        formInline: {
+          amount: "",
+          tax_id: "",
+          address: "",
+          title: "",
+          title_type: "",
+          phone: "",
+          bank: "",
+          bank_account: ""
+        }
+      },
+      width: "46%",
+      draggable: true,
+      fullscreenIcon: true,
+      closeOnClickModal: false,
+      contentRenderer: () => h(addForm, {ref: formRef}),
+      beforeSure: (done, {options}) => {
+        const FormRef = formRef.value.getRef();
+        const curData = options.props.formInline;
+        FormRef.validate(valid => {
+          if (valid) {
+            addBill({
+              amount: curData.amount,
+              title_type: curData.title_type,
+              title: curData.title,
+              tax_id: curData.tax_id,
+              address: curData.address,
+              phone: curData.phone,
+              bank: curData.bank,
+              bank_account: curData.bank_account
+            }).then(res => {
+              message(`申请发票成功`, {
+                type: "success"
+              });
+              done();
+              onSearch();
+            }).catch(() => {
+              message(`更新教练信息失败`, {
+                type: "error"
+              });
+            })
+          }
+        })
+      },
+    })
   }
 
   function openDialog() {
@@ -133,6 +187,7 @@ export function useBill() {
     resetForm,
     pagination,
     onSearch,
-    openDialog
+    openDialog,
+    openAddDialog
   }
 }

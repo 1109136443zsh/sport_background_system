@@ -89,43 +89,41 @@ export interface WalletLog {
   [property: string]: any;
 }
 // 查询所有提现订单
-export const getOrderList = (data:object) => {
+export const getOrderList = (data: { page:number, user_id?:number, user_role?: string }) => {
+  const { page, user_id, user_role} = data
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/wallet/list?apifoxApiId=147842665",
-    {data}
+    `http://115.28.37.42:7788/admin/wallet/list?page=${page}&user_id=${user_id}&user_role=${user_role}`
   );
 };
 // 查询自己提现订单
-export const getSelfOrderList = (data:object) => {
+export const getSelfOrderList = (page:number) => {
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/wallet/selfOrder",
-    {data}
+    `http://115.28.37.42:7788/admin/wallet/selfOrder?page=${page}`
   );
 };
 // 查看自己收支明细
-export const getSelfPaymentList = (data:object) => {
+export const getSelfPaymentList = (page:number) => {
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/wallet/selfList",
-    {data}
+    `http://115.28.37.42:7788/admin/wallet/selfList?page=${page}`
   );
 };
 // 查看所有收支明细
-export const getPaymentList = (data:object) => {
+export const getPaymentList = (data: { page:number, user_id?:number}) => {
+  const { page, user_id} = data
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/wallet/list?apifoxApiId=147842667",
-    {data}
+    `http://115.28.37.42:7788/admin/wallet/list?page=${page}&user_id=${user_id}`
   );
 };
 // 查询自己余额
 export const getSelfBalance = () => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/wallet/self"
+    "http://115.28.37.42:7788/admin/wallet/self"
   );
 };
 // 提现
 export const withdraw = (data:object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/wallet/withdraw",
+    "http://115.28.37.42:7788/admin/wallet/withdraw",
     {data}
   );
 };

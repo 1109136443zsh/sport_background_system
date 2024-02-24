@@ -16,7 +16,7 @@ export function useUser() {
     enable: ""
   });
   const formRef = ref()
-  const dataList = ref([]);
+  const dataList = ref();
   const loading = ref(true);
   const switchLoadMap = ref({});
   const {switchStyle} = usePublicHooks();
@@ -100,9 +100,10 @@ export function useUser() {
           }
         );
         updateUserAble({
-          enable: row.enable,
+          enable: row.enable ? 1 : 0,
           user_id: row.user_id
         }).then(res => {
+          console.log(res)
           if (res) {
             setTimeout(() => {
               switchLoadMap.value[index] = Object.assign(
@@ -117,7 +118,8 @@ export function useUser() {
               });
             }, 300);
           }
-        }).catch(() => {
+        }).catch((error) => {
+          console.log(error)
           message("修改用户状态失败", {
             type: "error"
           });
@@ -152,7 +154,8 @@ export function useUser() {
               user_id: curData.user_id,
               username: curData.username,
               password: curData.password
-            }).then(() => {
+            }).then((res) => {
+              console.log(res)
               message(`您更新了用户名称为${curData.username}的这条数据`,
                 {
                   type: "success"
@@ -196,7 +199,8 @@ export function useUser() {
               password: curData.password,
               account: curData.account,
               openid: curData.opoenid
-            }).then(() => {
+            }).then((response) => {
+              console.log(response)
               message(`您新增用户名称为${curData.username}的这条数据`,
                 {
                   type: "success"
@@ -232,11 +236,13 @@ export function useUser() {
 
   async function onSearch() {
     loading.value = true;
-    await getUserList({
-      page: pagination.currentPage
-    }).then(response => {
-      dataList.value = response.data.page_data
-    }).catch(() => {
+    await getUserList(
+      pagination.currentPage
+    ).then(response => {
+      dataList.value = response.data
+      pagination.total = response.pages
+    }).catch((error) => {
+      console.log(error)
       message(`获取用户列表失败，请刷新`,
         {
           type: "error"

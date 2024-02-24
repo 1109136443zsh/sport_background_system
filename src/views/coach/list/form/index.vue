@@ -2,27 +2,52 @@
 import {FormProps} from "@/views/coach/list/form/types";
 import ReCol from "@/components/ReCol";
 import {ref} from "vue";
+import UploadIcon from "@iconify-icons/ri/upload-2-line";
+import {picUpload} from "@/api/picUpload";
 
 const props = withDefaults(defineProps<FormProps>(), {
   formInline: () => ({
     name: "",
     info: "",
     gender_limit: 2,
-    skill: [],
+    skill: "",
     coach_id: "",
     price: 0,
     rate_id: 0,
-    case: [],
-    banner: []
+    coachCase: "",
+    banner: "",
+    url: ""
   })
 })
 const ruleFormRef = ref()
 const newFormInline = ref(props.formInline)
-
 function getRef() {
   return ruleFormRef.value;
 }
+const uploadRef = ref()
+function importCommit(fileData) {
+  return new Promise((resolve, reject) => {
+    const data = new FormData()
+    data.append("image", fileData.file)
 
+    picUpload(
+      data
+    ).then(response => {
+      // 处理成功回调
+      newFormInline.value.url = response.data.url
+      console.log(newFormInline.value.url)
+      resolve(response)
+    })
+      .catch(error => {
+        // 处理失败回调
+        console.log(error)
+        reject(error)
+      });
+  });
+}
+function onSubmit() {
+  uploadRef.value.submit()
+}
 defineExpose({getRef})
 </script>
 
@@ -37,9 +62,7 @@ defineExpose({getRef})
           label="教练id：" prop="coach_id"
           :rules="[{ required: true, message: '教练id不能为空'}]"
         >
-          <el-input
-            disabled
-            v-model="newFormInline.coach_id"/>
+          <el-input v-model="newFormInline.coach_id"/>
         </el-form-item>
       </re-col>
       <re-col :value="12" :xs="24" :sm="24">
@@ -60,44 +83,50 @@ defineExpose({getRef})
       </re-col>
       <re-col>
         <el-form-item
-          allow-create
-          filterable
-          multiple
           label="擅长技能：" prop="skill"
           :rules="[{ required: true, message: '擅长技能不能为空'}]"
         >
-          <el-select
-            allow-create
-            filterable
-            multiple
-            v-model="newFormInline.skill">
-          </el-select>
+          <el-input v-model="newFormInline.skill"/>
         </el-form-item>
       </re-col>
       <re-col>
         <el-form-item
-          label="轮播图：" prop="banner"
+          label="轮播图：" prop="coach_id"
           :rules="[{ required: true, message: '轮播图不能为空'}]"
         >
-          <el-select
-            allow-create
-            filterable
+          <el-upload
+            ref="uploadRef"
+            v-model="newFormInline.banner"
+            drag
             multiple
-            v-model="newFormInline.banner">
-          </el-select>
+            action="http://115.28.37.42:7788/admin/imageUpload"
+            class="!w-[180px] m-2"
+            :auto-upload="false"
+            :http-request="importCommit"
+          >
+            <div class="el-upload__text">
+              <IconifyIconOffline
+                :icon="UploadIcon"
+                width="26"
+                class="m-auto mb-2"
+              />
+              可点击或拖拽上传
+            </div>
+          </el-upload>
+          <el-button
+            type="primary"
+            @click="onSubmit"
+          >
+            提交图片
+          </el-button>
         </el-form-item>
       </re-col>
       <re-col>
         <el-form-item
-          label="案例：" prop="case"
+          label="案例：" prop="coachCase"
           :rules="[{ required: true, message: '案例不能为空'}]"
         >
-          <el-select
-            allow-create
-            filterable
-            multiple
-            v-model="newFormInline.case">
-          </el-select>
+          <el-input v-model="newFormInline.coachCase"/>
         </el-form-item>
       </re-col>
       <re-col>

@@ -9,7 +9,7 @@ import {any} from "vue-types";
 
 export function useSettle() {
   const form = reactive({
-    phone: "",
+    phone: 0,
     name: ""
   })
   const formRef = ref()
@@ -55,7 +55,17 @@ export function useSettle() {
     },
     {
       label: "申请状态",
-      prop: "apply_status"
+      prop: "apply_status",
+      minWidth: 90,
+      cellRenderer: ({ row, props }) => (
+        <el-tag
+          size={props.size}
+          type={row.apply_status === 0 ? "danger" : ""}
+          effect="plain"
+        >
+          {row.apply_status === 1 ? "通过" : "待审核"}
+        </el-tag>
+      )
     },
     {
       label: "申请ID",
@@ -77,11 +87,19 @@ export function useSettle() {
 
   async function onSearch() {
     loading.value = true;
-    const {data} = await getCoachList({
+    await getCoachList({
       page: pagination.currentPage,
-      phone: toRaw(form)
-    });
-    dataList.value = data.page_data;
+      phone: toRaw(form).phone
+    }).then(res => {
+      if (res.code === 200) {
+        dataList.value = res.data
+        pagination.total = res.pages
+      }else {
+        message(`出错了`, {type: "error"});
+      }
+    }).catch(() => {
+      message(`获取列表信息失败`, {type: "error"});
+    })
     setTimeout(() => {
       loading.value = false;
     }, 500);
@@ -92,24 +110,27 @@ export function useSettle() {
     getCoachDetail({
       apply_id: row.apply_id
     }).then(response => {
-      ids = response.data
-      addDialog({
-        title: "查看教练入驻信息",
-        props: {
-          formInline: {
-            ids
-          }
-        },
-        width: "46%",
-        draggable: true,
-        fullscreenIcon: true,
-        closeOnClickModal: false,
-        contentRenderer: () => detailTable
-      })
+      if (response.code === 200) {
+        ids = response.data
+        addDialog({
+          title: "查看教练入驻信息",
+          props: {
+            formInline: {
+              ids
+            }
+          },
+          width: "46%",
+          draggable: true,
+          fullscreenIcon: true,
+          closeOnClickModal: false,
+          contentRenderer: () => detailTable
+        })
+      }else {
+        message(`出错了`, {type: "error"});
+      }
     }).catch(() => {
       message(`获取教练入驻信息失败`, {type: "error"});
     })
-
   }
 
   const resetForm = formEl => {
