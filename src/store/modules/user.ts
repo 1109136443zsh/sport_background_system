@@ -25,7 +25,8 @@ export const useUserStore = defineStore({
     // 是否勾选了登录页的免登录
     isRemembered: false,
     // 登录页的免登录存储几天，默认7天
-    loginDay: 7
+    loginDay: 7,
+    token: ""
   }),
   actions: {
     /** 存储用户名 */
@@ -52,13 +53,13 @@ export const useUserStore = defineStore({
     SET_LOGINDAY(value: number) {
       this.loginDay = Number(value);
     },
+
     /** 登入 */
     async loginByUsername(data) {
       return new Promise<UserResult>((resolve, reject) => {
         getLogin(data)
           .then(data => {
             if (data) {
-              console.log(data)
               setToken(data.data);
               resolve(data);
             }

@@ -11,8 +11,7 @@ const props = withDefaults(defineProps<FormProps>(), {
 })
 
 const newFormInline = ref(props.formInline);
-const dataList = ref()
-dataList.value = newFormInline.value.ids
+
 </script>
 
 <template>
@@ -20,14 +19,14 @@ dataList.value = newFormInline.value.ids
   <div>
     <el-descriptions
       class="margin-top"
-      title="场馆信息"
+      title="核销信息"
       :column="3"
       :border="true"
     >
       <el-descriptions-item label="核销码">
         <ReQrcode :text="newFormInline.checkin_code"/>
       </el-descriptions-item>
-      <el-descriptions-item label="快速核销编号">{{ dataList.checkin_fast }}</el-descriptions-item>
+      <el-descriptions-item label="快速核销编号">{{ newFormInline.checkin_fast }}</el-descriptions-item>
     </el-descriptions>
   </div>
 </template>

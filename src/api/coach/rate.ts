@@ -1,4 +1,6 @@
 import {http} from "@/utils/http";
+import {baseUrlApi} from "@/api/utils";
+import {getToken} from "@/utils/auth";
 
 export interface Response {
   /**
@@ -54,50 +56,86 @@ export interface PageDatum {
 // 场馆星级-获取列表
 export const getRateList = () => {
   return http.request<Response>("get",
-    "http://115.28.37.42:7788/admin/coach/rateList"
+    baseUrlApi("/admin/coach/rateList"),{},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 
 // 教练星级-增加
 export const rateAdd = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/coach/rateAdd",
-    {data}
+    baseUrlApi("/admin/coach/rateAdd"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 教练星级-更新
 export const rateUpdate = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/coach/rateUpdate",
-    {data}
+    baseUrlApi("/admin/coach/rateUpdate"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 教练星级-删除
 export const rateRemove = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/coach/rateRemove",
-    {data}
+    baseUrlApi("/admin/coach/rateRemove"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 
 // 教练星级-添加可上课程
 export const rateCourseAdd = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/coach/rateCourseAdd",
-    {data}
+    baseUrlApi("/admin/coach/rateCourseAdd"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 教练星级-获取可上课程列表
 export const getRateCourseList = (data: {rate_id: number, page: number}) => {
   const {rate_id, page} = data
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/coach/rateCourseList?rate_id=${rate_id}&page=${page}`
+    baseUrlApi(`/admin/coach/rateCourseList?rate_id=${rate_id}&page=${page}`),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 教练星级-删除可上课程
 export const rateCourseRemove = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/coach/rateCourseRemove",
-    {data}
+    baseUrlApi("/admin/coach/rateCourseRemove"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };

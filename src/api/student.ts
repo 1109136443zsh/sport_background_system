@@ -1,4 +1,6 @@
 import {http} from "@/utils/http";
+import {baseUrlApi} from "@/api/utils";
+import {getToken} from "@/utils/auth";
 
 export interface Response {
   /**
@@ -66,10 +68,17 @@ export interface User {
 
   [property: string]: any;
 }
+
 // 获取用户列表
 export const getStudentList = (page: number) => {
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/customer/list?page=${page}`
+    baseUrlApi(`/admin/customer/list?page=${page}`),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 
@@ -77,14 +86,25 @@ export const getStudentList = (page: number) => {
 // 更新用户资料
 export const updateStudentList = (data: object) => {
   return http.request<Response>("post",
-    `http://115.28.37.42:7788/admin/user/update_info`,
-    {data}
+    baseUrlApi("/admin/user/update_info"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 
 // 获取用户详情
 export const getStudentDetail = (user_id: object) => {
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/customer/info?user_id=${user_id}`
+    baseUrlApi(`/admin/customer/info?user_id=${user_id}`),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };

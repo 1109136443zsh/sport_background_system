@@ -1,6 +1,7 @@
 import {http} from "@/utils/http";
 import {baseUrlApi} from "@/api/utils";
 import {UnwrapNestedRefs} from "vue";
+import {getToken} from "@/utils/auth";
 
 type Response = {
   /**
@@ -73,28 +74,49 @@ type ApplyCoachBase = {
 export const getCoachList = (data: { page: number, phone: number }) => {
   const {page, phone} = data
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/apply/coach/list?page=${page}&phone=${phone}`
+    baseUrlApi(`/admin/apply/coach/list?page=${page}&phone=${phone}`),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 获取入驻详情
 export const getCoachDetail = (data: { apply_id }) => {
   const {apply_id} = data
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/apply/coach/get?apply_id=${apply_id}`,
-    {data}
+    baseUrlApi(`/admin/apply/coach/get?apply_id=${apply_id}`),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 同意入驻
 export const coachAccept = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/apply/coach/accept",
-    {data}
+    baseUrlApi("/admin/apply/coach/accept"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 拒绝入驻
 export const coachReject = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/apply/coach/reject",
-    {data}
+    baseUrlApi("/admin/apply/coach/reject"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };

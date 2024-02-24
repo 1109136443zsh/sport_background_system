@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import {addDialog} from "@/components/ReDialog/index";
 import {updateComplain} from "@/api/order";
 import {message} from "@/utils/message";
+import {any} from "vue-types";
 
 const props = withDefaults(defineProps<FormProps>(), {
   formInline: () => ({
@@ -39,8 +40,7 @@ const props = withDefaults(defineProps<FormProps>(), {
   })
 });
 const newFormInline = ref(props.formInline);
-const dataList = ref()
-dataList.value = newFormInline.value.ids
+
 
 function openDialog(row) {
   addDialog({
@@ -97,32 +97,32 @@ function formatTime(time) {
       :column="3"
       :border="true"
     >
-      <el-descriptions-item label="订单ID">{{ dataList.order_id }}</el-descriptions-item>
-      <el-descriptions-item label="最终价格">{{ dataList.price }}</el-descriptions-item>
+      <el-descriptions-item label="订单ID">{{ newFormInline.order_id }}</el-descriptions-item>
+      <el-descriptions-item label="最终价格">{{ newFormInline.price }}</el-descriptions-item>
       <el-descriptions-item label="支付状态">
         <template #default>
           <el-tag effect="plain">
             {{
-              dataList.status_pay === 0 ? '未支付' :
-                dataList.status_pay === 1 ? '支付中' :
-                  dataList.status_pay === 2 ? '支付成功' :
-                    dataList.status_pay === 3 ? '退款中' :
-                      dataList.status_pay === 4 ? '已退款' : ''
+              newFormInline.status_pay === 0 ? '未支付' :
+                newFormInline.status_pay === 1 ? '支付中' :
+                  newFormInline.status_pay === 2 ? '支付成功' :
+                    newFormInline.status_pay === 3 ? '退款中' :
+                      newFormInline.status_pay === 4 ? '已退款' : ''
             }}
           </el-tag>
         </template>
       </el-descriptions-item>
-      <el-descriptions-item label="预定时间节点ID">{{ dataList.segment_id }}</el-descriptions-item>
-      <el-descriptions-item label="预定日期时间戳">{{ formatTime(dataList.segment_date) }}</el-descriptions-item>
+      <el-descriptions-item label="预定时间节点ID">{{ newFormInline.segment_id }}</el-descriptions-item>
+      <el-descriptions-item label="预定日期时间戳">{{ formatTime(newFormInline.schedule_date) }}</el-descriptions-item>
       <el-descriptions-item label="订单状态">
         <template #default>
           <el-tag effect="plain">
             {{
-              dataList.status_order === 0 ? '未支付' :
-                dataList.status_order === 1 ? '支付中' :
-                  dataList.status_order === 2 ? '支付成功' :
-                    dataList.status_order === 3 ? '退款中' :
-                      dataList.status_order === 4 ? '已退款' : ''
+              newFormInline.status_order === 0 ? '未支付' :
+                newFormInline.status_order === 1 ? '支付中' :
+                  newFormInline.status_order === 2 ? '支付成功' :
+                    newFormInline.status_order === 3 ? '退款中' :
+                      newFormInline.status_order === 4 ? '已退款' : ''
             }}
           </el-tag>
         </template>
@@ -134,22 +134,22 @@ function formatTime(time) {
       :column="3"
       :border="true"
     >
-      <el-descriptions-item label="教练名称">{{ dataList.coach_name }}</el-descriptions-item>
-      <el-descriptions-item label="教练ID">{{ dataList.coach_id }}</el-descriptions-item>
+      <el-descriptions-item label="教练名称">{{ newFormInline.coach_name }}</el-descriptions-item>
+      <el-descriptions-item label="教练ID">{{ newFormInline.coach_id }}</el-descriptions-item>
       <el-descriptions-item label="教练图像">
         <template #default>
           <el-image
             fit="cover"
             preview-teleported
-            :src="dataList.coach_image"
-            :preview-src-list="[dataList.coach_image]"
+            :src="newFormInline.coach_image"
+            :preview-src-list="[newFormInline.coach_image]"
             class="w-[60px] h-[60px] rounded-full align-middle"
           />
         </template>
       </el-descriptions-item>
-      <el-descriptions-item label="教练电话">{{ dataList.coach_phone }}</el-descriptions-item>
-      <el-descriptions-item label="教练等级">{{ dataList.coach_rate }}</el-descriptions-item>
-      <el-descriptions-item label="教练评分">{{ dataList.coach_score }}</el-descriptions-item>
+      <el-descriptions-item label="教练电话">{{ newFormInline.coach_phone }}</el-descriptions-item>
+      <el-descriptions-item label="教练等级">{{ newFormInline.coach_rate }}</el-descriptions-item>
+      <el-descriptions-item label="教练评分">{{ newFormInline.coach_score }}</el-descriptions-item>
     </el-descriptions>
     <el-descriptions
       class="margin-top"
@@ -157,37 +157,37 @@ function formatTime(time) {
       :column="3"
       :border="true"
     >
-      <el-descriptions-item label="场馆名称">{{ dataList.gym_name }}</el-descriptions-item>
-      <el-descriptions-item label="场馆ID">{{ dataList.gym_id }}</el-descriptions-item>
-      <el-descriptions-item label="场馆费用">{{ dataList.gym_price }}</el-descriptions-item>
-      <el-descriptions-item label="场馆等级">{{ dataList.gym_rate }}</el-descriptions-item>
-      <el-descriptions-item label="场馆地址">{{ dataList.gym_location }}</el-descriptions-item>
-      <el-descriptions-item label="经度">{{ dataList.gym_longitude }}</el-descriptions-item>
-      <el-descriptions-item label="纬度">{{ dataList.gym_latitude }}</el-descriptions-item>
+      <el-descriptions-item label="场馆名称">{{ newFormInline.gym_name }}</el-descriptions-item>
+      <el-descriptions-item label="场馆ID">{{ newFormInline.gym_id }}</el-descriptions-item>
+      <el-descriptions-item label="场馆费用">{{ newFormInline.gym_price }}</el-descriptions-item>
+      <el-descriptions-item label="场馆等级">{{ newFormInline.gym_rate }}</el-descriptions-item>
+      <el-descriptions-item label="场馆地址">{{ newFormInline.gym_location }}</el-descriptions-item>
+      <el-descriptions-item label="经度">{{ newFormInline.gym_longitude }}</el-descriptions-item>
+      <el-descriptions-item label="纬度">{{ newFormInline.gym_latitude }}</el-descriptions-item>
     </el-descriptions>
     <el-table
-      :data="dataList.complain"
+      :data="newFormInline.complain"
     >
       <el-table-column label="投诉的工单ID" prop="complain_id"/>
       <el-table-column label="发起投诉主体" prop="complain_type">
-        <template #default>
+        <template #default="row">
           <el-tag effect="plain">
             {{
-              dataList.complain.complain_type === 0 ? '学员' :
-                dataList.complain.complain_type === 1 ? '教练' :
-                  dataList.complain.complain_type === 2 ? '场馆' : ''
+              row.complain_type === 0 ? '学员' :
+                row.complain_type === 1 ? '教练' :
+                  row.complain_type === 2 ? '场馆' : ''
             }}
           </el-tag>
         </template>
       </el-table-column>
       <el-table-column label="投诉内容" prop="claim"/>
       <el-table-column label="处理状态" prop="status_complain">
-        <template #default>
+        <template #default="row">
           <el-tag effect="plain">
             {{
-              dataList.complain.complain_status === 0 ? '未处理' :
-                dataList.complain.complain_status === 1 ? '处理中' :
-                  dataList.complain.complain_status === 2 ? '已处理' : ''
+              row.complain_status === 0 ? '未处理' :
+                row.complain_status === 1 ? '处理中' :
+                  row.complain_status === 2 ? '已处理' : ''
             }}
           </el-tag>
         </template>

@@ -43,4 +43,5 @@ export type userType = {
   currentPage?: number;
   isRemembered?: boolean;
   loginDay?: number;
+  token?:string;
 };

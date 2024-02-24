@@ -1,4 +1,5 @@
 import {http} from "@/utils/http";
+import {getToken} from "@/utils/auth";
 
 export interface Response {
   /**
@@ -36,7 +37,8 @@ export const picUpload = (data: object) => {
     {data},
     {
       headers: {
-        "Content-Type": "multipart/form-data"
+        "Content-Type": "multipart/form-data",
+        "token": getToken().accessToken
       }
     }
   );

@@ -38,7 +38,6 @@ function importCommit(fileData) {
     ).then(response => {
       // 处理成功回调
       newFormInline.value.imageUrl = response.data.url
-      console.log(newFormInline.value.imageUrl)
       resolve(response)
     })
       .catch(error => {

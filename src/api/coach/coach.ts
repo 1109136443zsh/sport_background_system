@@ -1,4 +1,6 @@
 import {http} from "@/utils/http";
+import {getToken} from "@/utils/auth";
+import {baseUrlApi} from "@/api/utils";
 
 export interface Response {
   /**
@@ -91,43 +93,72 @@ export const getCoachList = (data: {
 }) => {
   const {page, rate_id, name, region_id} = data
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/coach/list?page=${page}&rate_id=${rate_id}&rehion_id=${region_id}&name=${name}`,
-    {data}
+    baseUrlApi(`/admin/coach/list?page=${page}&rate_id=${rate_id}&rehion_id=${region_id}&name=${name}`),
+    {data},{
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 更新教练资料
 export const updateCoach = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/coach/update",
-    {data}
+    baseUrlApi("/admin/coach/update"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 获取教练详情
 export const getCoachDetail = (data: { coach_id }) => {
   const {coach_id} = data
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/coach/get?coach_id=${coach_id}`
+    `http://115.28.37.42:7788/admin/coach/get?coach_id=${coach_id}`,{},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 教练可去场馆-列表
 export const getGymEnableList = (data: { coach_id: number, page: number }) => {
   const {coach_id, page} = data
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/coach/gymEnable/list?coach_id=${coach_id}&page=${page}`,
-    {data}
+    baseUrlApi(`/admin/coach/gymEnable/list?coach_id=${coach_id}&page=${page}`),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 教练可去场馆-添加
 export const gymEnableAdd = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/coach/gymEnable/add",
-    {data}
+    baseUrlApi("/admin/coach/gymEnable/add"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 教练可去场馆-删除
 export const gymEnableRemove = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/coach/gymEnable/remove",
-    {data}
+    baseUrlApi("/admin/coach/gymEnable/remove"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };

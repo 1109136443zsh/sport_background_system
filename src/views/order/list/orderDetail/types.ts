@@ -38,7 +38,7 @@ interface FormItemProps {
   /**
    * 投诉信息
    */
-  complain: Complain[];
+  complain: Array<Complain>;
   /**
    * 课程id
    */

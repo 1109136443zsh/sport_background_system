@@ -1,4 +1,6 @@
 import {http} from "@/utils/http";
+import {baseUrlApi} from "@/api/utils";
+import {getToken} from "@/utils/auth";
 
 export interface Response {
   /**
@@ -74,34 +76,60 @@ export interface CourseBase {
 export const getCourseList = (data: { page: number, course_type?: number }) => {
   const {page, course_type} = data
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/course/list?page=${page}&course_type=${course_type}`
+    baseUrlApi(`/admin/course/list?page=${page}&course_type=${course_type}`),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 删除课程
 export const removeCourse = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/course/remove",
-    {data}
+    baseUrlApi("/admin/course/remove"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 新增课程
 export const addCourse = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/course/add",
-    {data}
+    baseUrlApi("/admin/course/add"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 更新课程
 export const updateCourse = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/course/update",
-    {data}
+    baseUrlApi("/admin/course/update"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 获取课程详情
 export const getCourseDetail = (data: object) => {
   return http.request<Response>("get",
-    "http://115.28.37.42:7788/admin/course/get",
-    {data}
+    baseUrlApi("/admin/course/get"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };

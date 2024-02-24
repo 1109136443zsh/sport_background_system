@@ -1,4 +1,6 @@
 import {http} from "@/utils/http";
+import {baseUrlApi} from "@/api/utils";
+import {getToken} from "@/utils/auth";
 
 export interface Response {
   /**
@@ -45,19 +47,37 @@ export interface detail {
 export const getNewCustomsList = (data: {day}) => {
   const {day} = data
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/report/newCustomer?day=${day}`
+    baseUrlApi(`/admin/report/newCustomer?day=${day}`),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 export const getOrderNum = (data: {day}) => {
   const {day} = data
   return http.request<Response>("get",
-    `https://mock.apifox.com/m1/4020694-0-default/admin/report/orderNum?day=${day}}`
+    baseUrlApi(`/admin/report/orderNum?day=${day}`),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 export const getIncomeNum = (data: {day}) => {
   const {day} = data
   return http.request<Response>("get",
-    `https://mock.apifox.com/m1/4020694-0-default/admin/report/income?day=${day}`
+    baseUrlApi(`/admin/report/income?day=${day}`),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 

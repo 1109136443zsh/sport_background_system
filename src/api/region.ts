@@ -1,4 +1,6 @@
 import {http} from "@/utils/http";
+import {getToken} from "@/utils/auth";
+import {baseUrlApi} from "@/api/utils";
 
 export interface Response {
   /**
@@ -54,20 +56,36 @@ export interface PageDatum {
 export const getRegionList = (data: { page: number }) => {
   const {page} = data
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/region/list?page=${page}`
+    baseUrlApi(`/admin/region/list?page=${page}`),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 删除区域
 export const deleteRegion = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/region/remove",
-    {data}
+    baseUrlApi("/admin/region/remove"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 新增区域
 export const addRegion = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/region/add",
-    {data}
+    baseUrlApi("/admin/region/add"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };

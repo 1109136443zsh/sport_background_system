@@ -1,4 +1,6 @@
 import {http} from "@/utils/http";
+import {baseUrlApi} from "@/api/utils";
+import {getToken} from "@/utils/auth";
 
 type Response = {
   /**
@@ -71,28 +73,50 @@ type ApplyGymBase = {
 export const getVenueList = (data: {page: string, phone: string}) => {
   const {page, phone} = data
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/apply/gym/list?page=${page}&phone=${phone}`
+    baseUrlApi(`/admin/apply/gym/list?page=${page}&phone=${phone}`),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 获取场馆详情
 export const getVenueDetail = (data: {apply_id: string}) => {
   const {apply_id} = data
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/apply/gym/get?apply_id=${apply_id}`
+    baseUrlApi(`/admin/apply/gym/get?apply_id=${apply_id}`),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 
 // 同意入驻
 export const venueAccept = (data:object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/apply/gym/accept",
-    {data}
+    baseUrlApi("/admin/apply/gym/accept"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 拒绝入驻
 export const venueReject = (data:object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4020694-0-default/admin/apply/gym/reject",
-    {data}
+    baseUrlApi("/admin/apply/gym/reject"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };

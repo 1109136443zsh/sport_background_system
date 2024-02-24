@@ -1,4 +1,7 @@
 import {http} from "@/utils/http";
+import {baseUrlApi} from "@/api/utils";
+import {getToken} from "@/utils/auth";
+
 export interface Response {
   /**
    * 状态码
@@ -12,6 +15,7 @@ export interface Response {
    * 说明
    */
   msg: string;
+
   [property: string]: any;
 }
 
@@ -32,6 +36,7 @@ export interface Data {
    * 分页大小
    */
   size: number;
+
   [property: string]: any;
 }
 
@@ -79,11 +84,12 @@ export interface OrderDetailCopy {
    * 订单支付状态，如已支付等
    */
   status_pay: number;
+
   [property: string]: any;
 }
 
 // 查询订单列表
-export const getOrderList = (data:{
+export const getOrderList = (data: {
   page: number,
   order_status: number,
   user_id: number,
@@ -93,55 +99,99 @@ export const getOrderList = (data:{
 }) => {
   const {page, complain, comment, order_status, user_id, gym_id} = data
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/order/list?page=${page}&order_status=${order_status}&user_id=${user_id}&gym_id=${gym_id}&complain=${complain}&comment=${comment}`
+    baseUrlApi(
+      `/admin/order/list?page=${page}&order_status=${order_status}&user_id=${user_id}&gym_id=${gym_id}&complain=${complain}&comment=${comment}`
+    ),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 查询订单详情
-export const getOrderDetail = (data:object) => {
+export const getOrderDetail = (data: {order_id: number}) => {
+  const {order_id} = data
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4026186-0-default/admin/order/get",
-    {data}
+    baseUrlApi(`/admin/order/get?order_id=${order_id}`),{},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 取消订单
-export const cancelOrder = (data:object) => {
+export const cancelOrder = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4024188-0-default/admin/order/cancel",
-    {data}
+    baseUrlApi("/admin/order/cancel"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 获取订单学员个人信息
-export const getUserDetail = (data:object) => {
+export const getUserDetail = (data: {order_id}) => {
+  const {order_id} = data
   return http.request<Response>("get",
-    "https://mock.apifox.com/m1/4024188-0-default/admin/order/getUser",
-    {data}
+    baseUrlApi(`/admin/order/getUser?order_id=${order_id}`),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 获取订单核销信息
-export const getCheckinDetail = (data:object) => {
+export const getCheckinDetail = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4026186-0-default/admin/order/getCheckin",
-    {data}
+    baseUrlApi("/admin/order/getCheckin"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 订单核销
-export const Checkin = (data:object) => {
+export const Checkin = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4026186-0-default/admin/order/checkin",
-    {data}
+    baseUrlApi("/admin/order/checkin"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 投诉订单-教练/场馆
-export const addComplain = (data:object) => {
+export const addComplain = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4026186-0-default/admin/order/complain/add",
-    {data}
+    baseUrlApi("/admin/order/complain/add"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 更新投诉订单状态
-export const updateComplain = (data:object) => {
+export const updateComplain = (data: object) => {
   return http.request<Response>("post",
-    "https://mock.apifox.com/m1/4026186-0-default/admin/order/complain/update",
-    {data}
+    baseUrlApi("/admin/order/complain/update"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };

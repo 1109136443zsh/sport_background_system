@@ -1,5 +1,6 @@
 import {http} from "@/utils/http";
-
+import {getToken} from "@/utils/auth";
+import {baseUrlApi} from "@/api/utils";
 
 export interface Response {
   /**
@@ -41,20 +42,35 @@ export interface Permission {
 // 获取权限列表
 export const getPowerList = () => {
   return http.request<Response>("get",
-    "http://115.28.37.42:7788/admin/permission/list"
+    baseUrlApi("/admin/permission/list"),{},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 授予角色权限
 export const grantPermission = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/permission/grant",
-    {data}
+    baseUrlApi("/admin/permission/grant"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 撤销角色权限
 export const revokePermission = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/permission/revoke",
-    {data}
+    baseUrlApi("/admin/permission/revoke"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };

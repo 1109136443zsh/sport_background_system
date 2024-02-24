@@ -68,6 +68,7 @@ export type UserResult = {
     /** 当前登陆用户的角色 */
     roles: Array<string>;
     /** `token` */
+    token: string;
     accessToken: string;
     /** 用于调用刷新`accessToken`的接口时所需的`token` */
     refreshToken: string;
@@ -79,7 +80,7 @@ export type UserResult = {
 // 账密登录
 export const getLogin = (data: object) => {
   return http.request<UserResult>("post",
-      "http://115.28.37.42:7788/admin/user/login",
+      baseUrlApi("/admin/user/login"),
     {data}
   );
 };
@@ -89,13 +90,13 @@ export const getLogin = (data: object) => {
 // 二维码登录
 export const qrCodeLogin = () => {
   return http.request<Response>("get",
-    "http://115.28.37.42:7788/admin/user/wxlogin"
+    baseUrlApi("/admin/user/wxlogin")
   );
 };
 // 检查小程序扫码登录状态
 export const checkQrCodeLogin = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/user/checkWxlogin",
+    baseUrlApi("/admin/user/checkWxlogin"),
     {data}
   );
 };

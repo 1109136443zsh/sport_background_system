@@ -1,5 +1,6 @@
 import {http} from "@/utils/http";
 import {baseUrlApi} from "@/api/utils";
+import {getToken} from "@/utils/auth";
 
 export interface Response {
   /**
@@ -34,27 +35,47 @@ export interface Role {
 // 获取角色列表
 export const getRoleList = () => {
   return http.request<Response>("get",
-    "http://115.28.37.42:7788/admin/role/list"
+    baseUrlApi("/admin/role/list"),{},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 授予用户角色
 export const grantRole = (data:object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/role/grant",
-    {data}
+    baseUrlApi("/admin/role/grant"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 新增角色
 export const addRole = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/role/add",
-    {data}
+    baseUrlApi("/admin/role/add"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 删除角色
 export const deleteRole = (data:object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/role/remove",
-    {data}
+    baseUrlApi("/admin/role/remove"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };

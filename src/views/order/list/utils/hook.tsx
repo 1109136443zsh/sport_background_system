@@ -1,6 +1,14 @@
 import {PaginationProps} from "@pureadmin/table/dist";
 import {h, onMounted, reactive, ref, toRaw} from "vue";
-import {addComplain, cancelOrder, getCheckinDetail, getOrderDetail, getOrderList, getUserDetail} from "@/api/order";
+import {
+  addComplain,
+  cancelOrder,
+  Checkin,
+  getCheckinDetail,
+  getOrderDetail,
+  getOrderList,
+  getUserDetail
+} from "@/api/order";
 import detailTable from "@/views/order/list/orderDetail/index.vue"
 import dayjs from "dayjs";
 import {addDialog} from "@/components/ReDialog/index";
@@ -9,7 +17,7 @@ import cancelForm from "@/views/order/list/cancelOrder/index.vue"
 import userDetailTable from "@/views/order/list/userDetail/index.vue"
 import checkinDetail from "@/views/order/list/checkin/checkinDetail/index.vue"
 import complainForm from "@/views/order/list/complainOrder/index.vue";
-import type {FormItemProps} from "@/views/system/user/utils/types";
+import checkinForm from "@/views/order/list/checkin/checkinForm/index.vue"
 
 export function orderList() {
   const form = reactive({
@@ -117,8 +125,11 @@ export function orderList() {
       complain: toRaw(form).complain,
       comment: toRaw(form).comment
     }).then(response => {
-      dataList.value = response.data
-      console.log(response)
+      if (response.code === 200) {
+        dataList.value = response.data
+      } else {
+        message("出错了", {type: "error"})
+      }
     }).catch(() => {
       message("获取数据失败，请重试", {
         type: "error"
@@ -134,20 +145,52 @@ export function orderList() {
     await getOrderDetail({
       order_id: row.order_id
     }).then(response => {
-      ids = response.data
-      addDialog({
-        title: "查看订单详情",
-        props: {
-          formInline: {
-            ids
-          }
-        },
-        width: "75%",
-        draggable: true,
-        fullscreenIcon: true,
-        closeOnClickModal: false,
-        contentRenderer: () => detailTable
-      })
+      if (response.code === 200) {
+        ids = response.data
+        addDialog({
+          title: "查看订单详情",
+          props: {
+            formInline: {
+              coach_id: ids.coach_id,
+              coach_image: ids.coach_image,
+              coach_name: ids.coach_name,
+              coach_phone: ids.coach_phone,
+              coach_rate: ids.coach_rate,
+              coach_score: ids.coach_score,
+              comment: ids.comment,
+              comment_image: ids.comment_image,
+              comment_video: ids.comment_video,
+              complain: ids.complain,
+              course_id: ids.course_id,
+              course_name: ids.course_name,
+              course_score: ids.coach_score,
+              gym_id: ids.gym_id,
+              gym_latitude: ids.gym_latitude,
+              gym_longitude: ids.gym_longitude,
+              gym_location: ids.gym_location,
+              gym_name: ids.gym_name,
+              gym_price: ids.gym_price,
+              gym_rate: ids.gym_rate,
+              is_comment: ids.is_comment,
+              order_id: ids.order_id,
+              price: ids.price,
+              schedule_date: ids.schedule_date,
+              segment_id: ids.segment_id,
+              status_order: ids.status_order,
+              status_pay: ids.status_pay,
+            }
+          },
+          width: "75%",
+          draggable: true,
+          fullscreenIcon: true,
+          closeOnClickModal: false,
+          contentRenderer: () => detailTable
+        })
+      } else {
+        message("获取数据失败，请检查问题", {
+          type: "error"
+        })
+      }
     }).catch(() => {
       message("获取数据失败，请重试", {
         type: "error"
@@ -224,6 +267,7 @@ export function orderList() {
                   type: "success"
                 });
               done()
+              onSearch()
             }).catch(() => {
               message(`提交失败`,
                 {
@@ -243,7 +287,7 @@ export function orderList() {
     }).then(response => {
       ids = response.data
       addDialog({
-        title: "",
+        title: "订单学员个人信息",
         props: {
           formInline: {
             ids
@@ -267,12 +311,15 @@ export function orderList() {
     await getCheckinDetail({
       order_id: row.order_id
     }).then(response => {
+      console.log(response)
       ids = response.data;
       addDialog({
         title: "订单核销信息",
         props: {
           formInline: {
-            ids
+            ids,
+            checkin_code: ids.checkin_code ?? "",
+            checkin_fast: ids.checkin_fast ?? ""
           }
         },
         width: "46%",
@@ -281,6 +328,54 @@ export function orderList() {
         closeOnClickModal: false,
         contentRenderer: () => checkinDetail
       })
+    })
+  }
+
+  function openCheckinDialog() {
+    addDialog({
+      title: "核销订单(方式二选一)",
+      props: {
+        formInline: {
+          checkin_code: "",
+          checkin_fast: ""
+        }
+      },
+      width: "46%",
+      draggable: true,
+      fullscreenIcon: true,
+      closeOnClickModal: false,
+      contentRenderer: () => h(checkinForm, {ref: formRef}),
+      beforeSure: (done, {options}) => {
+        const FormRef = formRef.value.getRef();
+        const curData = options.props.formInline;
+        FormRef.validate(valid => {
+          if (valid) {
+            Checkin({
+              checkin_code: curData.checkin_code,
+              checkin_fast: curData.checkin_fast
+            }).then(response => {
+              if (response.code === 200) {
+                message(`核销订单成功`,
+                  {
+                    type: "success"
+                  });
+                done()
+                onSearch()
+              } else {
+                message(`出错了`,
+                  {
+                    type: "error"
+                  });
+              }
+            }).catch(error => {
+              message(`核销失败`,
+                {
+                  type: "error"
+                });
+            })
+          }
+        })
+      },
     })
   }
 
@@ -306,6 +401,7 @@ export function orderList() {
     openCancelDialog,
     openUserDetail,
     openCheckinDetail,
-    openComplainForm
+    openComplainForm,
+    openCheckinDialog
   }
 }

@@ -1,4 +1,6 @@
 import {http} from "@/utils/http";
+import {baseUrlApi} from "@/api/utils";
+import {getToken} from "@/utils/auth";
 
 export interface Response {
   /**
@@ -68,27 +70,49 @@ export interface ApplyPartnerBase {
 export const getPartnerList = (data: { page: number, phone?: string }) => {
   const {page, phone} = data
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/apply/partner/list?page=${page}&phone=${phone}`
+    baseUrlApi(`/admin/apply/partner/list?page=${page}&phone=${phone}`),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 查询入驻申请详情
 export const getPartnerDetail = (data: { apply_id: number }) => {
   const {apply_id} = data
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/apply/partner/get?apply_id=${apply_id}`
+    baseUrlApi(`/admin/apply/partner/get?apply_id=${apply_id}`),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 同意入驻
 export const partnerAccept = (data) => {
   return http.request<Response>("post",
-    `http://115.28.37.42:7788/admin/apply/partner/accept`,
-    {data}
+    baseUrlApi("/admin/apply/partner/accept"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 拒绝入驻
 export const partnerReject = (data) => {
   return http.request<Response>("post",
-    `http://115.28.37.42:7788/admin/apply/partner/reject`,
-    {data}
+    baseUrlApi("/admin/apply/partner/reject"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };

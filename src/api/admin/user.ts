@@ -1,4 +1,6 @@
 import {http} from "@/utils/http";
+import {baseUrlApi} from "@/api/utils";
+import {getToken} from "@/utils/auth";
 
 export interface Response {
   /**
@@ -73,34 +75,59 @@ export interface AdminUser {
 // 获取用户列表
 export const getUserList = (page: number) => {
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/user/list?page=${page}`
+    baseUrlApi(`/admin/user/list?page=${page}`),{},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 修改用户可用状态
 export const updateUserAble = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/user/able",
-    {data}
+    baseUrlApi("/admin/user/able"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 删除用户
 export const deleteUser = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/user/list",
-    {data}
+    baseUrlApi("/admin/user/list"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 更新用户信息
 export const updateUser = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/user/update",
-    {data}
+    baseUrlApi("/admin/user/update"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 新增用户
 export const addUser = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/user/add",
-    {data}
+    baseUrlApi("/admin/user/add"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };

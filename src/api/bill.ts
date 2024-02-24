@@ -1,4 +1,6 @@
 import {http} from "@/utils/http";
+import {baseUrlApi} from "@/api/utils";
+import {getToken} from "@/utils/auth";
 
 export interface Response {
   /**
@@ -98,27 +100,49 @@ export interface Bill {
 export const getBillList = (data: { page: number, user_id: number }) => {
   const {page, user_id} = data
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/bill/list?page=${page}&user_id=${user_id}`
+    baseUrlApi(`/admin/bill/list?page=${page}&user_id=${user_id}`),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 获取自己的发票的列表
 export const getBillSelfList = (data: { page: number }) => {
   const {page} = data
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/bill/self?page=${page}`
+    baseUrlApi(`/admin/bill/self?page=${page}`),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 上传发票
 export const uploadBill = (data) => {
   return http.request<Response>("post",
-    `http://115.28.37.42:7788/admin/bill/upload`,
-    {data}
+    baseUrlApi("/admin/bill/upload"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 申请开票
 export const addBill = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/bill/add",
-    {data}
+    baseUrlApi("/admin/bill/add"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };

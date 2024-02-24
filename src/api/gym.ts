@@ -1,4 +1,6 @@
 import {http} from "@/utils/http";
+import {getToken} from "@/utils/auth";
+import {baseUrlApi} from "@/api/utils";
 
 export interface Response {
   /**
@@ -104,69 +106,122 @@ export const getGymList = (data: {
     name
   } = data
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/gym/list?page=${page}&rate_id=${rate_id}&region_id=${region_id}&name=${name}`
+    baseUrlApi(`/admin/gym/list?page=${page}&rate_id=${rate_id}&region_id=${region_id}&name=${name}`),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 //获取场馆详情
 export const getGymDetail = (data: { gym_id: number }) => {
   const {gym_id} = data
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/gym/get?gym_id=${gym_id}`
+    baseUrlApi(`/admin/gym/get?gym_id=${gym_id}`),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 更新场馆资料
 export const updateGym = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/gym/update",
-    {data}
+    baseUrlApi("/admin/gym/update"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 场馆星级-获取列表
 export const getRateList = () => {
   return http.request<Response>("get",
-    "http://115.28.37.42:7788/admin/gym/rateList"
+    baseUrlApi("/admin/gym/rateList"),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 场馆星级-增加
 export const rateAdd = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/gym/rateAdd",
-    {data}
+    baseUrlApi("/admin/gym/rateAdd"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 场馆星级-删除
 export const rateRemove = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/gym/rateRemove",
-    {data}
+    baseUrlApi("/admin/gym/rateRemove"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 场馆星级-更新
 export const rateUpdate = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/gym/rateUpdate",
-    {data}
+    baseUrlApi("/admin/gym/rateUpdate"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 获取场馆可上课程
 export const getRateCourseList = (data: {page: number, gym_id: number}) => {
   const {page, gym_id} = data
   return http.request<Response>("get",
-    "http://115.28.37.42:7788/admin/gym/courseList",
-    {data}
+    baseUrlApi("/admin/gym/courseList"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 删除场馆可上课程
 export const rateCourseRemove = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/gym/courseRemove",
-    {data}
+    baseUrlApi("/admin/gym/courseRemove"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 添加场馆可上课程
 export const rateCourseAdd = (data: object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/gym/courseAdd",
-    {data}
+    baseUrlApi("/admin/gym/courseAdd"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };

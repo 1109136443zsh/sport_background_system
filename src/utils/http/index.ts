@@ -12,7 +12,9 @@ import type {
 import { stringify } from "qs";
 import NProgress from "../progress";
 import { getToken, formatToken } from "@/utils/auth";
-import { useUserStoreHook } from "@/store/modules/user";
+import {useUserStore, useUserStoreHook} from "@/store/modules/user";
+import axios from "axios";
+
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
@@ -20,7 +22,7 @@ const defaultConfig: AxiosRequestConfig = {
   timeout: 10000,
   headers: {
     Accept: "application/json, text/plain, */*",
-    token: "MQ==.0.1.null.ZmExZmRmYmRjNzdiOTkxYjdmOGMyZTFkZDMyZDZmZGI=",
+    token: "",
     "Content-Type":"application/x-www-form-urlencoded",
     "X-Requested-With": "XMLHttpRequest"
   },
@@ -79,43 +81,43 @@ class PureHttp {
         return whiteList.find(url => url === config.url)
           ? config
           : new Promise(resolve => {
-              const data = getToken();
-              if (data) {
-                const now = new Date().getTime();
-                const expired = parseInt(data.expires) - now <= 0;
-                if (expired) {
-                  if (!PureHttp.isRefreshing) {
-                    PureHttp.isRefreshing = true;
-                    // token过期刷新
-                   /* useUserStoreHook()
-                      .handRefreshToken({ refreshToken: data.refreshToken })
-                      .then(res => {
-                        const token = res.data.accessToken;
-                        config.headers["Authorization"] = formatToken(token);
-                        PureHttp.requests.forEach(cb => cb(token));
-                        PureHttp.requests = [];
-                      })
-                      .finally(() => {
-                        PureHttp.isRefreshing = false;
-                      });*/
-                  }
-                  resolve(PureHttp.retryOriginalRequest(config));
-                } else {
-                  config.headers["Authorization"] = formatToken(
-                    data.accessToken
-                  );
-                  resolve(config);
+            const data = getToken();
+            if (data) {
+              const now = new Date().getTime();
+              const expired = parseInt(data.expires) - now <= 0;
+              if (expired) {
+                if (!PureHttp.isRefreshing) {
+                  PureHttp.isRefreshing = true;
+                  // token过期刷新
+                  /* useUserStoreHook()
+                     .handRefreshToken({ refreshToken: data.refreshToken })
+                     .then(res => {
+                       const token = res.data.accessToken;
+                       config.headers["Authorization"] = formatToken(token);
+                       PureHttp.requests.forEach(cb => cb(token));
+                       PureHttp.requests = [];
+                     })
+                     .finally(() => {
+                       PureHttp.isRefreshing = false;
+                     });*/
                 }
+                resolve(PureHttp.retryOriginalRequest(config));
               } else {
+                // 在这里添加请求头
+                config.headers["Authorization"] = "Your Token Here";
                 resolve(config);
               }
-            });
+            } else {
+              resolve(config);
+            }
+          });
       },
       error => {
         return Promise.reject(error);
       }
     );
   }
+
 
   /** 响应拦截 */
   private httpInterceptorsResponse(): void {

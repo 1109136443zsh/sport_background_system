@@ -1,4 +1,6 @@
 import {http} from "@/utils/http";
+import {getToken} from "@/utils/auth";
+import {baseUrlApi} from "@/api/utils";
 
 export interface Response {
   /**
@@ -85,40 +87,70 @@ export interface Card {
 // 会员卡-查询
 export const getCardList = (page: number) => {
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/card/typeList?page=${page}`
+    baseUrlApi(`/admin/card/typeList?page=${page}`),{},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 会员卡-删除
 export const cardRemove = (data: object) => {
   return http.request<Response>("post",
-    `http://115.28.37.42:7788/admin/card/remove`,
-    {data}
+    baseUrlApi("/admin/card/remove"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 会员卡-新增
 export const cardAdd = (data: object) => {
   return http.request<Response>("post",
-    `http://115.28.37.42:7788/admin/card/add`,
-    {data}
+    baseUrlApi("/admin/card/add"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 会员卡类型-查询
 export const getCardTypeList = (page: number) => {
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/card/typeList?page=${page}`
+    baseUrlApi(`/admin/card/typeList?page=${page}`),
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 会员卡类型-新增
 export const addCardType = (data: object) => {
   return http.request<Response>("post",
-    `http://115.28.37.42:7788/admin/card/typeList`,
-    {data}
+    baseUrlApi("/admin/card/typeList"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 会员卡类型-删除
 export const removeCardType = (data: object) => {
   return http.request<Response>("post",
-    `http://115.28.37.42:7788/admin/card/typeRemove`,
-    {data}
+    baseUrlApi("/admin/card/typeRemove"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };

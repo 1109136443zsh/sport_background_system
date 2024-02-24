@@ -20,7 +20,8 @@ const {
   openCancelDialog,
   openUserDetail,
   openCheckinDetail,
-  openComplainForm
+  openComplainForm,
+  openCheckinDialog
 } = orderList()
 </script>
 
@@ -97,7 +98,7 @@ const {
         <el-button
           type="primary"
           :icon="useRenderIcon(AddFill)"
-
+          @click="openCheckinDialog"
         >
           订单核销
         </el-button>

@@ -1,4 +1,6 @@
 import {http} from "@/utils/http";
+import {getToken} from "@/utils/auth";
+import {baseUrlApi} from "@/api/utils";
 
 export interface Response {
   /**
@@ -92,38 +94,73 @@ export interface WalletLog {
 export const getOrderList = (data: { page:number, user_id?:number, user_role?: string }) => {
   const { page, user_id, user_role} = data
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/wallet/list?page=${page}&user_id=${user_id}&user_role=${user_role}`
+    baseUrlApi(`/admin/wallet/list?page=${page}&user_id=${user_id}&user_role=${user_role}`),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 查询自己提现订单
 export const getSelfOrderList = (page:number) => {
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/wallet/selfOrder?page=${page}`
+    baseUrlApi(`/admin/wallet/selfOrder?page=${page}`),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 查看自己收支明细
 export const getSelfPaymentList = (page:number) => {
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/wallet/selfList?page=${page}`
+    baseUrlApi(`/admin/wallet/selfList?page=${page}`),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 查看所有收支明细
 export const getPaymentList = (data: { page:number, user_id?:number}) => {
   const { page, user_id} = data
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/wallet/list?page=${page}&user_id=${user_id}`
+    baseUrlApi(`/admin/wallet/list?page=${page}&user_id=${user_id}`),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 查询自己余额
 export const getSelfBalance = () => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/wallet/self"
+    baseUrlApi("/admin/wallet/self"),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
 // 提现
 export const withdraw = (data:object) => {
   return http.request<Response>("post",
-    "http://115.28.37.42:7788/admin/wallet/withdraw",
-    {data}
+    baseUrlApi("/admin/wallet/withdraw"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
   );
 };
