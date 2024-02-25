@@ -68,10 +68,10 @@ export function useContract() {
         props: {
           formInline: {
             ids,
-            name: ids[0].name ?? "",
-            sign_role: ids[0].sign_role ?? "",
-            contract_id: ids[0].contract_id ?? "",
-            text: ids[0].text ?? ""
+            name: ids.name ?? "",
+            sign_role: ids.sign_role ?? "",
+            contract_id: ids.contract_id ?? "",
+            text: ids.text ?? ""
           }
         },
         width: "46%",

@@ -23,6 +23,7 @@ const defaultConfig: AxiosRequestConfig = {
   headers: {
     Accept: "application/json, text/plain, */*",
     token: "",
+    type:"WEB",
     "Content-Type":"application/x-www-form-urlencoded",
     "X-Requested-With": "XMLHttpRequest"
   },
