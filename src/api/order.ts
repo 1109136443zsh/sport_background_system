@@ -91,11 +91,11 @@ export interface OrderDetailCopy {
 // 查询订单列表
 export const getOrderList = (data: {
   page: number,
-  order_status: number,
-  user_id: number,
-  gym_id: number,
-  complain: number,
-  comment: number
+  order_status: string,
+  user_id: string,
+  gym_id: string,
+  complain: string,
+  comment: string
 }) => {
   const {page, complain, comment, order_status, user_id, gym_id} = data
   return http.request<Response>("get",

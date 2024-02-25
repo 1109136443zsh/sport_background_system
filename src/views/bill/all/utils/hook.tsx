@@ -7,7 +7,7 @@ import {message} from "@/utils/message";
 import addForm from "@/views/bill/addForm/index.vue"
 export function useBill() {
   const form = reactive({
-    user_id: 0
+    user_id: ""
   });
   const dataList = ref();
   const formRef = ref()
@@ -21,7 +21,7 @@ export function useBill() {
   const columns: TableColumnList = [
     {
       label: "发票ID",
-      prop: "bill_id"
+      prop: "Bill_id"
     },
     {
       label: "金额",

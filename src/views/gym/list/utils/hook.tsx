@@ -10,9 +10,9 @@ import courseTable from "@/views/gym/list/course/index.vue"
 export function gymList() {
   const formRef = ref()
   const form = reactive({
-    rate_id: 0,
+    rate_id: "",
     name: "",
-    region_id: 0
+    region_id: ""
   })
   const pagination = reactive<PaginationProps>({
     total: 0,
@@ -148,7 +148,7 @@ export function gymList() {
 
   function openDialog(row) {
     addDialog({
-      title: "",
+      title: "更新场馆信息",
       props: {
         formInline: {
           gym_id: row.gym_id ?? "",
@@ -160,7 +160,8 @@ export function gymList() {
           end_time: row?.end_time ?? "",
           location: row?.location ?? "",
           longitude: row?.longitude ?? "",
-          latitude: row?.latitude ?? ""
+          latitude: row?.latitude ?? "",
+          url: ""
         }
       },
       width: "46%",
@@ -179,7 +180,7 @@ export function gymList() {
                 name: curData.name,
                 rate_id: curData.rate_id,
                 info: curData.info,
-                banner: curData.banner,
+                banner: curData.url,
                 begin_time: curData.begin_time,
                 end_time: curData.end_time,
                 location: curData.location,

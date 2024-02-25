@@ -98,7 +98,7 @@ export const updateUserAble = (data: object) => {
 // 删除用户
 export const deleteUser = (data: object) => {
   return http.request<Response>("post",
-    baseUrlApi("/admin/user/list"),
+    baseUrlApi("/admin/user/remove"),
     {data},
     {
       headers: {

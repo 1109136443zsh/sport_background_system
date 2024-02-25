@@ -87,9 +87,9 @@ export interface Coach {
 // 获取教练列表
 export const getCoachList = (data: {
   page: number,
-  rate_id?: number,
+  rate_id?: string,
   name?: string,
-  region_id?: number
+  region_id?: string
 }) => {
   const {page, rate_id, name, region_id} = data
   return http.request<Response>("get",

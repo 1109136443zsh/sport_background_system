@@ -27,11 +27,17 @@ function formatTime(time) {
       class="margin_top"
       title="合伙人入驻信息"
       :column="3"
+      :border="true"
     >
       <el-descriptions-item label="申请ID：">
         {{ newFormInline.apply_id }}
       </el-descriptions-item>
-      <el-descriptions-item label="申请状态：">{{ newFormInline.apply_status }}</el-descriptions-item>
+      <el-descriptions-item label="申请状态：">{{
+          newFormInline.apply_status === 0 ? "未审核" :
+            newFormInline.apply_status === 1 ? "已通过" :
+              newFormInline.apply_status === 2 ? "已拒绝" : ''
+        }}
+      </el-descriptions-item>
       <el-descriptions-item label="申请时间：">{{ formatTime(newFormInline.apply_time) }}</el-descriptions-item>
       <el-descriptions-item label="名称：">
         {{ newFormInline.name }}

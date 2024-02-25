@@ -12,8 +12,6 @@ import type {
 import { stringify } from "qs";
 import NProgress from "../progress";
 import { getToken, formatToken } from "@/utils/auth";
-import {useUserStore, useUserStoreHook} from "@/store/modules/user";
-import axios from "axios";
 
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
@@ -23,6 +21,7 @@ const defaultConfig: AxiosRequestConfig = {
   headers: {
     Accept: "application/json, text/plain, */*",
     token: "",
+    type: "WEB",
     "Content-Type":"application/x-www-form-urlencoded",
     "X-Requested-With": "XMLHttpRequest"
   },

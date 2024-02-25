@@ -39,6 +39,7 @@ interface FormItemProps {
    * 星级id
    */
   rate_id?: number;
+  url: string;
 }
 interface FormProps {
   formInline: FormItemProps

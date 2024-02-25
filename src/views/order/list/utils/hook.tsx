@@ -21,11 +21,11 @@ import checkinForm from "@/views/order/list/checkin/checkinForm/index.vue"
 
 export function orderList() {
   const form = reactive({
-    comment: 0,
-    complain: 0,
-    gym_id: 0,
-    order_status: 0,
-    user_id: 0
+    comment: "",
+    complain: "",
+    gym_id: "",
+    order_status: "",
+    user_id: ""
   });
   const formRef = ref()
   const loading = ref(true)
@@ -125,6 +125,7 @@ export function orderList() {
       complain: toRaw(form).complain,
       comment: toRaw(form).comment
     }).then(response => {
+      console.log(response)
       if (response.code === 200) {
         dataList.value = response.data
       } else {
@@ -367,7 +368,7 @@ export function orderList() {
                     type: "error"
                   });
               }
-            }).catch(error => {
+            }).catch(() => {
               message(`核销失败`,
                 {
                   type: "error"

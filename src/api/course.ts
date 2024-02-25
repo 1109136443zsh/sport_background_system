@@ -73,10 +73,10 @@ export interface CourseBase {
 }
 
 // 获取课程列表
-export const getCourseList = (data: { page: number, course_type?: number }) => {
-  const {page, course_type} = data
+export const getCourseList = (data: { page: number, type?: number }) => {
+  const {page, type} = data
   return http.request<Response>("get",
-    baseUrlApi(`/admin/course/list?page=${page}&course_type=${course_type}`),
+    baseUrlApi(`/admin/course/list?page=${page}&course_type=${type}`),
     {},
     {
       headers: {
@@ -122,9 +122,10 @@ export const updateCourse = (data: object) => {
   );
 };
 // 获取课程详情
-export const getCourseDetail = (data: object) => {
+export const getCourseDetail = (data: {course_id}) => {
+  const {course_id}= data
   return http.request<Response>("get",
-    baseUrlApi("/admin/course/get"),
+    baseUrlApi(`/admin/course/get?course_id=${course_id}`),
     {data},
     {
       headers: {

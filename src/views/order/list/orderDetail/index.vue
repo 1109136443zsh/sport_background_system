@@ -127,6 +127,27 @@ function formatTime(time) {
           </el-tag>
         </template>
       </el-descriptions-item>
+      <el-descriptions
+        class="margin-top"
+        title="学员评价信息"
+        :column="3"
+        :border="true"
+      >
+        <el-descriptions-item label="学员是否平均评价">{{newFormInline.is_comment === true ? "已评价" : "未评价"}}</el-descriptions-item>
+        <el-descriptions-item label="评价图片">
+          <template #default>
+            <el-image
+              fit="cover"
+              preview-teleported
+              :src="newFormInline.comment_image"
+              :preview-src-list="[newFormInline.comment_image]"
+              class="w-[60px] h-[60px] rounded-full align-middle"
+            />
+          </template>
+        </el-descriptions-item>
+        <el-descriptions-item label="评价视频">{{newFormInline.comment_video}}</el-descriptions-item>
+        <el-descriptions-item label="评价内容">{{newFormInline.comment}}</el-descriptions-item>
+      </el-descriptions>
     </el-descriptions>
     <el-descriptions
       class="margin-top"

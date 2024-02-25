@@ -97,7 +97,7 @@ export interface Bill {
 }
 
 // 获取所有发票列表
-export const getBillList = (data: { page: number, user_id: number }) => {
+export const getBillList = (data: { page: number, user_id: string }) => {
   const {page, user_id} = data
   return http.request<Response>("get",
     baseUrlApi(`/admin/bill/list?page=${page}&user_id=${user_id}`),

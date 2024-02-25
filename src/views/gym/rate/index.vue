@@ -31,7 +31,7 @@ const {
           :icon="useRenderIcon(AddFill)"
           @click="openDialog('添加')"
         >
-          添加课程
+          添加场馆星级
         </el-button>
       </template>
       <template v-slot="{size, dynamicColumns}">

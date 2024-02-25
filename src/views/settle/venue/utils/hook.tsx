@@ -1,7 +1,7 @@
 import {onMounted, reactive, ref, toRaw} from "vue";
 import type {PaginationProps} from "@pureadmin/table";
 import {getVenueDetail, getVenueList} from "@/api/settle/venue";
-import {coachAccept, coachReject, getCoachList} from "@/api/settle/coach";
+import {coachAccept, coachReject} from "@/api/settle/coach";
 import dayjs from "dayjs";
 import {message} from "@/utils/message";
 import {addDialog} from "@/components/ReDialog/index";
@@ -12,7 +12,6 @@ export function useSettle() {
     phone: "",
     name: ""
   })
-  const formRef = ref()
   const pagination = reactive<PaginationProps>({
     total: 0,
     pageSize: 10,
@@ -48,7 +47,9 @@ export function useSettle() {
           type={row.apply_status === 0 ? "danger" : ""}
           effect="plain"
         >
-          {row.apply_status === 1 ? "通过" : "待审核"}
+          {row.apply_status === 0 && "未审核"}
+          {row.apply_status === 1 && "已通过"}
+          {row.apply_status === 2 && "已拒绝"}
         </el-tag>
       )
     },
@@ -110,7 +111,19 @@ export function useSettle() {
           title: "查看场馆入驻信息",
           props: {
             formInline: {
-              ids
+              ids,
+              apply_id: ids.apply_id,
+              apply_status: ids.apply_status,
+              apply_time: ids.apply_time,
+              info: ids.info,
+              name: ids.name,
+              openid: ids.openid,
+              phone: ids.phone,
+              avatar: ids.avatar,
+              gym_image: ids.gym_image,
+              skill: ids.skill,
+              job: ids.job,
+              location: ids.location
             }
           },
           width: "46%",

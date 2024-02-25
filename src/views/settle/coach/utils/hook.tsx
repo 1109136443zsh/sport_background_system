@@ -5,14 +5,12 @@ import {coachAccept, coachReject, getCoachDetail, getCoachList} from "@/api/sett
 import {message} from "@/utils/message";
 import detailTable from "@/views/settle/coach/detail/index.vue"
 import {addDialog} from "@/components/ReDialog/index";
-import {any} from "vue-types";
 
 export function useSettle() {
   const form = reactive({
-    phone: 0,
+    phone: "",
     name: ""
   })
-  const formRef = ref()
   const loading = ref(true)
   const pagination = reactive<PaginationProps>({
     total: 0,
@@ -63,7 +61,9 @@ export function useSettle() {
           type={row.apply_status === 0 ? "danger" : ""}
           effect="plain"
         >
-          {row.apply_status === 1 ? "通过" : "待审核"}
+          {row.apply_status === 0 && "未审核"}
+          {row.apply_status === 1 && "已通过"}
+          {row.apply_status === 2 && "已拒绝"}
         </el-tag>
       )
     },
@@ -116,7 +116,17 @@ export function useSettle() {
           title: "查看教练入驻信息",
           props: {
             formInline: {
-              ids
+              ids,
+              apply_id: ids.apply_id,
+              apply_status: ids.apply_status,
+              apply_time: ids.apply_time,
+              info: ids.info,
+              name: ids.name,
+              openid: ids.openid,
+              phone: ids.phone,
+              avatar: ids.avatar,
+              cover_image: ids.cover_image,
+              skill: ids.skill
             }
           },
           width: "46%",

@@ -133,7 +133,7 @@ export const getCardTypeList = (page: number) => {
 // 会员卡类型-新增
 export const addCardType = (data: object) => {
   return http.request<Response>("post",
-    baseUrlApi("/admin/card/typeList"),
+    baseUrlApi("/admin/card/typeAdd"),
     {data},
     {
       headers: {

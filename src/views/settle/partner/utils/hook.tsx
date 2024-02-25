@@ -47,7 +47,9 @@ export function partner() {
           type={row.apply_status === 0 ? "danger" : ""}
           effect="plain"
         >
-          {row.apply_status === 1 ? "通过" : "待审核"}
+          {row.apply_status === 0 && "未审核"}
+          {row.apply_status === 1 && "已通过"}
+          {row.apply_status === 2 && "已拒绝"}
         </el-tag>
       )
     },
@@ -66,7 +68,6 @@ export function partner() {
   ]
   const resetForm = formEl => {
     if (!formEl) return;
-    console.log(formEl)
     formEl.resetFields();
     onSearch()
   }
@@ -133,7 +134,7 @@ export function partner() {
             } else {
               partnerReject({
                 apply_id: curData.apply_id
-              }).then((res) => {
+              }).then(() => {
                 message(`操作成功`,
                   {type: "success"});
                 onSearch();
@@ -160,7 +161,14 @@ export function partner() {
           title: "查看合伙人入驻信息",
           props: {
             formInline: {
-              ids
+              ids,
+              apply_id: ids.apply_id,
+              apply_status: ids.apply_status,
+              apply_time: ids.apply_time,
+              info: ids.info,
+              name: ids.name,
+              openid: ids.openid,
+              phone: ids.phone,
             }
           },
           width: "46%",

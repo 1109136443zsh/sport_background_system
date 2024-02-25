@@ -97,7 +97,7 @@ export const updateStudentList = (data: object) => {
 };
 
 // 获取用户详情
-export const getStudentDetail = (user_id: object) => {
+export const getStudentDetail = (user_id: number) => {
   return http.request<Response>("get",
     baseUrlApi(`/admin/customer/info?user_id=${user_id}`),
     {},

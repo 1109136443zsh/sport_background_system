@@ -12,8 +12,8 @@ export function useCoach() {
   const form = reactive({
     name: "",
     page: "",
-    rate_id: 0,
-    region_id: 0
+    rate_id: "",
+    region_id: ""
   });
   const formRef = ref();
   const loading = ref(true)
@@ -155,63 +155,70 @@ export function useCoach() {
   }
 
   async function openDialog(row) {
-    addDialog({
-      title: "修改教练信息",
-      props: {
-        formInline: {
-          name: row?.name ?? "",
-          coach_id: row?.coach_id ?? "",
-          skill: "",
-          gender_limit: row?.gender_limit ?? "",
-          rate_id: row?.rate_id ?? "",
-          info: row?.info ?? "",
-          banner: "",
-          coachCase: "",
-          url: ""
-        }
-      },
-      width: "46%",
-      draggable: true,
-      fullscreenIcon: true,
-      closeOnClickModal: false,
-      contentRenderer: () => h(editForm, {ref: formRef}),
-      beforeSure: (done, {options, index}) => {
-        const FormRef = formRef.value.getRef();
-        const curData = options.props.formInline;
-        FormRef.validate(valid => {
-          if (valid) {
-            console.log(curData.url)
-            updateCoach({
-              coach_id: curData.coach_id,
-              name: curData.name,
-              rate_id: curData.rate_id,
-              skill: curData.skill,
-              info: curData.info,
-              banner: curData.url,
-              coachCase: curData.coachCase,
-              gender_limit: curData.gender_limit
-            }).then((res) => {
-              console.log(res)
-              if (res.code === 200) {
-                message(`成功更新教练信息`, {
-                  type: "success"
-                });
-                done();
-                onSearch();
-              } else {
-                message(`更新教练信息失败`, {
-                  type: "error"
-                });
+    let data = null
+    getCoachDetail(row.coach_id).then(response => {
+      console.log(response)
+      if (response.code === 200) {
+        data = response.data
+        addDialog({
+          title: "修改教练信息",
+          props: {
+            formInline: {
+              name: data.name ?? "",
+              coach_id: data.coach_id ?? "",
+              skill: data.skill,
+              gender_limit: data.gender_limit ?? "",
+              rate_id: data.rate_id ?? "",
+              info: data.info ?? "",
+              banner: data.banner ?? "",
+              coachCase: data.coachCase ?? "",
+              url: ""
+            }
+          },
+          width: "46%",
+          draggable: true,
+          fullscreenIcon: true,
+          closeOnClickModal: false,
+          contentRenderer: () => h(editForm, {ref: formRef}),
+          beforeSure: (done, {options}) => {
+            const FormRef = formRef.value.getRef();
+            const curData = options.props.formInline;
+            FormRef.validate(valid => {
+              if (valid) {
+                console.log(curData.url)
+                updateCoach({
+                  coach_id: curData.coach_id,
+                  name: curData.name,
+                  rate_id: curData.rate_id,
+                  skill: curData.skill,
+                  info: curData.info,
+                  banner: curData.url,
+                  coachCase: curData.coachCase,
+                  gender_limit: curData.gender_limit
+                }).then((res) => {
+                  console.log(res)
+                  if (res.code === 200) {
+                    message(`成功更新教练信息`, {
+                      type: "success"
+                    });
+                    done();
+                    onSearch();
+                  } else {
+                    message(`更新教练信息失败`, {
+                      type: "error"
+                    });
+                  }
+                }).catch(() => {
+                  message(`更新教练信息失败`, {
+                    type: "error"
+                  });
+                })
               }
-            }).catch(() => {
-              message(`更新教练信息失败`, {
-                type: "error"
-              });
             })
-          }
-        })
-      },
-    });
+          },
+        });
+      }
+    })
   }
 
   async function openGymEnableTable(row) {
@@ -246,18 +253,8 @@ export function useCoach() {
         type: "error"
       })
     })
-
   }
-  function openEditForm() {
-    addDialog({
-      title: "教练设置可上课时间",
-      props: {
-        formInline: {
 
-        }
-      }
-    })
-  }
   onMounted(async () => {
     onSearch();
   });

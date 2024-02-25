@@ -6,11 +6,10 @@ import editForm from "@/views/course/form/index.vue";
 import {FormItemProps} from "@/views/course/form/types";
 import {addDialog} from "@/components/ReDialog/index";
 import detailTable from "@/views/course/detail/index.vue"
-import {any} from "vue-types";
 
 export function courseList() {
   const form = reactive({
-    course_type: 1
+    type: 1
   })
 
   const formRef = ref();
@@ -75,7 +74,7 @@ export function courseList() {
           name: row?.name ?? "",
           price: row?.price ?? "",
           price_info: row?.price_info ?? "",
-          course_type: row?.course_type ?? "",
+          course_type: row?.type ?? "",
           subtitle: row?.subtitle ?? ""
         }
       },
@@ -120,6 +119,7 @@ export function courseList() {
                 type: curData.course_type,
                 course_id: curData.course_id
               }).then((res) => {
+                console.log(res)
                 console.log(curData.course_type)
                 message(`您成功${title}了名称为${curData.name}的这条数据`,
                   {
@@ -171,12 +171,12 @@ export function courseList() {
     loading.value = true;
     await getCourseList({
       page: 1,
-      course_type: toRaw(form).course_type
+      type: toRaw(form).type
     }).then(response => {
       dataList.value = response.data
       console.log(response)
       pagination.total = response.pages
-    }).catch((error) => {
+    }).catch(() => {
       message(`获取课程列表失败`,
         {type: "error"});
     });

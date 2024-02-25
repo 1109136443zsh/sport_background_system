@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {FormProps} from "@/views/admin/role/form/types";
-import {ref} from "vue";
+import { FormProps } from "@/views/admin/role/form/types";
+import { ref } from "vue";
 import ReCol from "@/components/ReCol";
-import {formRules} from "@/views/admin/role/utils/rule";
+import { formRules } from "@/views/admin/role/utils/rule";
 
 const props = withDefaults(defineProps<FormProps>(), {
   formInline: () => ({
@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<FormProps>(), {
     inline_id: "",
     role_name: ""
   })
-})
+});
 
 const ruleFormRef = ref();
 const newFormInline = ref(props.formInline);
@@ -21,30 +21,32 @@ function getRef() {
   return ruleFormRef.value;
 }
 
-defineExpose({getRef});
+defineExpose({ getRef });
 </script>
 
 <template>
-  <el-form
-    ref="ruleFormRef"
-    :rules="formRules"
-    :model="newFormInline"
-  >
+  <el-form ref="ruleFormRef" :rules="formRules" :model="newFormInline">
     <el-row :gutter="30">
       <re-col
         v-if="newFormInline.title === '新增'"
-        :value="12" :xs="24" :sm="24">
+        :value="12"
+        :xs="24"
+        :sm="24"
+      >
         <el-form-item label="角色名称" prop="role_name">
           <el-input
-            clearable
             v-model="newFormInline.role_name"
+            clearable
             placeholder="请输入角色名称"
           />
         </el-form-item>
       </re-col>
       <re-col
         v-if="newFormInline.title !== '新增'"
-        :value="12" :xs="24" :sm="24">
+        :value="12"
+        :xs="24"
+        :sm="24"
+      >
         <el-form-item label="用户id" prop="user_id">
           <el-input
             v-model="newFormInline.user_id"
@@ -55,7 +57,10 @@ defineExpose({getRef});
       </re-col>
       <re-col
         v-if="newFormInline.title !== '新增'"
-        :value="12" :xs="24" :sm="24">
+        :value="12"
+        :xs="24"
+        :sm="24"
+      >
         <el-form-item label="角色id" prop="role_id">
           <el-input
             v-model="newFormInline.role_id"
@@ -66,8 +71,15 @@ defineExpose({getRef});
       </re-col>
       <re-col
         v-if="newFormInline.title !== '新增'"
-        :value="12" :xs="24" :sm="24">
-        <el-form-item label="内部id" prop="inline_id">
+        :value="12"
+        :xs="24"
+        :sm="24"
+      >
+        <el-form-item
+          :rules="[{ required: true, message: '内部ID不能为空' }]"
+          label="内部id"
+          prop="inline_id"
+        >
           <el-input
             v-model="newFormInline.inline_id"
             clearable
@@ -79,6 +91,4 @@ defineExpose({getRef});
   </el-form>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

@@ -1,6 +1,5 @@
 import {http} from "@/utils/http";
 import {baseUrlApi} from "@/api/utils";
-import {UnwrapNestedRefs} from "vue";
 import {getToken} from "@/utils/auth";
 
 type Response = {
@@ -71,7 +70,7 @@ type ApplyCoachBase = {
   [property: string]: any;
 };
 
-export const getCoachList = (data: { page: number, phone: number }) => {
+export const getCoachList = (data: { page: number, phone: string }) => {
   const {page, phone} = data
   return http.request<Response>("get",
     baseUrlApi(`/admin/apply/coach/list?page=${page}&phone=${phone}`),

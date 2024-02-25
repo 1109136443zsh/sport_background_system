@@ -1,12 +1,10 @@
 import {h, onMounted, reactive, ref} from "vue";
-import {getCoachList} from "@/api/settle/coach";
-import {addBill, getBillList, getBillSelfList, uploadBill} from "@/api/bill";
+import {addBill, getBillSelfList, uploadBill} from "@/api/bill";
 import type {PaginationProps} from "@pureadmin/table";
 import {addDialog} from "@/components/ReDialog/index";
 import editForm from "@/views/bill/uploadForm/index.vue"
 import {message} from "@/utils/message";
 import addForm from "@/views/bill/addForm/index.vue";
-import {picUpload} from "@/api/picUpload";
 
 export function useBill() {
   const form = reactive({
@@ -24,7 +22,7 @@ export function useBill() {
   const columns: TableColumnList = [
     {
       label: "发票ID",
-      prop: "bill_id"
+      prop: "Bill_id"
     },
     {
       label: "金额",
@@ -112,6 +110,7 @@ export function useBill() {
               bank: curData.bank,
               bank_account: curData.bank_account
             }).then(res => {
+              console.log(res)
               message(`申请发票成功`, {
                 type: "success"
               });

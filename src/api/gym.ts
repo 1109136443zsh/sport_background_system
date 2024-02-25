@@ -95,9 +95,9 @@ export interface Gym {
 // 获取场馆列表
 export const getGymList = (data: {
   page: number,
-  rate_id: number,
+  rate_id: string,
   name: string,
-  region_id: number
+  region_id: string
 }) => {
   const {
     page,
@@ -192,7 +192,7 @@ export const rateUpdate = (data: object) => {
 export const getRateCourseList = (data: {page: number, gym_id: number}) => {
   const {page, gym_id} = data
   return http.request<Response>("get",
-    baseUrlApi("/admin/gym/courseList"),
+    baseUrlApi(`/admin/gym/courseList?page=${page}&gym_id=${gym_id}`),
     {data},
     {
       headers: {

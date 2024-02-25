@@ -5,9 +5,7 @@ import {FormItemProps} from "@/views/student/utils/types";
 import {addDialog} from "@/components/ReDialog/index";
 import detailForm from "@/views/student/detail/index.vue"
 import {getStudentDetail, getStudentList, updateStudentList} from "@/api/student";
-import {UserDetailProps} from "@/views/student/detail/types";
 import {message} from "@/utils/message";
-import {picUpload} from "@/api/picUpload";
 
 export function stuUser() {
   const form = reactive({
@@ -80,8 +78,7 @@ export function stuUser() {
       pagination.currentPage
     ).then(response => {
       dataList.value = response.data
-      console.log(dataList.value)
-    }).catch((error) => {
+    }).catch(() => {
       message(`获取用户列表失败，请重试`, {
         type: "error"
       });
@@ -101,12 +98,20 @@ export function stuUser() {
         title: "查看用户信息",
         props: {
           formInline: {
-            user_id: row?.user_id ?? "",
-            nickname: row.nickname ?? "",
-            avatar: row.avatar ?? "",
-            openid: row.openid ?? "",
-            phone: row.phone ?? "",
-            unionid: row.unionid ?? "",
+            user_id: ids.user_id ?? "",
+            nickname: ids.nickname ?? "",
+            avatar: ids.avatar ?? "",
+            openid: ids.openid ?? "",
+            phone: ids.phone ?? "",
+            unionid: ids.unionid ?? "",
+            age: ids.age,
+            bmi: ids.bmi,
+            fat: ids.bmi,
+            gender: ids.gender,
+            height: ids.height,
+            metabolism: ids.metabolism,
+            muscle: ids.muscle,
+            weight: ids.weight,
             ids
           }
         },
@@ -125,63 +130,69 @@ export function stuUser() {
   }
 
   function openModify(row?: FormItemProps) {
-    addDialog({
-      title: "修改用户信息",
-      props: {
-        formInline: {
-          user_id: row.user_id ?? "",
-          nickname: row?.nickname ?? "",
-          gender: row?.gender ?? "",
-          height: row?.height ?? "",
-          weight: row?.weight ?? "",
-          age: row?.age ?? "",
-          avatar: row?.avatar ?? "",
-          muscle: row?.muscle ?? "",
-          metabolism: row?.metabolism ?? "",
-          fat: row?.fat ?? "",
-          bmi: row?.bmi ?? "",
-          url: ""
-        }
-      },
-      width: "46%",
-      draggable: true,
-      fullscreenIcon: true,
-      closeOnClickModal: false,
-      contentRenderer: () => h(editForm, {ref: formRef}),
-      beforeSure: (done, {options}) => {
-        const FormRef = formRef.value.getRef()
-        const curData = options.props.formInline
-        FormRef.validate(valid => {
-          if (valid) {
-            updateStudentList({
-              user_id: curData.user_id,
-              nickname: curData.nickname,
-              gender: curData.gender,
-              height: curData.height,
-              weight: curData.weight,
-              muscle: curData.muscle,
-              fat: curData.fat,
-              age: curData.age,
-              metabolism: curData.metabolism,
-              avatar: curData.url,
-              bmi: curData.bmi
-            }).then((response) => {
-              console.log(response)
-              message(`更新用户资料成功`, {
-                type: "success"
-              });
-              done();
-              onSearch();
-            }).catch((error) => {
-              console.log(error)
-              message(`更新用户资料失败`, {
-                type: "error"
-              });
+    let data = null
+    getStudentDetail(row.user_id).then(response => {
+      if (response.code === 200) {
+        data = response.data
+        addDialog({
+          title: "修改用户信息",
+          props: {
+            formInline: {
+              user_id: data.user_id ?? "",
+              nickname: data.nickname ?? "",
+              gender: data.gender ?? "",
+              height: data.height ?? "",
+              weight: data.weight ?? "",
+              age: data.age ?? "",
+              avatar: data.avatar ?? "",
+              muscle: data.muscle ?? "",
+              metabolism: data.metabolism ?? "",
+              fat: data.fat ?? "",
+              bmi: data.bmi ?? "",
+              url: ""
+            }
+          },
+          width: "46%",
+          draggable: true,
+          fullscreenIcon: true,
+          closeOnClickModal: false,
+          contentRenderer: () => h(editForm, {ref: formRef}),
+          beforeSure: (done, {options}) => {
+            const FormRef = formRef.value.getRef()
+            const curData = options.props.formInline
+            FormRef.validate(valid => {
+              if (valid) {
+                updateStudentList({
+                  user_id: curData.user_id,
+                  nickname: curData.nickname,
+                  gender: curData.gender,
+                  height: curData.height,
+                  weight: curData.weight,
+                  muscle: curData.muscle,
+                  fat: curData.fat,
+                  age: curData.age,
+                  metabolism: curData.metabolism,
+                  avatar: curData.url,
+                  bmi: curData.bmi
+                }).then((response) => {
+                  console.log(response)
+                  message(`更新用户资料成功`, {
+                    type: "success"
+                  });
+                  done();
+                  onSearch();
+                }).catch((error) => {
+                  console.log(error)
+                  message(`更新用户资料失败`, {
+                    type: "error"
+                  });
+                })
+              }
             })
-          }
-        })
-      },
-    });
+          },
+        });
+      }
+    })
   }
 
   onMounted(async () => {
