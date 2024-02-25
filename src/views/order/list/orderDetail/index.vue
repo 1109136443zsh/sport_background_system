@@ -6,7 +6,6 @@ import dayjs from "dayjs";
 import {addDialog} from "@/components/ReDialog/index";
 import {updateComplain} from "@/api/order";
 import {message} from "@/utils/message";
-import {any} from "vue-types";
 
 const props = withDefaults(defineProps<FormProps>(), {
   formInline: () => ({
@@ -56,7 +55,7 @@ function openDialog(row) {
     fullscreenIcon: true,
     closeOnClickModal: false,
     contentRenderer: () => h(editForm, {ref: formRef}),
-    beforeSure: (done, {options, index}) => {
+    beforeSure: (done, {options}) => {
       const FormRef = formRef.value.getRef();
       const curData = options.props.formInline;
       FormRef.validate(valid => {

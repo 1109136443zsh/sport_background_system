@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { DetailProps } from "@/views/coach/list/detail/types";
 import { FormProps } from "@/views/gym/list/form/types";
 import { ref } from "vue";
 import ReCol from "@/components/ReCol";
