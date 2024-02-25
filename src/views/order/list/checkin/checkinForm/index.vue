@@ -93,7 +93,7 @@ defineExpose({ getRef });
       <el-input
         v-model="newFormInline.checkin_fast"
         clearable
-        placeholder="请输入10为快捷核销码"
+        placeholder="请输入快捷核销码"
       />
     </el-form-item>
   </el-form>
