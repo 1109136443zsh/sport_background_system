@@ -107,7 +107,7 @@ defineExpose({ getRef });
         drag
         multiple
         action="http://115.28.37.42:7788/admin/imageUpload"
-        class="!w-[180px]"
+        class="!w-[180px] m-4"
         :auto-upload="false"
         :http-request="importCommit"
       >
@@ -124,7 +124,7 @@ defineExpose({ getRef });
         type="primary"
         @click="onSubmit"
       >
-        提交头像
+        确认上传
       </el-button>
     </el-form-item>
     <el-form-item

@@ -87,7 +87,7 @@ export interface Card {
 // 会员卡-查询
 export const getCardList = (page: number) => {
   return http.request<Response>("get",
-    baseUrlApi(`/admin/card/typeList?page=${page}`),{},
+    baseUrlApi(`/admin/card/list?page=${page}`),{},
     {
       headers: {
         "token": getToken().accessToken

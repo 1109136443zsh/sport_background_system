@@ -30,7 +30,14 @@ const newFormInline = ref(props.formInline);
       <el-descriptions-item label="课程名称">{{ newFormInline.name }}</el-descriptions-item>
       <el-descriptions-item label="价格">{{ newFormInline.price }}</el-descriptions-item>
       <el-descriptions-item label="小标题">{{ newFormInline.subtitle }}</el-descriptions-item>
-      <el-descriptions-item label="课程类型">{{ newFormInline.type }}</el-descriptions-item>
+      <el-descriptions-item label="课程类型">
+        {{
+          newFormInline.type === 1 ? "私教课" :
+            newFormInline.type === 2 ? "特色课" :
+              newFormInline.type === 3 ? "训练营" :
+                newFormInline.type === 4 ? "团操" : ''
+        }}
+      </el-descriptions-item>
       <el-descriptions-item label="价格介绍">{{ newFormInline.price_info }}</el-descriptions-item>
     </el-descriptions>
     <h3>可上课门店</h3>

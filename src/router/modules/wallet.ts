@@ -22,7 +22,7 @@ export default {
       name: "selfOrderManage",
       component: () => import("@/views/wallet/selfOrder/index.vue"),
       meta: {
-        title: "自己订单",
+        title: "个人订单",
         showParent: true
       }
     },
@@ -40,7 +40,7 @@ export default {
       name: "selfPaymentManage",
       component: () => import("@/views/wallet/selfPayment/index.vue"),
       meta: {
-        title: "自己收支详情",
+        title: "个人收支详情",
         showParent: true
       }
     }

@@ -37,7 +37,6 @@ defineExpose({getRef})
         clearable/>
     </el-form-item>
     <el-form-item
-      :rules="[{required: true, message: '课程ID不能为空'}]"
       label="课程ID" prop="course_id">
       <el-input
         v-model="newFormInline.course_id"
@@ -53,7 +52,6 @@ defineExpose({getRef})
         clearable/>
     </el-form-item>
     <el-form-item
-      :rules="[{required: true, message: '场馆ID不能为空'}]"
       label="场馆ID" prop="gym_id">
       <el-input
         v-model="newFormInline.gym_id"
@@ -61,7 +59,6 @@ defineExpose({getRef})
         clearable/>
     </el-form-item>
     <el-form-item
-      :rules="[{required: true, message: '教练ID不能为空'}]"
       label="教练ID" prop="coach_id">
       <el-input
         v-model="newFormInline.coach_id"

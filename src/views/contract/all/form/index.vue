@@ -116,7 +116,7 @@ defineExpose({getRef});
         type="primary"
         @click="onSubmit"
       >
-        提交
+        确认上传
       </el-button>
     </el-form-item>
   </el-form>

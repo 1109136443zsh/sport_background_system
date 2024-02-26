@@ -28,7 +28,7 @@ const {
       @refresh="onSearch"
     >
       <template #buttons>
-        <el-text class="m-1">余额：{{balance}}</el-text>
+        <el-text class="m-1">余额：{{balance}}元</el-text>
         <el-button
           type="primary"
           style="margin-left: 18px"

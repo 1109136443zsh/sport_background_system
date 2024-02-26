@@ -63,7 +63,7 @@ export function useBanner() {
           title,
           index_banner_id: row?.index_banner_id ?? "",
           image: row?.image ?? "",
-          url: "",
+          url: row?.url ?? "",
           enable: row?.enable ?? "",
           sort: row?.sort ?? "",
           imageUrl: ""

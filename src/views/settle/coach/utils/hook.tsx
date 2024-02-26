@@ -44,7 +44,7 @@ export function useSettle() {
       width: 90
     },
     {
-      label: "申请时间",
+      label: "申请ID",
       prop: "apply_id"
     },
     {
@@ -74,8 +74,6 @@ export function useSettle() {
     {
       label: "申请时间",
       prop: "apply_time",
-      formatter: ({createTime}) =>
-        dayjs(createTime).format("YYYY-MM-DD HH:mm:ss")
     },
     {
       label: "操作",
