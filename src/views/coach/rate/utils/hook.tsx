@@ -12,7 +12,6 @@ import {message} from "@/utils/message";
 import editForm from "@/views/coach/rate/form/index.vue"
 import type {FormItemProps} from "@/views/coach/rate/form/types";
 import rateCourseTable from "@/views/coach/rate/rateCourse/index.vue"
-import type {RoleFormItemProps} from "@/views/system/user/utils/types";
 
 export function coachRate() {
   const formRef = ref()
@@ -35,11 +34,19 @@ export function coachRate() {
     },
     {
       label: "学员额外付费",
-      prop: "charge"
+      prop: "charge",
+      cellRenderer: ({row}) => {
+        const amountInYuan = (row.charge / 100).toFixed(2); // 将分转换为元，并保留两位小数
+        return <span>{amountInYuan} 元</span>; // 在模板中显示转换后的金额
+      },
     },
     {
       label: "教练额外分成费用",
-      prop: "bonus"
+      prop: "bonus",
+      cellRenderer: ({row}) => {
+        const amountInYuan = (row.bonus / 100).toFixed(2); // 将分转换为元，并保留两位小数
+        return <span>{amountInYuan} 元</span>; // 在模板中显示转换后的金额
+      },
     },
     {
       label: "操作",

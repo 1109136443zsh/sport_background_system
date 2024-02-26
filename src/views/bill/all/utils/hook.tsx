@@ -5,6 +5,7 @@ import {addDialog} from "@/components/ReDialog/index";
 import editForm from "@/views/bill/uploadForm/index.vue";
 import {message} from "@/utils/message";
 import addForm from "@/views/bill/addForm/index.vue"
+
 export function useBill() {
   const form = reactive({
     user_id: ""
@@ -25,7 +26,11 @@ export function useBill() {
     },
     {
       label: "金额",
-      prop: "amount"
+      prop: "amount",
+      cellRenderer: ({row}) => {
+        const amountInYuan = (row.amount / 100).toFixed(2); // 将分转换为元，并保留两位小数
+        return <span>{amountInYuan} 元</span>; // 在模板中显示转换后的金额
+      },
     },
     {
       label: "抬头类型",
@@ -67,9 +72,9 @@ export function useBill() {
       page: pagination.currentPage,
       user_id: toRaw(form).user_id
     }).then(response => {
-      if (response.code === 200){
+      if (response.code === 200) {
         dataList.value = response.data
-      }else {
+      } else {
         message("出错了，请重试", {
           type: "error"
         })
@@ -105,17 +110,17 @@ export function useBill() {
         FormRef.validate(valid => {
           if (valid) {
             const data = new FormData()
-            data.append("bill_id",curData.bill_id)
-            data.append("bill_file",curData.bill_file)
+            data.append("bill_id", curData.bill_id)
+            data.append("bill_file", curData.bill_file)
             uploadBill(data).then((response) => {
               console.log(response)
-              if (response.code === 200){
+              if (response.code === 200) {
                 message("成功上传发票", {
                   type: "success"
                 });
                 done();
                 onSearch();
-              }else {
+              } else {
                 message("出错了，请检查", {
                   type: "error"
                 });
@@ -131,6 +136,7 @@ export function useBill() {
       }
     })
   }
+
   function openAddDialog() {
     addDialog({
       title: "申请发票",
@@ -151,7 +157,7 @@ export function useBill() {
       fullscreenIcon: true,
       closeOnClickModal: false,
       contentRenderer: () => h(addForm, {ref: formRef}),
-      beforeSure: (done, { options}) => {
+      beforeSure: (done, {options}) => {
         const FormRef = formRef.value.getRef();
         const curData = options.props.formInline;
         FormRef.validate(valid => {
@@ -172,7 +178,7 @@ export function useBill() {
                 });
                 done();
                 onSearch();
-              }else {
+              } else {
                 message(`出错了`, {
                   type: "error"
                 });
@@ -187,6 +193,7 @@ export function useBill() {
       },
     })
   }
+
   const resetForm = formEl => {
     if (!formEl) return;
     formEl.resetFields();

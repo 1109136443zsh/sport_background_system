@@ -58,7 +58,11 @@ export function useCoach() {
     },
     {
       label: "课时费",
-      prop: "price"
+      prop: "price",
+      cellRenderer: ({row}) => {
+        const amountInYuan = (row.price / 100).toFixed(2); // 将分转换为元，并保留两位小数
+        return <span>{amountInYuan} 元</span>; // 在模板中显示转换后的金额
+      }
     },
     {
       label: "所属区域",

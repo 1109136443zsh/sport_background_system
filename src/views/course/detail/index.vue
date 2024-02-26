@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {FormProps} from "@/views/course/detail/types";
 import {ref} from "vue";
+
 const props = withDefaults(defineProps<FormProps>(), {
   formInline: () => ({
     title: "新增",
@@ -12,7 +13,7 @@ const props = withDefaults(defineProps<FormProps>(), {
     price_info: "",
     subtitle: "",
     name: "",
-    course_id:"",
+    course_id: "",
   })
 });
 const newFormInline = ref(props.formInline);
@@ -28,7 +29,11 @@ const newFormInline = ref(props.formInline);
     >
       <el-descriptions-item label="课程ID">{{ newFormInline.course_id }}</el-descriptions-item>
       <el-descriptions-item label="课程名称">{{ newFormInline.name }}</el-descriptions-item>
-      <el-descriptions-item label="价格">{{ newFormInline.price }}</el-descriptions-item>
+      <el-descriptions-item label="价格">
+        <template #default>
+          <span>{{ (newFormInline.price / 100).toFixed(2) }}</span>
+        </template>
+      </el-descriptions-item>
       <el-descriptions-item label="小标题">{{ newFormInline.subtitle }}</el-descriptions-item>
       <el-descriptions-item label="课程类型">
         {{

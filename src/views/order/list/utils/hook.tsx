@@ -10,7 +10,6 @@ import {
   getUserDetail
 } from "@/api/order";
 import detailTable from "@/views/order/list/orderDetail/index.vue"
-import dayjs from "dayjs";
 import {addDialog} from "@/components/ReDialog/index";
 import {message} from "@/utils/message";
 import cancelForm from "@/views/order/list/cancelOrder/index.vue"
@@ -71,18 +70,23 @@ export function orderList() {
     },
     {
       label: "最终支付价格",
-      prop: "price"
+      prop: "price",
+      cellRenderer: ({row}) => {
+        const amountInYuan = (row.price / 100).toFixed(2); // 将分转换为元，并保留两位小数
+        return <span>{amountInYuan} 元</span>; // 在模板中显示转换后的金额
+      },
     },
     {
       label: "支付状态",
       prop: "status_pay",
       cellRenderer: ({row, props}) => (
         <el-tag size={props.size} effect="plain">
-          {row.status_pay === 0 && "未支付"}
-          {row.status_pay === 1 && "支付中"}
-          {row.status_pay === 2 && "支付成功"}
-          {row.status_pay === 3 && "退款中"}
-          {row.status_pay === 4 && "已退款"}
+          {row.status_pay === 0 && "待支付"}
+          {row.status_pay === 1 && "待核销"}
+          {row.status_pay === 2 && "待上课"}
+          {row.status_pay === 3 && "已完成"}
+          {row.status_pay === 4 && "已取消"}
+          {row.status_pay === 5 && "已核销"}
         </el-tag>
       )
     },
@@ -91,10 +95,11 @@ export function orderList() {
       prop: "status_order",
       cellRenderer: ({row, props}) => (
         <el-tag size={props.size} effect="plain">
-          {row.status_order === 0 && "未完成"}
-          {row.status_order === 2 && "待核销"}
-          {row.status_order === 3 && "已完成"}
-          {row.status_order === 4 && "已取消"}
+          {row.status_order === 0 && "未支付"}
+          {row.status_order === 1 && "支付中"}
+          {row.status_order === 2 && "支付成功"}
+          {row.status_order === 3 && "退款中"}
+          {row.status_order === 4 && "已退款"}
         </el-tag>
       )
     },
@@ -105,8 +110,12 @@ export function orderList() {
     {
       label: "预定日期时间戳",
       prop: "schedule_date",
-      formatter: ({createTime}) =>
-        dayjs(createTime).format("YYYY-MM-DD HH:mm:ss")
+      cellRenderer: ({ row }) => {
+        const segmentId = row.segment_id;
+        const time = getFormattedTime(segmentId); // 调用 getFormattedTime 函数，传入 segment_id 值获取时间数据
+
+        return <span>{time}</span>; // 在模板中显示时间数据
+      },
     },
     {
       label: "操作",
@@ -115,6 +124,20 @@ export function orderList() {
       width: 180
     }
   ];
+  const getFormattedTime=(number) =>{
+    if (number < 1 || number > 48) {
+      return "Invalid input";
+    }
+
+    var hours = Math.floor((number - 1) / 2);
+    var minutes = (number % 2 === 0) ? "30" : "00";
+
+    if (hours < 10) {
+      hours = "0" + hours; // 在一位数的小时前添加一个零
+    }
+
+    return hours + ":" + minutes;
+  }
 
   async function onSearch() {
     loading.value = true;

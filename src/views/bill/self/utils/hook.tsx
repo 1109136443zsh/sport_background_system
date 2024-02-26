@@ -26,7 +26,11 @@ export function useBill() {
     },
     {
       label: "金额",
-      prop: "amount"
+      prop: "amount",
+      cellRenderer: ({row}) => {
+        const amountInYuan = (row.amount / 100).toFixed(2); // 将分转换为元，并保留两位小数
+        return <span>{amountInYuan} 元</span>; // 在模板中显示转换后的金额
+      },
     },
     {
       label: "抬头类型",

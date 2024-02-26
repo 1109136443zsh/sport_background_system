@@ -40,7 +40,20 @@ const props = withDefaults(defineProps<FormProps>(), {
   })
 });
 const newFormInline = ref(props.formInline);
+const getFormattedTime = (number) => {
+  if (number < 1 || number > 48) {
+    return "Invalid input";
+  }
 
+  var hours = Math.floor((number - 1) / 2);
+  var minutes = (number % 2 === 0) ? "30" : "00";
+
+  if (hours < 10) {
+    hours = "0" + hours; // 在一位数的小时前添加一个零
+  }
+
+  return hours + ":" + minutes;
+}
 
 function openDialog(row) {
   addDialog({
@@ -113,7 +126,7 @@ function formatTime(time) {
         </template>
       </el-descriptions-item>
       <el-descriptions-item label="预定时间节点ID">{{ newFormInline.segment_id }}</el-descriptions-item>
-      <el-descriptions-item label="预定日期时间戳">{{ formatTime(newFormInline.schedule_date) }}</el-descriptions-item>
+      <el-descriptions-item label="预定日期时间戳">{{ getFormattedTime(newFormInline.segment_id) }}</el-descriptions-item>
       <el-descriptions-item label="订单状态">
         <template #default>
           <el-tag effect="plain">
@@ -133,7 +146,8 @@ function formatTime(time) {
         :column="3"
         :border="true"
       >
-        <el-descriptions-item label="学员是否平均评价">{{newFormInline.is_comment === true ? "已评价" : "未评价"}}</el-descriptions-item>
+        <el-descriptions-item label="学员是否平均评价">{{ newFormInline.is_comment === true ? "已评价" : "未评价" }}
+        </el-descriptions-item>
         <el-descriptions-item label="评价图片">
           <template #default>
             <el-image
@@ -145,8 +159,8 @@ function formatTime(time) {
             />
           </template>
         </el-descriptions-item>
-        <el-descriptions-item label="评价视频">{{newFormInline.comment_video}}</el-descriptions-item>
-        <el-descriptions-item label="评价内容">{{newFormInline.comment}}</el-descriptions-item>
+        <el-descriptions-item label="评价视频">{{ newFormInline.comment_video }}</el-descriptions-item>
+        <el-descriptions-item label="评价内容">{{ newFormInline.comment }}</el-descriptions-item>
       </el-descriptions>
     </el-descriptions>
     <el-descriptions

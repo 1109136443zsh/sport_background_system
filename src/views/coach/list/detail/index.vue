@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {DetailProps} from "@/views/coach/list/detail/types";
 import {ref} from "vue";
-import PureTableBar from "@/components/RePureTableBar/src/bar";
 import {urlApi} from "@/api/utils";
 
 const props = withDefaults(defineProps<DetailProps>(), {
@@ -20,6 +19,7 @@ const props = withDefaults(defineProps<DetailProps>(), {
     score: 0,
     segment: [],
     skill: [],
+    case: [],
     "01HN9PTMVNETH24VW5KBD91GYY": null,
   })
 })
@@ -49,7 +49,11 @@ const newFormInline = ref(props.formInline);
           />
         </template>
       </el-descriptions-item>
-      <el-descriptions-item label="课时费">{{ newFormInline.price }}</el-descriptions-item>
+      <el-descriptions-item label="课时费">
+        <template #default>
+          <span>{{(newFormInline.price / 100).toFixed(2)}}</span>
+        </template>
+      </el-descriptions-item>
       <el-descriptions-item label="教练星级">{{ newFormInline.rate }}</el-descriptions-item>
       <el-descriptions-item label="教练所属区域ID">{{ newFormInline.region_id }}</el-descriptions-item>
       <el-descriptions-item label="教练介绍">{{ newFormInline.info }}</el-descriptions-item>

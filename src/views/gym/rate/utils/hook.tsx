@@ -1,7 +1,6 @@
 import {h, onMounted, reactive, ref} from "vue";
 import {PaginationProps} from "@pureadmin/table/dist/types";
-import {getCoachList} from "@/api/coach/coach";
-import {getRateCourseList, getRateList, rateAdd, rateUpdate} from "@/api/gym";
+import {getRateList, rateAdd, rateUpdate} from "@/api/gym";
 import type {FormItemProps} from "@/views/gym/rate/form/types"
 import {addDialog} from "@/components/ReDialog/index";
 import editForm from "@/views/gym/rate/form/index.vue"
@@ -29,11 +28,19 @@ export function gymRate() {
     },
     {
       label: "场馆额外付费",
-      prop: "charge"
+      prop: "charge",
+      cellRenderer: ({row}) => {
+        const amountInYuan = (row.charge / 100).toFixed(2); // 将分转换为元，并保留两位小数
+        return <span>{amountInYuan} 元</span>; // 在模板中显示转换后的金额
+      },
     },
     {
       label: "场馆额外分成费用",
-      prop: "bonus"
+      prop: "bonus",
+      cellRenderer: ({row}) => {
+        const amountInYuan = (row.bonus / 100).toFixed(2); // 将分转换为元，并保留两位小数
+        return <span>{amountInYuan} 元</span>; // 在模板中显示转换后的金额
+      },
     },
     {
       label: "操作",

@@ -1,6 +1,5 @@
 import {onMounted, reactive, ref, toRaw} from "vue";
-import dayjs from "dayjs";
-import {getOrderList, getPaymentList} from "@/api/wallet";
+import {getPaymentList} from "@/api/wallet";
 import type {PaginationProps} from "@pureadmin/table";
 import {message} from "@/utils/message";
 
@@ -19,7 +18,11 @@ export function useWallet() {
   const columns: TableColumnList = [
     {
       label: "收支金额",
-      prop: "variation"
+      prop: "variation",
+      cellRenderer: ({row}) => {
+        const amountInYuan = (row.variation / 100).toFixed(2); // 将分转换为元，并保留两位小数
+        return <span>{amountInYuan} 元</span>; // 在模板中显示转换后的金额
+      },
     },
     {
       label: "原因",
@@ -27,9 +30,7 @@ export function useWallet() {
     },
     {
       label: "时间",
-      prop: "change_time",
-      formatter: ({createTime}) =>
-        dayjs(createTime).format("YYYY-MM-DD HH:mm:ss")
+      prop: "change_time"
     }
   ]
 
