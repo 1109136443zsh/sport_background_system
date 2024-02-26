@@ -133,7 +133,7 @@ login:
   remember: 天内免登录
   rememberInfo: 勾选并登录后，规定天数内无需输入用户名和密码会自动登入系统
   sure: 确认密码
-  forget: 忘记密码?
+  forget: 0
   login: 登录
   thirdLogin: 第三方登录
   phoneLogin: 手机登录

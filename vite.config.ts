@@ -26,7 +26,9 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
       // 本地跨域代理 https://cn.vitejs.dev/config/server-options.html#server-proxy
       proxy: {
         "/api": {
-          target: "http://115.28.37.42:7788",
+          // target: "http://115.28.37.42:7788",
+          target:"https://sport-online.lionugo.com:7788",
+          // target: "http://127.0.0.1:7788",
           changeOrigin: true,
           rewrite: path => path.replace(/^\/api/, "")
         }

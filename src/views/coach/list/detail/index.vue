@@ -53,7 +53,7 @@ const newFormInline = ref(props.formInline);
       <el-descriptions-item label="教练星级">{{ newFormInline.rate }}</el-descriptions-item>
       <el-descriptions-item label="教练所属区域ID">{{ newFormInline.region_id }}</el-descriptions-item>
       <el-descriptions-item label="教练介绍">{{ newFormInline.info }}</el-descriptions-item>
-      <el-descriptions-item label="限定接单用户性别">{{ newFormInline.gender_limit }}</el-descriptions-item>
+<!--      <el-descriptions-item label="限定接单用户性别">{{ newFormInline.gender_limit }}</el-descriptions-item>-->
       <el-descriptions-item label="案例">{{ newFormInline.case }}</el-descriptions-item>
       <el-descriptions-item label="轮播图">{{ newFormInline.banner }}</el-descriptions-item>
     </el-descriptions>
