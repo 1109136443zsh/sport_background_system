@@ -8,21 +8,21 @@ export default {
     rank: 13
   },
   children: [
-    {
-      path: "/bill/self/index",
-      name: "selfBillManage",
-      component: () => import("@/views/bill/self/index.vue"),
-      meta: {
-        title: "个人发票"
-      }
-    },
-    {
-      path: "/bill/all/index",
-      name: "allBillManage",
-      component: () => import("@/views/bill/all/index.vue"),
-      meta: {
-        title: "发票列表"
-      }
-    }
+    // {
+    //   path: "/bill/self/index",
+    //   name: "selfBillManage",
+    //   component: () => import("@/views/bill/self/index.vue"),
+    //   meta: {
+    //     title: "个人发票"
+    //   }
+    // },
+    // {
+    //   path: "/bill/all/index",
+    //   name: "allBillManage",
+    //   component: () => import("@/views/bill/all/index.vue"),
+    //   meta: {
+    //     title: "发票列表"
+    //   }
+    // }
   ]
 }

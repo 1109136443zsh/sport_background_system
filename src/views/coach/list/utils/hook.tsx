@@ -68,10 +68,10 @@ export function useCoach() {
       label: "星级",
       prop: "rate"
     },
-    {
-      label: "限定接单用户性别",
-      prop: "gender_limit",
-    },
+    // {
+    //   label: "限定接单用户性别",
+    //   prop: "gender_limit",
+    // },
     {
       label: "操作",
       fixed: "right",

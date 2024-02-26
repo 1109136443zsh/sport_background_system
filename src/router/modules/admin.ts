@@ -18,15 +18,15 @@ export default {
         showParent: true
       }
     },
-    {
-      path: "/admin/permission/index",
-      name: "permisssionManage",
-      component: () => import("@/views/admin/power/index.vue"),
-      meta: {
-        title: "权限管理",
-        showParent: true
-      }
-    },
+    // {
+    //   path: "/admin/permission/index",
+    //   name: "permisssionManage",
+    //   component: () => import("@/views/admin/power/index.vue"),
+    //   meta: {
+    //     title: "权限管理",
+    //     showParent: true
+    //   }
+    // },
     {
       path: "/admin/user/index",
       name: "userManage",
