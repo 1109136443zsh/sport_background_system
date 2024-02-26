@@ -6,6 +6,7 @@ import editForm from "@/views/configuration/banner/form/index.vue"
 import {addBanner, deleteBanner, getBannerList, updateBanner} from "@/api/config";
 import {FormItemProps} from "@/views/configuration/banner/form/types";
 import {addDialog} from "@/components/ReDialog/index";
+import {urlApi} from "@/api/utils";
 
 export function useBanner() {
   const loading = ref(true)
@@ -19,9 +20,9 @@ export function useBanner() {
         <el-image
           fit="cover"
           preview-teleported={true}
-          src={row.avatar}
-          preview-src-list={Array.of(row.avatar)}
-          class="w-[24px] h-[24px] rounded-full align-middle"
+          src={urlApi + row.image}
+          preview-src-list={Array.of(urlApi + row.image)}
+          class="w-[48px] h-[48px] align-middle"
         />
       )
     },

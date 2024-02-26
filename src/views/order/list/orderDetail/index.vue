@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import {addDialog} from "@/components/ReDialog/index";
 import {updateComplain} from "@/api/order";
 import {message} from "@/utils/message";
+import {urlApi} from "@/api/utils";
 
 const props = withDefaults(defineProps<FormProps>(), {
   formInline: () => ({
@@ -138,8 +139,8 @@ function formatTime(time) {
             <el-image
               fit="cover"
               preview-teleported
-              :src="newFormInline.comment_image"
-              :preview-src-list="[newFormInline.comment_image]"
+              :src="urlApi + newFormInline.comment_image"
+              :preview-src-list="[urlApi + newFormInline.comment_image]"
               class="w-[60px] h-[60px] rounded-full align-middle"
             />
           </template>
@@ -161,8 +162,8 @@ function formatTime(time) {
           <el-image
             fit="cover"
             preview-teleported
-            :src="newFormInline.coach_image"
-            :preview-src-list="[newFormInline.coach_image]"
+            :src="urlApi + newFormInline.coach_image"
+            :preview-src-list="[urlApi + newFormInline.coach_image]"
             class="w-[60px] h-[60px] rounded-full align-middle"
           />
         </template>

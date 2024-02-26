@@ -18,6 +18,7 @@ import userDetailTable from "@/views/order/list/userDetail/index.vue"
 import checkinDetail from "@/views/order/list/checkin/checkinDetail/index.vue"
 import complainForm from "@/views/order/list/complainOrder/index.vue";
 import checkinForm from "@/views/order/list/checkin/checkinForm/index.vue"
+import {urlApi} from "@/api/utils";
 
 export function orderList() {
   const form = reactive({
@@ -57,8 +58,8 @@ export function orderList() {
         <el-image
           fit="cover"
           preview-teleported={true}
-          src={row.coach_image}
-          preview-src-list={Array.of(row.coach_image)}
+          src={urlApi + row.coach_image}
+          preview-src-list={Array.of(urlApi + row.coach_image)}
           class="w-[48px] h-[48px] rounded-full align-middle"
         />
       ),

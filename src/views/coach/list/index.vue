@@ -72,15 +72,6 @@ const {
       :columns="columns"
       @refresh="onSearch"
     >
-      <template #buttons>
-        <el-button
-          type="primary"
-          :icon="useRenderIcon(AddFill)"
-          @click=""
-        >
-          设置可上课时间
-        </el-button>
-      </template>
       <template v-slot="{size, dynamicColumns}">
         <pure-table
           ref="tableRef"

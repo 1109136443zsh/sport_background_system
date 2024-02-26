@@ -6,6 +6,7 @@ import {addDialog} from "@/components/ReDialog/index";
 import detailForm from "@/views/student/detail/index.vue"
 import {getStudentDetail, getStudentList, updateStudentList} from "@/api/student";
 import {message} from "@/utils/message";
+import {urlApi} from "@/api/utils";
 
 export function stuUser() {
   const form = reactive({
@@ -53,9 +54,9 @@ export function stuUser() {
         <el-image
           fit="cover"
           preview-teleported={true}
-          src={row.avatar}
-          preview-src-list={Array.of(row.avatar)}
-          class="w-[24px] h-[24px] rounded-full align-middle"
+          src={urlApi + row.avatar}
+          preview-src-list={Array.of(urlApi + row.avatar)}
+          class="w-[30px] h-[30px] rounded-full align-middle"
         />
       ),
     },
@@ -77,6 +78,7 @@ export function stuUser() {
     await getStudentList(
       pagination.currentPage
     ).then(response => {
+      console.log(response)
       dataList.value = response.data
     }).catch(() => {
       message(`获取用户列表失败，请重试`, {

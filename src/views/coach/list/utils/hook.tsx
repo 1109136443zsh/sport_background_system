@@ -6,6 +6,7 @@ import {addDialog} from "@/components/ReDialog/index";
 import detailTable from "@/views/coach/list/detail/index.vue";
 import editForm from "@/views/coach/list/form/index.vue"
 import {message} from "@/utils/message";
+import {urlApi} from "@/api/utils";
 
 
 export function useCoach() {
@@ -40,8 +41,8 @@ export function useCoach() {
         <el-image
           fit="cover"
           preview-teleported={true}
-          src={row.avatar}
-          preview-src-list={Array.of(row.avatar)}
+          src={urlApi + row.avatar}
+          preview-src-list={Array.of(urlApi + row.avatar)}
           class="w-[24px] h-[24px] rounded-full align-middle"
         />
       ),

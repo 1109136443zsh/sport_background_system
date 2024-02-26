@@ -2,6 +2,7 @@
 import {DetailProps} from "@/views/coach/list/detail/types";
 import {ref} from "vue";
 import PureTableBar from "@/components/RePureTableBar/src/bar";
+import {urlApi} from "@/api/utils";
 
 const props = withDefaults(defineProps<DetailProps>(), {
   formInline: () => ({
@@ -42,8 +43,8 @@ const newFormInline = ref(props.formInline);
           <el-image
             fit="cover"
             preview-teleported
-            :src="newFormInline.cover_image"
-            :preview-src-list="[newFormInline.cover_image]"
+            :src="urlApi + newFormInline.cover_image"
+            :preview-src-list="[urlApi + newFormInline.cover_image]"
             class="w-[60px] h-[60px] rounded-full align-middle"
           />
         </template>

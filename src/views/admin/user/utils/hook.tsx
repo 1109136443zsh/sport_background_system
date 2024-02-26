@@ -240,7 +240,6 @@ export function useUser() {
       pagination.currentPage
     ).then(response => {
       dataList.value = response.data
-      pagination.total = response.pages
     }).catch((error) => {
       console.log(error)
       message(`获取用户列表失败，请刷新`,
