@@ -6,15 +6,15 @@ interface FormItemProps {
   /**
    * 是否需要绑定教练才可以购买 1=True 0=False
    */
-  is_bind_coach?: number;
+  bind_coach?: number;
   /**
    * 是否需要绑定课程才可以购买
    */
-  is_bind_course?: number;
+  bind_course?: number;
   /**
    * 是否需要绑定场馆才可以购买
    */
-  is_bind_gym?: number;
+  bind_gym?: number;
   /**
    * 卡名称 月卡/周卡/次卡之类的
    */

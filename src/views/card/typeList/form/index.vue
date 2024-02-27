@@ -6,9 +6,9 @@ const props = withDefaults(defineProps<FormProps>(), {
     name: "",
     remain: 0,
     period: 0,
-    is_bind_coach: 0,
-    is_bind_course: 0,
-    is_bind_gym: 0,
+    bind_coach: 0,
+    bind_course: 0,
+    bind_gym: 0,
     daily_limit: 0,
     price: 0
   })
@@ -67,7 +67,7 @@ defineExpose({getRef})
     </el-form-item>
     <el-form-item label="是否需绑定教练才能购买">
       <el-select
-        v-model="newFormInline.is_bind_coach"
+        v-model="newFormInline.bind_coach"
         placeholder="请选择"
         class="w-full"
         clearable
@@ -82,7 +82,7 @@ defineExpose({getRef})
     </el-form-item>
     <el-form-item label="是否需绑定课程才能购买">
       <el-select
-        v-model="newFormInline.is_bind_course"
+        v-model="newFormInline.bind_course"
         placeholder="请选择"
         class="w-full"
         clearable
@@ -97,7 +97,7 @@ defineExpose({getRef})
     </el-form-item>
     <el-form-item label="是否需绑定场馆才能购买">
       <el-select
-        v-model="newFormInline.is_bind_gym"
+        v-model="newFormInline.bind_gym"
         placeholder="请选择"
         class="w-full"
         clearable

@@ -34,43 +34,43 @@ export function cardList() {
     },
     {
       label: "是否需绑定教练",
-      prop: "is_bind_coach",
+      prop: "bind_coach",
       minWidth: 90,
       cellRenderer: ({ row, props }) => (
         <el-tag
           size={props.size}
-          type={row.is_bind_coach === false ? "danger" : ""}
+          type={row.bind_coach === false ? "danger" : ""}
           effect="plain"
         >
-          {row.is_bind_coach === true ? "是" : "否"}
+          {row.bind_coach === true ? "是" : "否"}
         </el-tag>
       )
     },
     {
       label: "是否需绑定课程",
-      prop: "is_bind_course",
+      prop: "bind_course",
       minWidth: 90,
       cellRenderer: ({ row, props }) => (
         <el-tag
           size={props.size}
-          type={row.is_bind_course === false ? "danger" : ""}
+          type={row.bind_course === false ? "danger" : ""}
           effect="plain"
         >
-          {row.is_bind_course === true ? "是" : "否"}
+          {row.bind_course === true ? "是" : "否"}
         </el-tag>
       )
     },
     {
       label: "是否需绑定场馆",
-      prop: "is_bind_gym",
+      prop: "bind_gym",
       minWidth: 90,
       cellRenderer: ({ row, props }) => (
         <el-tag
           size={props.size}
-          type={row.is_bind_gym === false ? "danger" : ""}
+          type={row.bind_gym === false ? "danger" : ""}
           effect="plain"
         >
-          {row.is_bind_gym === true ? "是" : "否"}
+          {row.bind_gym === true ? "是" : "否"}
         </el-tag>
       )
     },
@@ -98,9 +98,9 @@ export function cardList() {
           name: "",
           remain: "",
           period: "",
-          is_bind_coach: "",
-          is_bind_course: "",
-          is_bind_gym: "",
+          bind_coach: "",
+          bind_course: "",
+          bind_gym: "",
           daily_limit: "",
           price: ""
         }
@@ -119,9 +119,9 @@ export function cardList() {
               name: curData.name,
               remain: curData.remain,
               period: curData.period,
-              is_bind_coach: curData.is_bind_coach,
-              is_bind_course: curData.is_bind_course,
-              is_bind_gym: curData.is_bind_gym,
+              is_bind_coach: curData.bind_coach,
+              is_bind_course: curData.bind_course,
+              is_bind_gym: curData.bind_gym,
               daily_limit: curData.daily_limit,
               price: curData.price
             }).then(res => {

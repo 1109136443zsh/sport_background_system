@@ -43,9 +43,7 @@ export function card() {
     },
     {
       label: "激活时间",
-      prop: "activate_time",
-      formatter: ({ createTime }) =>
-        dayjs(createTime).format("YYYY-MM-DD HH:mm:ss")
+      prop: "activate_time"
     },
     {
       label: "过期时间",

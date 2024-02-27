@@ -62,7 +62,6 @@ export function useContract() {
       contract_id: row.contract_id
     }).then(response => {
       ids = response.data
-      console.log(ids)
       addDialog({
         title: "查看合同详情",
         props: {
