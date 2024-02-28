@@ -116,11 +116,13 @@ function formatTime(time) {
         <template #default>
           <el-tag effect="plain">
             {{
-              newFormInline.status_pay === 0 ? '未支付' :
-                newFormInline.status_pay === 1 ? '支付中' :
-                  newFormInline.status_pay === 2 ? '支付成功' :
-                    newFormInline.status_pay === 3 ? '退款中' :
-                      newFormInline.status_pay === 4 ? '已退款' : ''
+              newFormInline.status_pay === 0 ? '待支付' :
+                newFormInline.status_pay === 1 ? '待核销' :
+                  newFormInline.status_pay === 2 ? '待上课' :
+                    newFormInline.status_pay === 3 ? '已完成' :
+                      newFormInline.status_pay === 4 ? '已取消' :
+                        newFormInline.status_pay === 5 ? '已核销' :
+                          newFormInline.status_pay === 6 ? '上课中' : ''
             }}
           </el-tag>
         </template>

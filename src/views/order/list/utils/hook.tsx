@@ -87,6 +87,7 @@ export function orderList() {
           {row.status_pay === 3 && "已完成"}
           {row.status_pay === 4 && "已取消"}
           {row.status_pay === 5 && "已核销"}
+          {row.status_pay === 6 && "上课中"}
         </el-tag>
       )
     },
