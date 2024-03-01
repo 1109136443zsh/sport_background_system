@@ -2,10 +2,8 @@
 
 import {FormProps} from "@/views/gym/list/detail/types";
 import {ref} from "vue";
-import PureTableBar from "@/components/RePureTableBar/src/bar";
 import dayjs from "dayjs";
 import {urlApi} from "@/api/utils";
-import * as url from "url";
 
 const props = withDefaults(defineProps<FormProps>(), {
   formInline: () => ({
@@ -65,7 +63,17 @@ function formatTime(time) {
       <el-descriptions-item label="标签">{{ newFormInline.tags }}</el-descriptions-item>
       <el-descriptions-item label="营业时间">{{ formatTime(newFormInline.begin_time) }}</el-descriptions-item>
       <el-descriptions-item label="结束营业时间">{{ formatTime(newFormInline.end_time) }}</el-descriptions-item>
-      <el-descriptions-item label="轮播图">{{ newFormInline.banner }}</el-descriptions-item>
+      <el-descriptions-item label="轮播图">
+        <template #default>
+          <el-image
+            fit="cover"
+            preview-teleported
+            :src="urlApi + newFormInline.banner"
+            :preview-src-list="[urlApi + newFormInline.banner]"
+            class="w-[60px] h-[60px] align-middle"
+          />
+        </template>
+      </el-descriptions-item>
     </el-descriptions>
   </div>
 </template>

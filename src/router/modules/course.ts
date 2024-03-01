@@ -13,7 +13,8 @@ export default {
       name: "courseManage",
       component: () => import("@/views/course/index.vue"),
       meta: {
-        title: "课程列表"
+        title: "课程列表",
+        roles: ["管理员"]
       }
     }
   ]

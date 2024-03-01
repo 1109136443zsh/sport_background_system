@@ -15,7 +15,8 @@ export default {
       component: () => import("@/views/admin/role/index.vue"),
       meta: {
         title: "角色管理",
-        showParent: true
+        showParent: true,
+        roles: ["管理员"]
       }
     },
     // {
@@ -33,7 +34,8 @@ export default {
       component: () => import("@/views/admin/user/index.vue"),
       meta: {
         title: "用户管理",
-        showParent: true
+        showParent: true,
+        roles: ["管理员"]
       }
     },
   ]

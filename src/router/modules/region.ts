@@ -12,7 +12,8 @@ export default {
       name: "regionManage",
       component: () => import("@/views/region/index.vue"),
       meta: {
-        title: "区域管理"
+        title: "区域管理",
+        roles: ["管理员"]
       }
     }
   ]

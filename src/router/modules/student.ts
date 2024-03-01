@@ -14,7 +14,8 @@ export default {
       component: () => import("@/views/student/index.vue"),
       meta: {
         icon: "flUser",
-        title: "学员管理"
+        title: "学员管理",
+        roles: ["管理员"]
       }
     }
   ]

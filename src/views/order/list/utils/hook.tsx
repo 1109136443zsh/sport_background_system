@@ -105,16 +105,12 @@ export function orderList() {
       )
     },
     {
-      label: "预定时间节点ID",
-      prop: "segment_id"
-    },
-    {
       label: "预定日期时间戳",
       prop: "schedule_date",
-      cellRenderer: ({ row }) => {
+      cellRenderer: ({row}) => {
         const segmentId = row.segment_id;
-        const time = getFormattedTime(segmentId); // 调用 getFormattedTime 函数，传入 segment_id 值获取时间数据
-
+        // 调用 getFormattedTime 函数，传入 segment_id 值获取时间数据
+        const time = getFormattedTime(segmentId);
         return <span>{time}</span>; // 在模板中显示时间数据
       },
     },
@@ -125,7 +121,7 @@ export function orderList() {
       width: 180
     }
   ];
-  const getFormattedTime=(number) =>{
+  const getFormattedTime = (number) => {
     if (number < 1 || number > 48) {
       return "Invalid input";
     }
@@ -150,9 +146,9 @@ export function orderList() {
       complain: toRaw(form).complain,
       comment: toRaw(form).comment
     }).then(response => {
-      console.log(response)
       if (response.code === 200) {
         dataList.value = response.data
+        pagination.total = response.total
       } else {
         message("出错了", {type: "error"})
       }

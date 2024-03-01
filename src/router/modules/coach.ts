@@ -13,7 +13,8 @@ export default {
       name: "coachManage",
       component: () => import("@/views/coach/list/index.vue"),
       meta: {
-        title: "教练列表"
+        title: "教练列表",
+        roles: ["管理员"]
       }
     },
     {
@@ -21,7 +22,8 @@ export default {
       name: "rateCourseManage",
       component: () => import("@/views/coach/rate/index.vue"),
       meta: {
-        title: "星级管理"
+        title: "星级管理",
+        roles: ["管理员"]
       }
     }
   ]

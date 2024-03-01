@@ -64,8 +64,6 @@ export function useUser() {
     {
       label: "上次登录时间",
       prop: "last_login",
-      formatter: ({LoginTime}) =>
-        dayjs(LoginTime).format("YYYY-MM-DD HH:mm:ss")
     },
     {
       label: "操作",
@@ -116,6 +114,7 @@ export function useUser() {
               message("已成功修改用户状态", {
                 type: "success"
               });
+              onSearch()
             }, 300);
           }
         }).catch((error) => {
@@ -240,6 +239,8 @@ export function useUser() {
       pagination.currentPage
     ).then(response => {
       dataList.value = response.data
+      pagination.total = response.total
+      pagination.currentPage = response.pageNumber
     }).catch((error) => {
       console.log(error)
       message(`获取用户列表失败，请刷新`,

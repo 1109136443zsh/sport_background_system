@@ -12,7 +12,9 @@ export default {
       name: "cardListManage",
       component: () => import("@/views/card/list/index.vue"),
       meta: {
-        title: "会员卡列表"
+        title: "会员卡列表",
+        showParent: true,
+        roles: ["管理员"]
       }
     },
     {
@@ -20,7 +22,9 @@ export default {
       name: "typeManage",
       component: () => import("@/views/card/typeList/index.vue"),
       meta: {
-        title: "类型列表"
+        title: "类型列表",
+        showParent: true,
+        roles: ["管理员"]
       }
     }
   ]

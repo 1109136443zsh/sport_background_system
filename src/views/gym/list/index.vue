@@ -107,7 +107,6 @@ const {
               link
               type="primary"
               :size="size"
-
               @click="openDetail(row)"
             >
               查看场馆详情

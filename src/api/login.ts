@@ -25,7 +25,7 @@ export interface Data {
   accessToken: string;
   expires: Date,
   username?: string;
-  roles: Array<string>;
+  role: Array<string>;
   refreshToken: string;
 }
 
@@ -66,7 +66,7 @@ export type UserResult = {
     /** 用户名 */
     username: string;
     /** 当前登陆用户的角色 */
-    roles: Array<string>;
+    role: string;
     /** `token` */
     token: string;
     accessToken: string;

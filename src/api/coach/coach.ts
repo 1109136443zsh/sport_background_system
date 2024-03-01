@@ -117,7 +117,7 @@ export const updateCoach = (data: object) => {
 export const getCoachDetail = (data: { coach_id }) => {
   const {coach_id} = data
   return http.request<Response>("get",
-    `http://115.28.37.42:7788/admin/coach/get?coach_id=${coach_id}`,{},
+    baseUrlApi(`admin/coach/get?coach_id=${coach_id}`),{},
     {
       headers: {
         "token": getToken().accessToken

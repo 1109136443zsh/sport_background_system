@@ -14,7 +14,8 @@ export default {
       component: () => import("@/views/settle/venue/index.vue"),
       meta: {
         title: "场馆",
-        showParent: true
+        showParent: true,
+        roles: ["管理员"]
       }
     },
     {
@@ -23,7 +24,8 @@ export default {
       component: () => import("@/views/settle/coach/index.vue"),
       meta: {
         title: "教练",
-        showParent: true
+        showParent: true,
+        roles: ["管理员"]
       }
     },
     {
@@ -32,7 +34,8 @@ export default {
       component: () => import("@/views/settle/partner/index.vue"),
       meta: {
         title: "合伙人",
-        showParent: true
+        showParent: true,
+        roles: ["管理员"]
       }
     }
   ]

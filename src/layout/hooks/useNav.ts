@@ -8,11 +8,15 @@ import { useGlobal } from "@pureadmin/utils";
 import type { routeMetaType } from "../types";
 import { transformI18n } from "@/plugins/i18n";
 import { router, remainingPaths } from "@/router";
-import { computed, type CSSProperties } from "vue";
+import {computed, type CSSProperties, h, ref} from "vue";
 import { useAppStoreHook } from "@/store/modules/app";
 import { useUserStoreHook } from "@/store/modules/user";
 import { useEpThemeStoreHook } from "@/store/modules/epTheme";
 import { usePermissionStoreHook } from "@/store/modules/permission";
+import {addDialog} from "@/components/ReDialog/index";
+import editForm from "@/views/gym/list/form/index.vue";
+import {updateGym} from "@/api/gym";
+import {message} from "@/utils/message";
 
 const errorInfo = "当前路由配置不正确，请检查配置";
 
@@ -86,6 +90,65 @@ export function useNav() {
   function logout() {
     useUserStoreHook().logOut();
   }
+  const formRef = ref()
+  function openUpdateDialog() {
+    let ids = null
+
+    addDialog({
+      title: "更新场馆信息",
+      props: {
+        formInline: {
+          gym_id: "",
+          name: "",
+          rate_id: "",
+          info: "",
+          banner: "",
+          begin_time: "",
+          end_time: "",
+          location: "",
+          longitude: "",
+          latitude: "",
+          url: ""
+        }
+      },
+      width: "46%",
+      draggable: true,
+      fullscreenIcon: true,
+      closeOnClickModal: false,
+      contentRenderer: () => h(editForm, {ref: formRef}),
+      beforeSure: (done, {options}) => {
+        const FormRef = formRef.value.getRef();
+        const curData = options.props.formInline;
+        FormRef.validate(valid => {
+          if (valid) {
+            updateGym(
+              {
+                gym_id: curData.gym_id,
+                name: curData.name,
+                rate_id: curData.rate_id,
+                info: curData.info,
+                banner: curData.url,
+                begin_time: curData.begin_time,
+                end_time: curData.end_time,
+                location: curData.location,
+                longitude: curData.longitude,
+                latitude: curData.latitude
+              }
+            ).then(() => {
+              message(`成功更新场馆信息`, {
+                type: "success"
+              });
+              done();
+            }).catch(() => {
+              message(`更新场馆信息失败`, {
+                type: "error"
+              });
+            })
+          }
+        })
+      },
+    })
+  }
 
   function backTopMenu() {
     router.push(getTopMenu()?.path);
@@ -152,6 +215,7 @@ export function useNav() {
     avatarsStyle,
     tooltipEffect,
     getDropdownItemStyle,
-    getDropdownItemClass
+    getDropdownItemClass,
+    openUpdateDialog
   };
 }

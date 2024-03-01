@@ -2,14 +2,16 @@
 import Search from "./search/index.vue";
 import Notice from "./notice/index.vue";
 import mixNav from "./sidebar/mixNav.vue";
-import { useNav } from "@/layout/hooks/useNav";
+import {useNav} from "@/layout/hooks/useNav";
 import Breadcrumb from "./sidebar/breadCrumb.vue";
 import topCollapse from "./sidebar/topCollapse.vue";
-import { useTranslationLang } from "../hooks/useTranslationLang";
+import {useTranslationLang} from "../hooks/useTranslationLang";
 import globalization from "@/assets/svg/globalization.svg?component";
 import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
 import Setting from "@iconify-icons/ri/settings-3-line";
 import Check from "@iconify-icons/ep/check";
+import {useRenderIcon} from "@/components/ReIcon/src/hooks";
+import EditPen from "@iconify-icons/ep/edit-pen";
 
 const {
   layout,
@@ -22,10 +24,11 @@ const {
   avatarsStyle,
   toggleSideBar,
   getDropdownItemStyle,
-  getDropdownItemClass
+  getDropdownItemClass,
+  openUpdateDialog
 } = useNav();
 
-const { t, locale, translationCh, translationEn } = useTranslationLang();
+const {t, locale, translationCh, translationEn} = useTranslationLang();
 </script>
 
 <template>
@@ -42,13 +45,13 @@ const { t, locale, translationCh, translationEn } = useTranslationLang();
       class="breadcrumb-container"
     />
 
-    <mixNav v-if="layout === 'mix'" />
+    <mixNav v-if="layout === 'mix'"/>
 
     <div v-if="layout === 'vertical'" class="vertical-header-right">
       <!-- 菜单搜索 -->
-      <Search id="header-search" />
+      <Search id="header-search"/>
       <!-- 通知 -->
-      <Notice id="header-notice" />
+      <Notice id="header-notice"/>
       <!-- 国际化 -->
       <el-dropdown id="header-translation" trigger="click">
         <globalization
@@ -74,7 +77,7 @@ const { t, locale, translationCh, translationEn } = useTranslationLang();
               @click="translationEn"
             >
               <span v-show="locale === 'en'" class="check-en">
-                <IconifyIconOffline :icon="Check" />
+                <IconifyIconOffline :icon="Check"/>
               </span>
               English
             </el-dropdown-item>
@@ -84,11 +87,18 @@ const { t, locale, translationCh, translationEn } = useTranslationLang();
       <!-- 退出登录 -->
       <el-dropdown trigger="click">
         <span class="el-dropdown-link navbar-bg-hover select-none">
-          <img :src="userAvatar" :style="avatarsStyle" />
+          <img :src="userAvatar" :style="avatarsStyle"/>
           <p v-if="username" class="dark:text-white">{{ username }}</p>
         </span>
         <template #dropdown>
           <el-dropdown-menu class="logout">
+            <el-dropdown-item @click="openUpdateDialog">
+              <iconify-icon-offline
+                :icon="EditPen"
+                style="margin: 5px"
+              />
+              修改信息
+            </el-dropdown-item>
             <el-dropdown-item @click="logout">
               <IconifyIconOffline
                 :icon="LogoutCircleRLine"
@@ -104,7 +114,7 @@ const { t, locale, translationCh, translationEn } = useTranslationLang();
         :title="t('buttons.hssystemSet')"
         @click="onPanel"
       >
-        <IconifyIconOffline :icon="Setting" />
+        <IconifyIconOffline :icon="Setting"/>
       </span>
     </div>
   </div>

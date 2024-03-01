@@ -28,10 +28,10 @@ const loading = ref(true)
 async function onSearch() {
   loading.value = true
   await getRateCourseList({
-    rate_id: newFormInline.value.rate_id,
+    gym_id: newFormInline.value.gym_id,
     page: 1
   }).then(response => {
-    dataList.value = response.data.page_data
+    dataList.value = response.data
   })
   setTimeout(() => {
     loading.value = false;
@@ -81,11 +81,11 @@ function openDialog() {
     fullscreenIcon: true,
     closeOnClickModal: false,
     contentRenderer: () => h(editForm, {ref: formRef}),
-    beforeSure: (done, { options}) => {
+    beforeSure: (done, {options}) => {
       const FormRef = formRef.value.getRef()
       const curData = options.props.formInline;
       FormRef.validate(valid => {
-        if (valid){
+        if (valid) {
           rateCourseAdd({
             gym_id: curData.gym_id,
             course_id: curData.course_id
@@ -106,6 +106,7 @@ function openDialog() {
     },
   })
 }
+
 function getRef() {
   return ruleFormRef.value;
 }

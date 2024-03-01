@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { FormProps } from "@/views/gym/list/form/types";
-import { ref } from "vue";
+import {FormProps} from "@/views/gym/list/form/types";
+import {ref} from "vue";
 import ReCol from "@/components/ReCol";
 import UploadIcon from "@iconify-icons/ri/upload-2-line";
-import { picUpload } from "@/api/picUpload";
+import {picUpload} from "@/api/picUpload";
 
 const props = withDefaults(defineProps<FormProps>(), {
   formInline: () => ({
@@ -23,12 +23,14 @@ const props = withDefaults(defineProps<FormProps>(), {
     score: 0,
     segment: [],
     skill: [],
+    tags: "",
     url: ""
   })
 });
 const ruleFormRef = ref();
 const newFormInline = ref(props.formInline);
 const uploadRef = ref();
+
 function importCommit(fileData) {
   return new Promise((resolve, reject) => {
     const data = new FormData();
@@ -48,14 +50,16 @@ function importCommit(fileData) {
       });
   });
 }
+
 function onSubmit() {
   uploadRef.value.submit();
 }
+
 function getRef() {
   return ruleFormRef.value;
 }
 
-defineExpose({ getRef });
+defineExpose({getRef});
 </script>
 
 <template>
@@ -66,22 +70,22 @@ defineExpose({ getRef });
         label="场馆ID"
         prop="gym_id"
       >
-        <el-input v-model="newFormInline.gym_id" disabled />
+        <el-input v-model="newFormInline.gym_id" disabled/>
       </el-form-item>
     </re-col>
     <re-col>
       <el-form-item label="场馆名称" prop="name">
-        <el-input v-model="newFormInline.name" />
+        <el-input v-model="newFormInline.name"/>
       </el-form-item>
     </re-col>
     <re-col>
       <el-form-item label="星级ID" prop="rate_id">
-        <el-input v-model="newFormInline.rate_id" />
+        <el-input v-model="newFormInline.rate_id"/>
       </el-form-item>
     </re-col>
     <re-col>
       <el-form-item label="场馆介绍" prop="info">
-        <el-input v-model="newFormInline.info" />
+        <el-input v-model="newFormInline.info"/>
       </el-form-item>
     </re-col>
     <re-col>
@@ -109,34 +113,40 @@ defineExpose({ getRef });
             可点击或拖拽上传
           </div>
         </el-upload>
-        <el-button type="primary" @click="onSubmit"> 提交图片 </el-button>
+        <el-button type="primary" @click="onSubmit"> 提交图片</el-button>
       </el-form-item>
     </re-col>
     <re-col>
       <el-form-item label="开始营业时间" prop="begin_time">
-        <el-input v-model="newFormInline.begin_time" />
+        <el-input v-model="newFormInline.begin_time"/>
       </el-form-item>
     </re-col>
     <re-col>
       <el-form-item label="结束营业时间" prop="end_time">
-        <el-input v-model="newFormInline.end_time" />
+        <el-input v-model="newFormInline.end_time"/>
       </el-form-item>
     </re-col>
     <re-col>
       <el-form-item label="地址" prop="location">
-        <el-input v-model="newFormInline.location" />
+        <el-input v-model="newFormInline.location"/>
       </el-form-item>
     </re-col>
     <re-col>
       <el-form-item label="经度" prop="longitude">
-        <el-input v-model="newFormInline.longitude" />
+        <el-input v-model="newFormInline.longitude"/>
       </el-form-item>
     </re-col>
     <re-col>
       <el-form-item label="纬度" prop="latitude">
-        <el-input v-model="newFormInline.latitude" />
+        <el-input v-model="newFormInline.latitude"/>
       </el-form-item>
     </re-col>
+    <re-col>
+      <el-form-item label="标签" prop="tags">
+        <el-input v-model="newFormInline.tags"/>
+      </el-form-item>
+    </re-col>
+
   </el-form>
 </template>
 

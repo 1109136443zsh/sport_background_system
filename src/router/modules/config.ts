@@ -13,7 +13,8 @@ export default {
       name: "configManage",
       component: () => import("@/views/configuration/banner/index.vue"),
       meta: {
-        title: "首页轮播图设置"
+        title: "首页轮播图设置",
+        roles: ["管理员"]
       }
     },
     {
@@ -21,7 +22,8 @@ export default {
       name: "configList",
       component: () => import("@/views/configuration/setting/index.vue"),
       meta: {
-        title: "系统配置"
+        title: "系统配置",
+        roles: ["管理员"]
       }
     }
   ]

@@ -227,36 +227,18 @@ export function useCoach() {
   }
 
   async function openGymEnableTable(row) {
-    let ids = null
-    await getGymEnableList({
-      coach_id: row.coach_id,
-      page: 1
-    }).then(response => {
-      if (response.code === 200) {
-        ids = response.data
-        addDialog({
-          title: "教练可去场馆",
-          props: {
-            formInline: {
-              coach_id: row.coach_id,
-              ids
-            }
-          },
-          width: "46%",
-          draggable: true,
-          fullscreenIcon: true,
-          closeOnClickModal: false,
-          contentRenderer: () => gymEnableTable
-        })
-      } else {
-        message("出错了，请重试", {
-          type: "error"
-        })
-      }
-    }).catch(() => {
-      message("获取数据失败，请重试", {
-        type: "error"
-      })
+    addDialog({
+      title: "教练可去场馆",
+      props: {
+        formInline: {
+          coach_id: row.coach_id,
+        }
+      },
+      width: "46%",
+      draggable: true,
+      fullscreenIcon: true,
+      closeOnClickModal: false,
+      contentRenderer: () => gymEnableTable
     })
   }
 

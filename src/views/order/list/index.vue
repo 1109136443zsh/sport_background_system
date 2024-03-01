@@ -3,9 +3,9 @@ import PureTableBar from "@/components/RePureTableBar/src/bar";
 import {orderList} from "@/views/order/list/utils/hook";
 import {ref} from "vue";
 import {useRenderIcon} from "@/components/ReIcon/src/hooks";
-import Delete from "@iconify-icons/ri/delete-bin-7-line";
 import Refresh from "@iconify-icons/ep/refresh";
 import AddFill from "@iconify-icons/ri/add-circle-line";
+import {getAuths} from "../../../router/utils";
 
 const tableRef = ref()
 const formRef = ref()
@@ -21,7 +21,8 @@ const {
   openUserDetail,
   openCheckinDetail,
   openComplainForm,
-  openCheckinDialog
+  openCheckinDialog,
+  pagination
 } = orderList()
 </script>
 
@@ -117,6 +118,7 @@ const {
           :data="dataList"
           :size="size"
           :loading="loading"
+          :pagination="pagination"
           :columns="dynamicColumns"
           align-whole="center"
           table-layout="auto"
@@ -126,14 +128,16 @@ const {
             }"
         >
           <template #operation="{row}">
-            <el-button
-              type="primary"
-              link
-              class="reset-margin"
-              @click="openCheckinDetail(row)"
-            >
-              核销信息
-            </el-button>
+            <Auth value="管理员">
+              <el-button
+                type="primary"
+                link
+                class="reset-margin"
+                @click="openCheckinDetail(row)"
+              >
+                核销信息
+              </el-button>
+            </Auth>
             <el-button
               type="primary"
               link
@@ -142,22 +146,24 @@ const {
             >
               订单详情
             </el-button>
-            <el-button
-              type="primary"
-              link
-              class="reset-margin"
-              @click="openUserDetail(row)"
-            >
-              学员详情
-            </el-button>
-            <el-button
-              type="primary"
-              link
-              class="reset-margin"
-              @click="openCancelDialog(row)"
-            >
-              取消订单
-            </el-button>
+              <el-button
+                type="primary"
+                link
+                class="reset-margin"
+                @click="openUserDetail(row)"
+              >
+                学员详情
+              </el-button>
+            <Auth value="管理员">
+              <el-button
+                type="primary"
+                link
+                class="reset-margin"
+                @click="openCancelDialog(row)"
+              >
+                取消订单
+              </el-button>
+            </Auth>
 
           </template>
         </pure-table>

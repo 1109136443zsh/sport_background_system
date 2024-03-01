@@ -12,7 +12,7 @@ export interface DataInfo<T> {
   /** 用户名 */
   username?: string;
   /** 当前登陆用户的角色 */
-  roles?: Array<string>;
+  role?: string;
 }
 
 export const userKey = "user-info";
@@ -63,25 +63,25 @@ export function setToken(data: DataInfo<Date>) {
       : {}
   );
 
-  function setUserKey(username: string, roles: Array<string>) {
+  function setUserKey(username: string, role: string) {
     useUserStoreHook().SET_USERNAME(username);
-    useUserStoreHook().SET_ROLES(roles);
+    useUserStoreHook().SET_ROLES(role);
     storageLocal().setItem(userKey, {
       refreshToken,
       expires,
       username,
-      roles
+      role
     });
   }
 
-  if (data.username && data.roles) {
-    const { username, roles } = data;
-    setUserKey(username, roles);
+  if (data.username && data.role) {
+    const { username, role } = data;
+    setUserKey(username, role);
   } else {
     const username =
       storageLocal().getItem<DataInfo<number>>(userKey)?.username ?? "";
     const roles =
-      storageLocal().getItem<DataInfo<number>>(userKey)?.roles ?? [];
+      storageLocal().getItem<DataInfo<number>>(userKey)?.role ?? "";
     setUserKey(username, roles);
   }
 }

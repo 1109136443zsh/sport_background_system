@@ -93,7 +93,7 @@ export function gymList() {
       region_id: toRaw(form).region_id
     }).then(response => {
       dataList.value = response.data
-      pagination.total = response.pages
+      pagination.total = response.total
     }).catch(() => {
       message("获取数据失败，请重试", {
         type: "error"
@@ -103,11 +103,13 @@ export function gymList() {
       loading.value = false;
     }, 500);
   }
+
   const resetForm = formEl => {
     if (!formEl) return;
     formEl.resetFields();
     onSearch();
   };
+
   async function openDetail(row) {
     let ids = null
     await getGymDetail({
@@ -115,7 +117,6 @@ export function gymList() {
     }).then(response => {
       ids = response.data
     })
-    console.log(ids)
     addDialog({
       title: "查看场馆信息",
       props: {
@@ -155,13 +156,14 @@ export function gymList() {
           name: row?.name ?? "",
           rate_id: row?.rate_id ?? "",
           info: row?.info ?? "",
-          banner: [],
+          banner: "",
           begin_time: row?.begin_time ?? "",
           end_time: row?.end_time ?? "",
           location: row?.location ?? "",
           longitude: row?.longitude ?? "",
           latitude: row?.latitude ?? "",
-          url: ""
+          url: "",
+          tags: row.tags
         }
       },
       width: "46%",
@@ -205,26 +207,18 @@ export function gymList() {
   }
 
   async function openCourseList(row) {
-    let ids = null
-    await getRateCourseList({
-      gym_id: row.gym_id,
-      page: pagination.currentPage
-    }).then(res => {
-      ids = res.data
-      addDialog({
-        title: "查看该星级的可上课课程",
-        props: {
-          formInline: {
-            ids,
-            gym_id: row.gym_id
-          }
-        },
-        width: "46%",
-        draggable: true,
-        fullscreenIcon: true,
-        closeOnClickModal: false,
-        contentRenderer: () => courseTable
-      })
+    addDialog({
+      title: "查看可上课课程",
+      props: {
+        formInline: {
+          gym_id: row.gym_id
+        }
+      },
+      width: "46%",
+      draggable: true,
+      fullscreenIcon: true,
+      closeOnClickModal: false,
+      contentRenderer: () => courseTable
     })
   }
 
