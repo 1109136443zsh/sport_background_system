@@ -33,7 +33,7 @@ const columns: TableColumnList = [
     prop: "course_id"
   },
   {
-    label: "价格",
+    label: "价格/元",
     prop: "price",
     cellRenderer: ({row}) => {
       const yuan = (row.price / 100).toFixed(2);

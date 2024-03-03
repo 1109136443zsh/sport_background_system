@@ -10,7 +10,7 @@ interface FormItemProps {
   /**
    * 价格
    */
-  price: string;
+  price: number;
   /**
    * 价格介绍的文本内容
    */

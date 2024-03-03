@@ -30,6 +30,7 @@ function formatTime(time) {
       class="margin_top"
       title="教场馆入驻信息"
       :column="3"
+      :border="true"
     >
       <el-descriptions-item label="申请ID：">
         {{ newFormInline.apply_id }}

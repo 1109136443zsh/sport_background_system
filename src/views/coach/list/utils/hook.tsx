@@ -191,7 +191,6 @@ export function useCoach() {
             const curData = options.props.formInline;
             FormRef.validate(valid => {
               if (valid) {
-                console.log(curData.url)
                 updateCoach({
                   coach_id: curData.coach_id,
                   name: curData.name,

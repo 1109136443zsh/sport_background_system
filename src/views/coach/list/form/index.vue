@@ -62,7 +62,9 @@ defineExpose({getRef})
           label="教练id：" prop="coach_id"
           :rules="[{ required: true, message: '教练id不能为空'}]"
         >
-          <el-input v-model="newFormInline.coach_id"/>
+          <el-input
+            disabled
+            v-model="newFormInline.coach_id"/>
         </el-form-item>
       </re-col>
       <re-col :value="12" :xs="24" :sm="24">

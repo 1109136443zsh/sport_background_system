@@ -76,7 +76,7 @@ export function courseList() {
           title,
           course_id: row?.course_id ?? "",
           name: row?.name ?? "",
-          price: row?.price ?? "",
+          price: row?.price / 100 ?? "",
           price_info: row?.price_info ?? "",
           course_type: row?.type ?? "",
           subtitle: row?.subtitle ?? ""

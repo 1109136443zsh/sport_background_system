@@ -85,8 +85,8 @@ export function coachRate() {
         formInline: {
           title,
           name: row?.name ?? "",
-          charge: row?.charge ?? "",
-          bonus: row?.bonus ?? "",
+          charge: (row?.charge / 100).toFixed(2) ?? "",
+          bonus: (row?.bonus / 100).toFixed(2) ?? "",
           rate_id: row?.id ?? ""
         }
       },
