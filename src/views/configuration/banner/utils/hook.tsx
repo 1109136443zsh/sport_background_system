@@ -1,6 +1,4 @@
 import {h, onMounted, ref, toRaw} from "vue";
-import {usePublicHooks} from "@/views/system/hooks";
-import {ElMessageBox} from "element-plus";
 import {message} from "@/utils/message";
 import editForm from "@/views/configuration/banner/form/index.vue"
 import {addBanner, deleteBanner, getBannerList, updateBanner} from "@/api/config";
@@ -143,8 +141,9 @@ export function useBanner() {
   async function onSearch() {
     loading.value = true;
     await getBannerList().then(response => {
-      dataList.value = response.data
-      console.log(response)
+      if (response.code === 200) {
+        dataList.value = response.data
+      }
     }).catch(() => {
       message("获取数据失败，请重试", {
         type: "error"

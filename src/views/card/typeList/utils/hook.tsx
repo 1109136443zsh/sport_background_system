@@ -4,6 +4,7 @@ import {h, onMounted, reactive, ref} from "vue";
 import {addCardType, cardRemove, getCardTypeList, removeCardType} from "@/api/card";
 import {message} from "@/utils/message";
 import type {PaginationProps} from "@pureadmin/table";
+import courseListTable from "@/views/card/typeList/courseList/index.vue"
 
 export function cardList() {
   const formRef = ref()
@@ -36,7 +37,7 @@ export function cardList() {
       label: "是否需绑定教练",
       prop: "bind_coach",
       minWidth: 90,
-      cellRenderer: ({ row, props }) => (
+      cellRenderer: ({row, props}) => (
         <el-tag
           size={props.size}
           type={row.bind_coach === false ? "danger" : ""}
@@ -50,7 +51,7 @@ export function cardList() {
       label: "是否需绑定课程",
       prop: "bind_course",
       minWidth: 90,
-      cellRenderer: ({ row, props }) => (
+      cellRenderer: ({row, props}) => (
         <el-tag
           size={props.size}
           type={row.bind_course === false ? "danger" : ""}
@@ -64,7 +65,7 @@ export function cardList() {
       label: "是否需绑定场馆",
       prop: "bind_gym",
       minWidth: 90,
-      cellRenderer: ({ row, props }) => (
+      cellRenderer: ({row, props}) => (
         <el-tag
           size={props.size}
           type={row.bind_gym === false ? "danger" : ""}
@@ -143,15 +144,23 @@ export function cardList() {
       },
     })
   }
+
   async function handleDelete(row) {
     await removeCardType({
       card_type_id: row.card_type_id
-    }).then(() => {
-      message(`您删除了编号为${row.card_type_id}的数据`,
-        {
-          type: "success"
-        });
-      onSearch();
+    }).then(response => {
+      if (response.code === 200) {
+        message(`您删除了编号为${row.card_type_id}的数据`,
+          {
+            type: "success"
+          });
+        onSearch();
+      } else {
+        message(`出错了，请重试`,
+          {
+            type: "error"
+          });
+      }
     }).catch(() => {
       message(`操作失败，请重试`,
         {
@@ -159,12 +168,16 @@ export function cardList() {
         });
     })
   }
+
   async function onSearch() {
     loading.value = true;
     await getCardTypeList(
-      1
+      pagination.currentPage
     ).then(response => {
-      dataList.value = response.data
+      if (response.code === 200) {
+        dataList.value = response.data
+        pagination.total = response.total
+      }
     }).catch(() => {
       message(`获取列表信息失败`,
         {
@@ -175,9 +188,26 @@ export function cardList() {
       loading.value = false;
     }, 500);
   }
+  function openCourseDialog(row) {
+    addDialog({
+      title: "",
+      props: {
+        formInline: {
+          card_type_id: row.card_type_id
+        }
+      },
+      width: "75%",
+      draggable: true,
+      fullscreenIcon: true,
+      closeOnClickModal: false,
+      contentRenderer: () => courseListTable
+    })
+  }
+
   onMounted(async () => {
     onSearch();
   });
+
   return {
     loading,
     pagination,
@@ -185,6 +215,7 @@ export function cardList() {
     dataList,
     onSearch,
     handleDelete,
-    openDialog
+    openDialog,
+    openCourseDialog
   }
 }

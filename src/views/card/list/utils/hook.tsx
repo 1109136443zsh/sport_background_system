@@ -125,10 +125,10 @@ export function card() {
   async function onSearch() {
     loading.value = true;
     await getCardList(
-      1
+      pagination.currentPage
     ).then(response => {
       dataList.value = response.data
-      pagination.total = response.pages
+      pagination.total = response.total
     }).catch(() => {
       message(`获取列表信息失败`,
         {

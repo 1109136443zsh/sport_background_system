@@ -53,7 +53,7 @@ export interface PageDatum {
   [property: string]: any;
 }
 
-// 场馆星级-获取列表
+// 教练星级-获取列表
 export const getRateList = () => {
   return http.request<Response>("get",
     baseUrlApi("/admin/coach/rateList"),{},

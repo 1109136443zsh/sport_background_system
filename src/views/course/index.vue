@@ -35,7 +35,7 @@ const {
     >
       <el-form-item label="课程类型" prop="course_type">
         <el-select
-          v-model="form.course_type"
+          v-model="form.type"
           placeholder="请选择"
           clearable
           class="!w-[180px]"
@@ -86,6 +86,7 @@ const {
           :data="dataList"
           :columns="dynamicColumns"
           :pagination="pagination"
+          @current-change="onSearch"
           :header-cell-style="{
               background: 'var(--el-fill-color-light)',
               color: 'var(--el-text-color-primary)'

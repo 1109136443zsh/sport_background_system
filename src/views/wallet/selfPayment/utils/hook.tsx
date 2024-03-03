@@ -16,7 +16,11 @@ export function useWallet() {
   const columns: TableColumnList = [
     {
       label: "收支金额",
-      prop: "variation"
+      prop: "variation",
+      cellRenderer: ({row}) => {
+        const amountInYuan = (row.variation / 100).toFixed(2); // 将分转换为元，并保留两位小数
+        return <span>{amountInYuan} 元</span>; // 在模板中显示转换后的金额
+      }
     },
     {
       label: "原因",
@@ -24,9 +28,7 @@ export function useWallet() {
     },
     {
       label: "时间",
-      prop: "change_time",
-      formatter: ({createTime}) =>
-        dayjs(createTime).format("YYYY-MM-DD HH:mm:ss")
+      prop: "change_time"
     }
   ]
   const balance = ref(0);
@@ -38,7 +40,7 @@ export function useWallet() {
     ).then(response => {
       if (response.code === 200){
         dataList.value = response.data
-        pagination.total = response.pages
+        pagination.total = response.total
       }else {
         message(`出错了，请检查`,
           {

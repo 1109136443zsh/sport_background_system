@@ -78,7 +78,7 @@ export function stuUser() {
     await getStudentList(
       pagination.currentPage
     ).then(response => {
-      console.log(response)
+      pagination.total = response.total
       dataList.value = response.data
     }).catch(() => {
       message(`获取用户列表失败，请重试`, {

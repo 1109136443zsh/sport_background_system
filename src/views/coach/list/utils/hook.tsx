@@ -98,7 +98,8 @@ export function useCoach() {
       region_id: toRaw(form).region_id
     }).then(response => {
       dataList.value = response.data
-      pagination.total = response.pages
+      pagination.total = response.total
+
     }).catch((error) => {
       console.log(error)
       message("获取数据失败，请重试", {

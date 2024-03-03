@@ -5,7 +5,6 @@ import {ref} from "vue";
 import {useRenderIcon} from "@/components/ReIcon/src/hooks";
 import Refresh from "@iconify-icons/ep/refresh";
 import AddFill from "@iconify-icons/ri/add-circle-line";
-import {getAuths} from "../../../router/utils";
 
 const tableRef = ref()
 const formRef = ref()
@@ -116,6 +115,7 @@ const {
           ref="tableRef"
           adaptive
           :data="dataList"
+          @current-change="onSearch"
           :size="size"
           :loading="loading"
           :pagination="pagination"

@@ -131,3 +131,15 @@ export const addUser = (data: object) => {
     }
   );
 };
+// 获取用户自身的个人信息
+export const getUserSelf = () => {
+  return http.request<Response>("get",
+    baseUrlApi("/admin/user/self"),
+    {},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
+  );
+};

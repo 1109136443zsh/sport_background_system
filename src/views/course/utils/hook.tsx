@@ -118,12 +118,11 @@ export function courseList() {
               updateCourse({
                 name: curData.name,
                 subtitle: curData.subtitle,
-                price: curData.price,
+                price: curData.price * 100,
                 price_info: curData.price_info,
                 type: curData.course_type,
                 course_id: curData.course_id
               }).then((res) => {
-                console.log(res)
                 console.log(curData.course_type)
                 message(`您成功${title}了名称为${curData.name}的这条数据`,
                   {
@@ -174,12 +173,11 @@ export function courseList() {
   async function onSearch() {
     loading.value = true;
     await getCourseList({
-      page: 1,
+      page: pagination.currentPage,
       type: toRaw(form).type
     }).then(response => {
       dataList.value = response.data
-      console.log(response)
-      pagination.total = response.pages
+      pagination.total = response.total
     }).catch(() => {
       message(`获取课程列表失败`,
         {type: "error"});

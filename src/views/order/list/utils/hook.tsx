@@ -111,7 +111,7 @@ export function orderList() {
         const segmentId = row.segment_id;
         // 调用 getFormattedTime 函数，传入 segment_id 值获取时间数据
         const time = getFormattedTime(segmentId);
-        return <span>{time}</span>; // 在模板中显示时间数据
+        return <span>{row.schedule_date + " " + time}</span>; // 在模板中显示时间数据
       },
     },
     {
@@ -139,7 +139,7 @@ export function orderList() {
   async function onSearch() {
     loading.value = true;
     await getOrderList({
-      page: 1,
+      page: pagination.currentPage,
       order_status: toRaw(form).order_status,
       user_id: toRaw(form).user_id,
       gym_id: toRaw(form).gym_id,

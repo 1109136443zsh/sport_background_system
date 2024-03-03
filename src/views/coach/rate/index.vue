@@ -44,7 +44,6 @@ const {
           align-whole="center"
           table-layout="auto"
           :data="dataList"
-          :pagination="pagination"
           :size="size"
           :columns="dynamicColumns"
           :header-cell-style="{

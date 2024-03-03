@@ -39,11 +39,10 @@ export function useRegion() {
   async function onSearch() {
     loading.value = true;
     await getRegionList({
-      page: 1
+      page: pagination.currentPage
     }).then(response => {
-      console.log(response)
       dataList.value = response.data
-      pagination.total = response.pages
+      pagination.total = response.total
     }).catch((error) => {
       console.log(error)
       message("获取数据失败，请重试", {

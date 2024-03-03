@@ -4,7 +4,7 @@ import { useRouter } from "vue-router";
 import { emitter } from "@/utils/mitt";
 import userAvatar from "@/assets/user.jpg";
 import { getTopMenu } from "@/router/utils";
-import { useGlobal } from "@pureadmin/utils";
+import {storageLocal, useGlobal} from "@pureadmin/utils";
 import type { routeMetaType } from "../types";
 import { transformI18n } from "@/plugins/i18n";
 import { router, remainingPaths } from "@/router";
@@ -14,9 +14,13 @@ import { useUserStoreHook } from "@/store/modules/user";
 import { useEpThemeStoreHook } from "@/store/modules/epTheme";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 import {addDialog} from "@/components/ReDialog/index";
-import editForm from "@/views/gym/list/form/index.vue";
 import {updateGym} from "@/api/gym";
 import {message} from "@/utils/message";
+import {getUserSelf} from "@/api/admin/user";
+import gymForm from "@/layout/components/form/gym/index.vue"
+import coachForm from "@/layout/components/form/coach/index.vue"
+import {DataInfo, userKey} from "@/utils/auth";
+import {updateCoach} from "@/api/coach/coach";
 
 const errorInfo = "当前路由配置不正确，请检查配置";
 
@@ -90,63 +94,129 @@ export function useNav() {
   function logout() {
     useUserStoreHook().logOut();
   }
+
   const formRef = ref()
   function openUpdateDialog() {
+    const role = storageLocal().getItem<DataInfo<number>>(userKey)?.role ?? "";
     let ids = null
-
-    addDialog({
-      title: "更新场馆信息",
-      props: {
-        formInline: {
-          gym_id: "",
-          name: "",
-          rate_id: "",
-          info: "",
-          banner: "",
-          begin_time: "",
-          end_time: "",
-          location: "",
-          longitude: "",
-          latitude: "",
-          url: ""
-        }
-      },
-      width: "46%",
-      draggable: true,
-      fullscreenIcon: true,
-      closeOnClickModal: false,
-      contentRenderer: () => h(editForm, {ref: formRef}),
-      beforeSure: (done, {options}) => {
-        const FormRef = formRef.value.getRef();
-        const curData = options.props.formInline;
-        FormRef.validate(valid => {
-          if (valid) {
-            updateGym(
-              {
-                gym_id: curData.gym_id,
-                name: curData.name,
-                rate_id: curData.rate_id,
-                info: curData.info,
-                banner: curData.url,
-                begin_time: curData.begin_time,
-                end_time: curData.end_time,
-                location: curData.location,
-                longitude: curData.longitude,
-                latitude: curData.latitude
+    getUserSelf().then(response => {
+      if (response.code === 200) {
+        ids = response.data
+        if (role === "场馆"){
+          addDialog({
+            title: "更新场馆信息",
+            props: {
+              formInline: {
+                gym_id: ids.gym_id,
+                name: ids.name,
+                rate_id: ids.rate_id,
+                info: ids.info,
+                banner: ids.banner,
+                begin_time: ids.begin_time,
+                end_time: ids.end_time,
+                location: ids.location,
+                longitude: ids.longitude,
+                latitude: ids.latitude,
+                url: "",
+                tags: ids.tags
               }
-            ).then(() => {
-              message(`成功更新场馆信息`, {
-                type: "success"
-              });
-              done();
-            }).catch(() => {
-              message(`更新场馆信息失败`, {
-                type: "error"
-              });
-            })
-          }
-        })
-      },
+            },
+            width: "46%",
+            draggable: true,
+            fullscreenIcon: true,
+            closeOnClickModal: false,
+            contentRenderer: () => h(gymForm, {ref: formRef}),
+            beforeSure: (done, {options}) => {
+              const FormRef = formRef.value.getRef();
+              const curData = options.props.formInline;
+              FormRef.validate(valid => {
+                if (valid) {
+                  updateGym(
+                    {
+                      gym_id: curData.gym_id,
+                      name: curData.name,
+                      rate_id: curData.rate_id,
+                      info: curData.info,
+                      banner: curData.url,
+                      begin_time: curData.begin_time,
+                      end_time: curData.end_time,
+                      location: curData.location,
+                      longitude: curData.longitude,
+                      latitude: curData.latitude
+                    }
+                  ).then(() => {
+                    message(`成功更新场馆信息`, {
+                      type: "success"
+                    });
+                    done();
+                  }).catch(() => {
+                    message(`更新场馆信息失败`, {
+                      type: "error"
+                    });
+                  })
+                }
+              })
+            },
+          })
+        } else if (role === "教练") {
+          /*addDialog({
+            title: "更新教练信息",
+            props: {
+              formInline: {
+                name: ids.name ?? "",
+                coach_id: ids.coach_id ?? "",
+                skill: ids.skill,
+                gender_limit: ids.gender_limit ?? "",
+                rate_id: ids.rate_id ?? "",
+                info: ids.info ?? "",
+                banner: ids.banner ?? "",
+                coachCase: ids.coachCase ?? "",
+                url: ""
+              }
+            },
+            width: "46%",
+            draggable: true,
+            fullscreenIcon: true,
+            closeOnClickModal: false,
+            contentRenderer: () => h(coachForm, {ref: formRef}),
+            beforeSure: (done, { options}) => {
+              const FormRef = formRef.value.getRef();
+              const curData = options.props.formInline;
+              FormRef.validate(valid => {
+                if (valid) {
+                  console.log(curData.url)
+                  updateCoach({
+                    coach_id: curData.coach_id,
+                    name: curData.name,
+                    rate_id: curData.rate_id,
+                    skill: curData.skill,
+                    info: curData.info,
+                    banner: curData.url,
+                    coachCase: curData.coachCase,
+                    gender_limit: curData.gender_limit
+                  }).then((res) => {
+                    console.log(res)
+                    if (res.code === 200) {
+                      message(`成功更新教练信息`, {
+                        type: "success"
+                      });
+                      done();
+                    } else {
+                      message(`更新教练信息失败`, {
+                        type: "error"
+                      });
+                    }
+                  }).catch(() => {
+                    message(`更新教练信息失败`, {
+                      type: "error"
+                    });
+                  })
+                }
+              })
+            },
+          })*/
+        }
+      }
     })
   }
 

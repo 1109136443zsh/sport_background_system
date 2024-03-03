@@ -19,6 +19,7 @@ interface FormItemProps{
    * 判断是添加还是更新
    *  */
   title: string
+  id?: number;
   [property: string]: any;
 }
 interface FormProps{

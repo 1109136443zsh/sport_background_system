@@ -2,6 +2,7 @@
 import {FormProps} from "@/views/settle/coach/detail/types";
 import {ref} from "vue";
 import dayjs from "dayjs";
+import {urlApi} from "@/api/utils";
 
 const props = withDefaults(defineProps<FormProps>(), {
   formInline: () => ({
@@ -30,6 +31,7 @@ function formatTime(time) {
       class="margin_top"
       title="教练入驻信息"
       :column="3"
+      :border="true"
     >
       <el-descriptions-item label="申请ID：">
         {{ newFormInline.apply_id }}
@@ -58,8 +60,8 @@ function formatTime(time) {
           <el-image
             fit="cover"
             preview-teleported
-            :src="newFormInline.cover_image"
-            :preview-src-list="[newFormInline.cover_image]"
+            :src="urlApi + newFormInline.cover_image"
+            :preview-src-list="[urlApi + newFormInline.cover_image]"
             class="w-[60px] h-[60px] rounded-full align-middle"
           />
         </template>
@@ -69,8 +71,8 @@ function formatTime(time) {
           <el-image
             fit="cover"
             preview-teleported
-            :src="newFormInline.avatar"
-            :preview-src-list="[newFormInline.avatar]"
+            :src="urlApi + newFormInline.avatar"
+            :preview-src-list="[urlApi + newFormInline.avatar]"
             class="w-[60px] h-[60px] rounded-full align-middle"
           />
         </template>

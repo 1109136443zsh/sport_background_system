@@ -10,7 +10,7 @@ const props = withDefaults(defineProps<FormProps>(), {
     banner: [],
     begin_time: 0,
     end_time: 0,
-    gym_id: "123",
+    gym_id: 0,
     info: "场馆介绍",
     latitude: 0,
     location: "地址",
@@ -63,90 +63,97 @@ defineExpose({getRef});
 </script>
 
 <template>
-  <el-form ref="ruleFormRef" :model="newFormInline">
-    <re-col>
-      <el-form-item
-        :rules="[{ required: true, message: '场馆ID不能为空' }]"
-        label="场馆ID"
-        prop="gym_id"
-      >
-        <el-input v-model="newFormInline.gym_id" disabled/>
-      </el-form-item>
-    </re-col>
-    <re-col>
-      <el-form-item label="场馆名称" prop="name">
-        <el-input v-model="newFormInline.name"/>
-      </el-form-item>
-    </re-col>
-    <re-col>
-      <el-form-item label="星级ID" prop="rate_id">
-        <el-input v-model="newFormInline.rate_id"/>
-      </el-form-item>
-    </re-col>
-    <re-col>
-      <el-form-item label="场馆介绍" prop="info">
-        <el-input v-model="newFormInline.info"/>
-      </el-form-item>
-    </re-col>
-    <re-col>
-      <el-form-item
-        :rules="[{ required: true, message: '轮播图不能为空' }]"
-        label="轮播图"
-        prop="banner"
-      >
-        <el-upload
-          ref="uploadRef"
-          v-model="newFormInline.banner"
-          drag
-          multiple
-          action="http://115.28.37.42:7788/admin/imageUpload"
-          class="!w-[180px] m-2"
-          :auto-upload="false"
-          :http-request="importCommit"
+  <el-form
+    ref="ruleFormRef"
+    :model="newFormInline"
+  >
+    <el-row :gutter="30">
+      <re-col>
+        <el-form-item
+          :rules="[{ required: true, message: '场馆ID不能为空' }]"
+          label="场馆ID"
+          prop="gym_id"
         >
-          <div class="el-upload__text">
-            <IconifyIconOffline
-              :icon="UploadIcon"
-              width="26"
-              class="m-auto mb-2"
-            />
-            可点击或拖拽上传
-          </div>
-        </el-upload>
-        <el-button type="primary" @click="onSubmit"> 提交图片</el-button>
-      </el-form-item>
-    </re-col>
-    <re-col>
-      <el-form-item label="开始营业时间" prop="begin_time">
-        <el-input v-model="newFormInline.begin_time"/>
-      </el-form-item>
-    </re-col>
-    <re-col>
-      <el-form-item label="结束营业时间" prop="end_time">
-        <el-input v-model="newFormInline.end_time"/>
-      </el-form-item>
-    </re-col>
-    <re-col>
-      <el-form-item label="地址" prop="location">
-        <el-input v-model="newFormInline.location"/>
-      </el-form-item>
-    </re-col>
-    <re-col>
-      <el-form-item label="经度" prop="longitude">
-        <el-input v-model="newFormInline.longitude"/>
-      </el-form-item>
-    </re-col>
-    <re-col>
-      <el-form-item label="纬度" prop="latitude">
-        <el-input v-model="newFormInline.latitude"/>
-      </el-form-item>
-    </re-col>
-    <re-col>
-      <el-form-item label="标签" prop="tags">
-        <el-input v-model="newFormInline.tags"/>
-      </el-form-item>
-    </re-col>
+          <el-input v-model="newFormInline.gym_id" disabled/>
+        </el-form-item>
+      </re-col>
+      <re-col>
+        <el-form-item label="场馆名称" prop="name">
+          <el-input v-model="newFormInline.name"/>
+        </el-form-item>
+      </re-col>
+      <re-col>
+        <el-form-item label="星级ID" prop="rate_id">
+          <el-input v-model="newFormInline.rate_id"/>
+        </el-form-item>
+      </re-col>
+      <re-col>
+        <el-form-item label="场馆介绍" prop="info">
+          <el-input v-model="newFormInline.info"/>
+        </el-form-item>
+      </re-col>
+      <re-col>
+        <el-form-item
+          :rules="[{ required: true, message: '轮播图不能为空' }]"
+          label="轮播图"
+          prop="banner"
+        >
+          <el-upload
+            ref="uploadRef"
+            v-model="newFormInline.banner"
+            drag
+            multiple
+            action="http://115.28.37.42:7788/admin/imageUpload"
+            class="!w-[180px] m-2"
+            :auto-upload="false"
+            :http-request="importCommit"
+          >
+            <div class="el-upload__text">
+              <IconifyIconOffline
+                :icon="UploadIcon"
+                width="26"
+                class="m-auto mb-2"
+              />
+              可点击或拖拽上传
+            </div>
+          </el-upload>
+          <el-button type="primary" @click="onSubmit">
+            确认提交
+          </el-button>
+        </el-form-item>
+      </re-col>
+      <re-col>
+        <el-form-item label="开始营业时间" prop="begin_time">
+          <el-input v-model="newFormInline.begin_time"/>
+        </el-form-item>
+      </re-col>
+      <re-col>
+        <el-form-item label="结束营业时间" prop="end_time">
+          <el-input v-model="newFormInline.end_time"/>
+        </el-form-item>
+      </re-col>
+      <re-col>
+        <el-form-item label="地址" prop="location">
+          <el-input v-model="newFormInline.location"/>
+        </el-form-item>
+      </re-col>
+      <re-col>
+        <el-form-item label="经度" prop="longitude">
+          <el-input v-model="newFormInline.longitude"/>
+        </el-form-item>
+      </re-col>
+      <re-col>
+        <el-form-item label="纬度" prop="latitude">
+          <el-input v-model="newFormInline.latitude"/>
+        </el-form-item>
+      </re-col>
+      <re-col>
+        <el-form-item label="标签" prop="tags">
+          <el-input v-model="newFormInline.tags"/>
+        </el-form-item>
+      </re-col>
 
+    </el-row>
   </el-form>
 </template>
 

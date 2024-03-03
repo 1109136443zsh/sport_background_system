@@ -87,7 +87,7 @@ export interface Card {
 // 会员卡-查询
 export const getCardList = (page: number) => {
   return http.request<Response>("get",
-    baseUrlApi(`/admin/card/list?page=${page}`),{},
+    baseUrlApi(`/admin/card/list?page=${page}`), {},
     {
       headers: {
         "token": getToken().accessToken
@@ -146,6 +146,46 @@ export const addCardType = (data: object) => {
 export const removeCardType = (data: object) => {
   return http.request<Response>("post",
     baseUrlApi("/admin/card/typeRemove"),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
+  );
+};
+// 会员卡类型绑定课程-查询
+export const getCardTypeCourseList = (data: { card_type_id: number }) => {
+  const {card_type_id} = data
+  return http.request<Response>("get",
+    baseUrlApi(`/admin/card/courseList?card_type_id=${card_type_id}`),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
+  );
+};
+// 会员卡类型绑定课程-新增
+export const addCardTypeCourseList = (data: {
+  card_type_id: number,
+  course_id: number
+}) => {
+  return http.request<Response>("post",
+    baseUrlApi(`/admin/card/addCourse`),
+    {data},
+    {
+      headers: {
+        "token": getToken().accessToken
+      }
+    }
+  );
+};
+// 会员卡类型绑定课程-删除
+export const removeCardTypeCourseList = (data: object) => {
+  return http.request<Response>("post",
+    baseUrlApi(`/admin/card/courseDelete`),
     {data},
     {
       headers: {

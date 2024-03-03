@@ -72,7 +72,7 @@ export function useBill() {
       page: pagination.currentPage
     }).then(res => {
       dataList.value = res.data
-      pagination.total = res.pages
+      pagination.total = res.total
     })
     setTimeout(() => {
       loading.value = false;

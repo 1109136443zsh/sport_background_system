@@ -44,7 +44,10 @@ export function useContract() {
     await getContractList(
       1
     ).then(response => {
-      dataList.value = response.data
+      if (response.code === 200) {
+        dataList.value = response.data
+        pagination.total = response.total
+      }
     }).catch(() => {
       message(`获取列表信息失败`,
         {

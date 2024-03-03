@@ -59,7 +59,6 @@ export function coachRate() {
   async function onSearch() {
     loading.value = true;
     await getRateList().then(response => {
-      console.log(response)
       if (response.code === 200) {
         dataList.value = response.data
       } else {
@@ -79,6 +78,7 @@ export function coachRate() {
   }
 
   function openDialog(title = "更新", row?: FormItemProps) {
+    console.log(row)
     addDialog({
       title: `${title}星级`,
       props: {
@@ -104,10 +104,9 @@ export function coachRate() {
               rateUpdate({
                 rate_id: curData.rate_id,
                 name: curData.name,
-                bonus: curData.bonus,
-                charge: curData.charge
+                bonus: curData.bonus * 100,
+                charge: curData.charge * 100
               }).then((response) => {
-                console.log(response)
                 if (response.code === 200) {
                   message(`成功更新教练星级`, {
                     type: "success"

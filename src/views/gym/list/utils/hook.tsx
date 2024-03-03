@@ -6,6 +6,7 @@ import {addDialog} from "@/components/ReDialog/index";
 import editForm from "@/views/gym/list/form/index.vue";
 import {message} from "@/utils/message";
 import courseTable from "@/views/gym/list/course/index.vue"
+import {urlApi} from "@/api/utils";
 
 export function gymList() {
   const formRef = ref()
@@ -38,8 +39,8 @@ export function gymList() {
         <el-image
           fit="cover"
           preview-teleported={true}
-          src={row.cover_image}
-          preview-src-list={Array.of(row.cover_image)}
+          src={urlApi + row.cover_image}
+          preview-src-list={Array.of(urlApi + row.cover_image)}
           class="w-[40px] h-[40px] rounded-full align-middle"
         />
       )
@@ -92,8 +93,14 @@ export function gymList() {
       rate_id: toRaw(form).rate_id,
       region_id: toRaw(form).region_id
     }).then(response => {
-      dataList.value = response.data
-      pagination.total = response.total
+      if (response.code === 200) {
+        dataList.value = response.data
+        pagination.total = response.total
+      }else {
+        message("获取数据失败，请重试", {
+          type: "error"
+        })
+      }
     }).catch(() => {
       message("获取数据失败，请重试", {
         type: "error"
@@ -103,7 +110,6 @@ export function gymList() {
       loading.value = false;
     }, 500);
   }
-
   const resetForm = formEl => {
     if (!formEl) return;
     formEl.resetFields();
@@ -236,6 +242,6 @@ export function gymList() {
     openDetail,
     openDialog,
     openCourseList,
-    resetForm
+    resetForm,
   }
 }

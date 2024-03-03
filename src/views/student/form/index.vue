@@ -86,9 +86,8 @@ defineExpose({getRef})
   <el-form
     ref="ruleFormRef"
     :model="newFormInline"
-    label-width="82px"
   >
-    <el-row>
+    <el-row :gutter="30">
       <re-col :value="12" :xs="24" :sm="24">
         <el-form-item
           label="用户id：" prop="user_id"

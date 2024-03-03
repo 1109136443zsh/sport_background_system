@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {FormProps} from "@/views/coach/rate/form/types";
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import ReCol from "@/components/ReCol";
 
 const props = withDefaults(defineProps<FormProps>(), {
@@ -18,6 +18,7 @@ const newFormInline = ref(props.formInline)
 function getRef() {
   return ruleFormRef.value;
 }
+
 
 defineExpose({getRef})
 </script>
@@ -45,7 +46,7 @@ defineExpose({getRef})
           v-model="newFormInline.name"/>
       </el-form-item>
     </re-col>
-    <re-col >
+    <re-col>
       <el-form-item
         label="学员额外付费" prop="charge"
         :rules="[{required: true, message: '学员额外付费不能为空'}]"

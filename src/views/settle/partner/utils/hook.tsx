@@ -54,10 +54,8 @@ export function partner() {
       )
     },
     {
-      label: "",
+      label: "申请时间",
       prop: "apply_time",
-      formatter: ({createTime}) =>
-        dayjs(createTime).format("YYYY-MM-DD HH:mm:ss")
     },
     {
       label: "操作",
@@ -80,7 +78,7 @@ export function partner() {
     }).then(response => {
       if (response.code === 200) {
         dataList.value = response.data
-        pagination.total = response.pages
+        pagination.total = response.total
       } else {
         message("出错了，请重试", {
           type: "error"

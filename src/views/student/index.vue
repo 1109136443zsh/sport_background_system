@@ -70,6 +70,7 @@ defineOptions({
           :columns="dynamicColumns"
           :pagination="pagination"
           :data="dataList"
+          @current-change="onSearch"
           :header-cell-style="{
            background: 'var(--el-fill-color-light)',
            color: 'var(--el-text-color-primary)'

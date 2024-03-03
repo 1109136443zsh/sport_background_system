@@ -1,11 +1,11 @@
-import region from "@/assets/svg/region.svg"
+import order from "@/assets/svg/order.svg"
 import {DataInfo, getToken, userKey} from "@/utils/auth";
 import {storageLocal} from "@pureadmin/utils";
 export default {
   path: "/order",
   meta:{
     title: "订单管理",
-    icon: region,
+    icon: order,
     rank: 4
   },
   children: [

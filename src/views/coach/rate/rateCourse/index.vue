@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {FormProps} from "@/views/coach/rate/rateCourse/types";
-import {computed, h, onMounted, ref} from "vue";
+import { h, onMounted, ref} from "vue";
 import PureTableBar from "@/components/RePureTableBar/src/bar";
 import {useRenderIcon} from "@/components/ReIcon/src/hooks";
 import AddFill from "@iconify-icons/ri/add-circle-line";
@@ -33,7 +33,6 @@ async function handDelete(row) {
     rate_id: newFormInline.value.rate_id,
     course_id: row.course_id
   }).then((res) => {
-    console.log(res)
     message(`您删除了课程名称为${row.course_name}的这条数据`,
       {type: "success"});
     onSearch()
@@ -70,7 +69,7 @@ function openDialog() {
     fullscreenIcon: true,
     closeOnClickModal: false,
     contentRenderer: () => h(editForm, {ref: formRef}),
-    beforeSure: async (done, {options, index}) => {
+    beforeSure: async (done, {options}) => {
       const FormRef = formRef.value.getRef()
       const curData = options.props.formInline;
       FormRef.validate(valid => {
@@ -78,17 +77,18 @@ function openDialog() {
           rateCourseAdd({
             rate_id: curData.rate_id,
             course_id: curData.course_id
-          }).then(() => {
-            message(`成功添加`, {
-              type: "success"
-            });
-            done();
-            onSearch()
+          }).then(response => {
+            if (response.code === 200) {
+              message(`成功添加`, {
+                type: "success"
+              });
+              done();
+              onSearch()
+            }
           }).catch(() => {
             message(`添加可上课程失败`, {
               type: "error"
             });
-            done();
           })
         }
       })

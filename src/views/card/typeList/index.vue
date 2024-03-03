@@ -13,7 +13,8 @@ const {
   dataList,
   onSearch,
   handleDelete,
-  openDialog
+  openDialog,
+  openCourseDialog
 } = cardList()
 </script>
 
@@ -42,6 +43,7 @@ const {
           :data="dataList"
           :loading="loading"
           :pagination="pagination"
+          @current-change="onSearch"
           :size="size"
           :columns="dynamicColumns"
           :header-cell-style="{
@@ -66,6 +68,15 @@ const {
                 </el-button>
               </template>
             </el-popconfirm>
+            <el-button
+              class="reset-margin"
+              link
+              type="primary"
+              :size="size"
+              @click="openCourseDialog(row)"
+            >
+              绑定可购卡课程
+            </el-button>
           </template>
         </pure-table>
       </template>

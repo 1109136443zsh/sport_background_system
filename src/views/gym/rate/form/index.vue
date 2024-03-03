@@ -34,6 +34,7 @@ defineExpose({getRef})
         :rules="[{required: true, message: '星级id不能为空'}]"
       >
         <el-input
+          disabled
           v-model="newFormInline.rate_id"/>
       </el-form-item>
     </re-col>

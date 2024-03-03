@@ -40,6 +40,7 @@ export function setting() {
       console.log(response)
       if (response.code === 200) {
         dataList.value = response.data
+        pagination.total = response.total
       }else {
         message(`出错了`,
           {

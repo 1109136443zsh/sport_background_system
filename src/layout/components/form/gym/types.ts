@@ -14,7 +14,7 @@ interface FormItemProps {
   /**
    * 场馆ID
    */
-  gym_id: number;
+  gym_id: string;
   /**
    * 介绍
    */

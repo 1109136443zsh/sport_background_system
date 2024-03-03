@@ -19,7 +19,7 @@ const {
   openDetail,
   openDialog,
   openCourseList,
-  resetForm
+  resetForm,
 } = gymList()
 </script>
 
@@ -85,6 +85,8 @@ const {
           :pagination="pagination"
           :size="size"
           :data="dataList"
+          @current-change="onSearch"
+
           :columns="dynamicColumns"
           :header-cell-style="{
               background: 'var(--el-fill-color-light)',

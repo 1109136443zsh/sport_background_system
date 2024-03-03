@@ -53,7 +53,9 @@ export function gymRate() {
   async function onSearch() {
     loading.value = true;
     await getRateList().then(res => {
-      dataList.value = res.data
+      if (res.code === 200) {
+        dataList.value = res.data
+      }
     })
     setTimeout(() => {
       loading.value = false;
@@ -69,7 +71,7 @@ export function gymRate() {
           name: row?.name ?? "",
           charge: row?.charge ?? "",
           bonus: row?.bonus ?? "",
-          rate_id: row?.rate_id ?? ""
+          rate_id: row?.id ?? ""
         }
       },
       width: "46%",
@@ -86,8 +88,8 @@ export function gymRate() {
               rateUpdate({
                 rate_id: curData.rate_id,
                 name: curData.name,
-                bonus: curData.bonus,
-                charge: curData.charge
+                bonus: curData.bonus * 100,
+                charge: curData.charge * 100
               }).then(() => {
                 message(`成功更新场馆星级`, {
                   type: "success"

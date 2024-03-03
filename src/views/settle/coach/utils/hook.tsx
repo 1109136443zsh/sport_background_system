@@ -5,6 +5,7 @@ import {coachAccept, coachReject, getCoachDetail, getCoachList} from "@/api/sett
 import {message} from "@/utils/message";
 import detailTable from "@/views/settle/coach/detail/index.vue"
 import {addDialog} from "@/components/ReDialog/index";
+import {urlApi} from "@/api/utils";
 
 export function useSettle() {
   const form = reactive({
@@ -36,9 +37,9 @@ export function useSettle() {
         <el-image
           fit="cover"
           preview-teleported={true}
-          src={row.avatar}
-          preview-src-list={Array.of(row.avatar)}
-          class="w-[24px] h-[24px] rounded-full align-middle"
+          src={urlApi + row.avatar}
+          preview-src-list={Array.of(urlApi + row.avatar)}
+          class="w-[48px] h-[48px] rounded-full align-middle"
         />
       ),
       width: 90
@@ -91,7 +92,7 @@ export function useSettle() {
     }).then(res => {
       if (res.code === 200) {
         dataList.value = res.data
-        pagination.total = res.pages
+        pagination.total = res.total
       }else {
         message(`出错了`, {type: "error"});
       }
