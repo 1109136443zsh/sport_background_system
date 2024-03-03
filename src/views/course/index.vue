@@ -86,7 +86,7 @@ const {
           :data="dataList"
           :columns="dynamicColumns"
           :pagination="pagination"
-          @current-change="onSearch"
+          @page-current-change="onSearch"
           :header-cell-style="{
               background: 'var(--el-fill-color-light)',
               color: 'var(--el-text-color-primary)'

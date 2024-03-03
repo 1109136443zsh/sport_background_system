@@ -42,7 +42,7 @@ const {
           :data="dataList"
           :loading="loading"
           :pagination="pagination"
-          @current-change="onSearch"
+          @page-current-change="onSearch"
           :size="size"
           :columns="dynamicColumns"
           :header-cell-style="{

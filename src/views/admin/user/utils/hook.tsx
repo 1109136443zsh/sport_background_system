@@ -238,9 +238,9 @@ export function useUser() {
     await getUserList(
       pagination.currentPage
     ).then(response => {
+      console.log(response)
       dataList.value = response.data
       pagination.total = response.total
-      pagination.currentPage = response.pageNumber
     }).catch((error) => {
       console.log(error)
       message(`获取用户列表失败，请刷新`,
@@ -257,7 +257,6 @@ export function useUser() {
     onSearch();
   });
   return {
-    form,
     columns,
     loading,
     dataList,

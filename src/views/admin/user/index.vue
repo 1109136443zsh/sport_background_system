@@ -12,7 +12,6 @@ import EditPen from "@iconify-icons/ep/edit-pen";
 const formRef = ref();
 const tableRef = ref();
 const {
-  form,
   columns,
   loading,
   dataList,
@@ -52,6 +51,7 @@ const {
           :data="dataList"
           :columns="dynamicColumns"
           :pagination="pagination"
+          @page-current-change="onSearch"
           :header-cell-style="{
               background: 'var(--el-fill-color-light)',
               color: 'var(--el-text-color-primary)'

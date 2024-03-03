@@ -35,7 +35,7 @@ const {
         </el-button>
       </template>
       <template v-slot="{size,dynamicColumns}">
-        <pure-table
+        <PureTable
           row_key="id"
           adaptive
           align-whole="center"
@@ -43,7 +43,7 @@ const {
           :data="dataList"
           :loading="loading"
           :pagination="pagination"
-          @current-change="onSearch"
+          @page-current-change="onSearch"
           :size="size"
           :columns="dynamicColumns"
           :header-cell-style="{
@@ -78,7 +78,7 @@ const {
               绑定可购卡课程
             </el-button>
           </template>
-        </pure-table>
+        </PureTable>
       </template>
     </PureTableBar>
   </div>

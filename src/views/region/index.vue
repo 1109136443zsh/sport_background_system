@@ -48,7 +48,7 @@ defineOptions({
           :data="dataList"
           :pagination="pagination"
           :size="size"
-          @current-change="onSearch"
+          @page-current-change="onSearch"
           :columns="dynamicColumns"
           :header-cell-style="{
            background: 'var(--el-fill-color-light)',

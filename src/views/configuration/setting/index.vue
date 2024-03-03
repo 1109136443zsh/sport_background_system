@@ -33,6 +33,7 @@ const {
           :pagination="pagination"
           :size="size"
           :columns="dynamicColumns"
+          @page-current-change="onSearch"
           :header-cell-style="{
               background: 'var(--el-fill-color-light)',
               color: 'var(--el-text-color-primary)'

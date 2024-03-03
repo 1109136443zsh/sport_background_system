@@ -35,7 +35,7 @@ export function setting() {
   async function onSearch() {
     loading.value = true;
     await getConfigList(
-      1
+      pagination.currentPage
     ).then(response => {
       console.log(response)
       if (response.code === 200) {

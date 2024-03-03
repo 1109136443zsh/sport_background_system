@@ -115,7 +115,7 @@ const {
           ref="tableRef"
           adaptive
           :data="dataList"
-          @current-change="onSearch"
+          @page-current-change="onSearch"
           :size="size"
           :loading="loading"
           :pagination="pagination"

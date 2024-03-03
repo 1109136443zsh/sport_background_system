@@ -85,7 +85,7 @@ const {
           :pagination="pagination"
           :size="size"
           :data="dataList"
-          @current-change="onSearch"
+          @page-current-change="onSearch"
 
           :columns="dynamicColumns"
           :header-cell-style="{

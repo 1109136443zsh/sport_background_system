@@ -1,6 +1,6 @@
 import {PaginationProps} from "@pureadmin/table/dist/types";
 import {h, onMounted, reactive, ref, toRaw,} from "vue";
-import {getCoachDetail, getCoachList, getGymEnableList, updateCoach} from "@/api/coach/coach";
+import {getCoachDetail, getCoachList, updateCoach} from "@/api/coach/coach";
 import gymEnableTable from "@/views/coach/list/gymEnable/index.vue"
 import {addDialog} from "@/components/ReDialog/index";
 import detailTable from "@/views/coach/list/detail/index.vue";
@@ -99,7 +99,6 @@ export function useCoach() {
     }).then(response => {
       dataList.value = response.data
       pagination.total = response.total
-
     }).catch((error) => {
       console.log(error)
       message("获取数据失败，请重试", {
@@ -162,7 +161,8 @@ export function useCoach() {
 
   async function openDialog(row) {
     let data = null
-    getCoachDetail(row.coach_id).then(response => {
+    console.log(row.coach_id)
+    getCoachDetail({coach_id: row.coach_id}).then(response => {
       console.log(response)
       if (response.code === 200) {
         data = response.data

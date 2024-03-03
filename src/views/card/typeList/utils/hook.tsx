@@ -81,7 +81,11 @@ export function cardList() {
     },
     {
       label: "价格",
-      prop: "price"
+      prop: "price",
+      cellRenderer: ({row}) => {
+        const amountInYuan = (row.price / 100).toFixed(2); // 将分转换为元，并保留两位小数
+        return <span>{amountInYuan} 元</span>; // 在模板中显示转换后的金额
+      }
     },
     {
       label: "操作",
@@ -124,7 +128,7 @@ export function cardList() {
               is_bind_course: curData.bind_course,
               is_bind_gym: curData.bind_gym,
               daily_limit: curData.daily_limit,
-              price: curData.price
+              price: curData.price * 100
             }).then(res => {
               console.log(res)
               message(`添加会员卡成功`,

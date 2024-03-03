@@ -95,7 +95,7 @@ export function courseList() {
             if (title === "新增") {
               addCourse({
                 name: curData.name,
-                price: curData.price,
+                price: curData.price * 100,
                 price_info: curData.price_info,
                 subtitle: curData.subtitle,
                 type: curData.course_type
